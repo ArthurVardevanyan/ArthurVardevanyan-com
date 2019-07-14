@@ -1,0 +1,24 @@
+Header set Cache-Control "max-age=0, private, no-cache, no-store, must-revalidate"
+
+
+
+# Do not remove this line, otherwise mod_rewrite rules will stop working
+RewriteBase /
+
+ErrorDocument 404 http://www.arthurvardevanyan.ml/index.html
+# 1 Month for most static assets
+<filesMatch ".(js|ico)$">
+Header set Cache-Control "max-age=2592000, public"
+</filesMatch>
+
+## EXPIRES CACHING ##
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType text/x-javascript "access 1 month"
+ExpiresByType application/x-shockwave-flash "access 1 month"
+
+
+
+ExpiresDefault "access plus 14 days"
+</IfModule>
+## EXPIRES CACHING ##
