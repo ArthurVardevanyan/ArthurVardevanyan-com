@@ -34,89 +34,8 @@ http://www.templatemo.com/tm-441-volton
  1. Reset
 -------------------------------------------------------- */
 
-html,
-body,
-div,
-span,
-applet,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-a,
-abbr,
-acronym,
-address,
-big,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-b,
-u,
-i,
-center,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-embed,
-figure,
-figcaption,
-footer,
-header,
-hgroup,
-menu,
-nav,
-output,
-ruby,
-section,
-summary,
-time,
-mark,
-audio,
-video {
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
     margin: 0;
-    padding: 0;
     border: 0;
     font-size: 100%;
     vertical-align: baseline;
@@ -138,18 +57,19 @@ body {
     line-height: 1;
 }
 
-ol,
-ul {
+ol {
     list-style: none;
 }
 
-blockquote,
-q {
+ul {
+    padding-inline-start: 25px;
+}
+
+blockquote, q {
     quotes: none;
 }
 
-blockquote:before,
-blockquote:after {
+blockquote:before, blockquote:after {
     content: '';
     content: none;
 }
@@ -169,22 +89,11 @@ a:focus {
     outline: none;
 }
 
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-nav,
-section {
+article, aside, details, figcaption, figure, footer, header, hgroup, nav, section {
     display: block;
 }
 
-audio,
-canvas,
-video {
+audio, canvas, video {
     display: inline-block;
     *display: inline;
     *zoom: 1;
@@ -194,8 +103,7 @@ audio:not([controls]) {
     display: none;
 }
 
-sub,
-sup {
+sub, sup {
     line-height: 0;
     position: relative;
     vertical-align: baseline;
@@ -214,32 +122,24 @@ img {
     -ms-interpolation-mode: bicubic;
 }
 
-button,
-input,
-select,
-textarea {
+button, input, select, textarea {
     font-size: 100%;
     margin: 0;
     vertical-align: baseline;
     *vertical-align: middle;
 }
 
-button,
-input {
+button, input {
     line-height: normal;
     *overflow: visible;
 }
 
-button::-moz-focus-inner,
-input::-moz-focus-inner {
+button::-moz-focus-inner, input::-moz-focus-inner {
     border: 0;
     padding: 0;
 }
 
-button,
-input[type="button"],
-input[type="reset"],
-input[type="submit"] {
+button, input[type="button"], input[type="reset"], input[type="submit"] {
     cursor: pointer;
     -webkit-appearance: button;
 }
@@ -283,11 +183,7 @@ a:hover {
     color: #555555;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5 {
+h1, h2, h3, h4, h5 {
     color: #34495e;
 }
 
@@ -319,8 +215,7 @@ h6 {
     color: #999999;
 }
 
-.main-content,
-.banner-bg {
+.main-content, .banner-bg {
     float: right;
     width: 80%;
 }
@@ -331,24 +226,18 @@ h6 {
 }
 
 @media screen and (max-width: 1290px) {
-
-    .main-content,
-    .banner-bg {
+    .main-content, .banner-bg {
         width: 70%;
     }
-
     .banner-cpd {
         width: 70%;
     }
 }
 
 @media screen and (max-width: 992px) {
-
-    .main-content,
-    .banner-bg {
+    .main-content, .banner-bg {
         width: 100%;
     }
-
     .banner-cpd {
         width: 100%;
     }
@@ -456,13 +345,17 @@ h3.profile-title {
     display: block;
 }
 
+.main-navigation ul {
+    display: block;
+    padding-inline-start: 0px;
+}
+
 .main-navigation li a {
     padding: 15px 40px;
     display: block;
     color: white;
     font-size: 14px;
     text-decoration: none;
-
 }
 
 .main-navigation li a i {
@@ -477,13 +370,11 @@ h3.profile-title {
 .main-navigation li a.active {
     background: #495461;
     text-decoration: none;
-
 }
 
 .main-navigation li a.active:hover {
     background: #495461;
     text-decoration: none;
-
 }
 
 .social-icons {
@@ -494,6 +385,10 @@ h3.profile-title {
 .social-icons li {
     display: inline-block;
     margin-right: 20px;
+}
+
+.social-icons ul {
+    padding-inline-start: 0px;
 }
 
 .social-icons a {
@@ -533,7 +428,6 @@ h3.profile-title {
         overflow: hidden;
         margin-right: 30px;
     }
-
     .responsive-header .profile-content {
         text-align: left;
         margin-top: 30px;
@@ -551,11 +445,9 @@ h3.profile-title {
     .main-navigation a {
         padding: 10px;
     }
-
     .main-navigation a.active {
         background: #34495e !important;
     }
-
     .main-navigation a:hover {
         background: #34495e !important;
     }
@@ -651,8 +543,7 @@ h3.profile-title {
     margin-top: 40px;
 }
 
-.projects-holder .col-md-4,
-.projects-holder .col-md-4 {
+.projects-holder .col-md-4, .projects-holder .col-md-4 {
     padding-right: 1px;
     padding-left: 1px;
 }
@@ -720,8 +611,7 @@ h3.profile-title {
     margin-top: 40px;
 }
 
-.contact-form input,
-.contact-form textarea {
+.contact-form input, .contact-form textarea {
     width: 100%;
     outline: 0;
     border: 1px solid #aaaaaa;
@@ -730,8 +620,7 @@ h3.profile-title {
     margin-bottom: 30px;
 }
 
-.contact-form input:focus,
-.contact-form textarea:focus {
+.contact-form input:focus, .contact-form textarea:focus {
     outline: 0;
 }
 

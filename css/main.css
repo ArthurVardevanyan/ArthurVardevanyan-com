@@ -9,6 +9,11 @@
     width: 50%;
     padding: 10px;
 }
+.tri-column {
+    float: left;
+    width: 33%;
+    padding: 10px;
+}
 
 /* Clear floats after the columns */
 
