@@ -142,23 +142,27 @@
                             <h4 class="widget-title">Main Project Points</h4>
                             <div class="column">
                                 <h5>Download Phase</h5>
-                                <p>• Gathers Emails </p>
-                                <p>• Reads the HTML form within the Email </p>
-                                <p>• Identifies the Google Drive Links </p>
-                                <p>• Downloads the Google Drive Files </p>
-                                <p>• Groups Everything by Order Number</p>
-                                <p>• Converts Files to Postscript</p>
-                                <p>• Creates JSON file with Job Specifications</p>
-                                <p>• Merges Postscript files if needed</p>
+                                <ul>
+                                    <li>Gathers Emails</li>
+                                    <li>Reads the HTML form within the Email</li>
+                                    <li>Identifies the Google Drive Links</li>
+                                    <li>Downloads the Google Drive Files</li>
+                                    <li>Groups Everything by Order Number</li>
+                                    <li>Converts Files to Postscript</li>
+                                    <li>Creates JSON file with Job Specifications</li>
+                                    <li>Merges Postscript files if needed</li>
+                                </ul>
                             </div><br>
                             <div class="column">
                                 <h5>Printing Phase</h5>
-                                <p>• Supports Bulk Printing via Order Numbers </p>
-                                <p>• Picks the Settings for the Printer for you </p>
-                                <p>• Manual Inseration of Set Count if unable to determine </p>
-                                <p>• Custom Banner Sheet's with Job Specs's, Files, and Page Counts</p>
-                                <p>• Job Error Checking</p>
-                                <p>• Injection of Printer Job Language (PJL) commands into postscript files</p>
+                                <ul>
+                                    <li>Supports Bulk Printing via Order Numbers</li>
+                                    <li>Picks the Settings for the Printer for you</li>
+                                    <li>Manual Inseration of Set Count if unable to determine</li>
+                                    <li>Custom Banner Sheet's with Job Specs's, Files, and Page Counts</li>
+                                    <li>Job Error Checking</li>
+                                    <li>Injection of Printer Job Language (PJL) commands into postscript files</li>
+                                </ul>
                             </div><br>
 
                             <hr>
@@ -343,24 +347,28 @@
                                     </p>
                                     <p>Im also using these libraries:
                                     </p>
-                                    <p>• PdfFileReader from PyPDF2 for page counts </p>
-                                    <p>• glob for getting the list of files and folders</p>
+                                    <ul>
+                                        <li>PdfFileReader from PyPDF2 for page counts </p>
+                                        </li>
+                                        <li>glob for getting the list of files and folders</li>
+                                    </ul>
                                 </li>
-                                <li>
-
-                                    <h5>Gmail API</h5>
-                                    <p>All of our jobs come to us via Email to a dedicated Gmail account. The Python
-                                        Script, using the <a
-                                            href="https://developers.google.com/gmil/api/quickstart/python">Gmail
-                                            API</a> looks through the Unread Emails (under normal use case thier is
-                                        no
-                                        human interaction with the email account) and downloads the Subject and
-                                        Contents
-                                        into a text file. I found a premade script <a
-                                            href="https://gist.github.com/robulouski/7442321#file-gmail_imap_dump_eml-py">(Robulouski's
-                                            "gmail_imap_dump_eml.py")</a> that shows the Gmail API in action, using
-                                        that
-                                        and modified it to my needs.</p>
+                                <h5>Gmail API</h5>
+                                <p>All of our jobs come to us via Email to a dedicated Gmail account. The
+                                    Python
+                                    Script, using the <a
+                                        href="https://developers.google.com/gmil/api/quickstart/python">Gmail
+                                        API</a> looks through the Unread Emails (under normal use case thier
+                                    is
+                                    no
+                                    human interaction with the email account) and downloads the Subject and
+                                    Contents
+                                    into a text file. I found a premade script <a
+                                        href="https://gist.github.com/robulouski/7442321#file-gmail_imap_dump_eml-py">(Robulouski's
+                                        "gmail_imap_dump_eml.py")</a> that shows the Gmail API in action,
+                                    using
+                                    that
+                                    and modified it to my needs.</p>
                                 </li>
                                 <li>
                                     <h5>Google Drive API</h5>
@@ -457,6 +465,12 @@
                                     </p>
                                 </li>
                                 <li>
+                                    <h5>Page and Job Counters</h5>
+                                    <p>The script knows the page count of all the files, that information is stored in
+                                        the JSON file, and is used on the printed banner sheet and for load balancing.
+                                    </p>
+                                </li>
+                                <li>
                                     <h5>Job Banner Sheet</h5>
                                     <p>Fusce ullamcorper ligula sit amet quam accumsan aliquet. Sed nulla odio,
                                         tincidunt vitae nunc vitae, mollis pharetra velit. Sed nec tempor nibh...
@@ -464,26 +478,43 @@
                                 </li>
                                 <li>
                                     <h5>Multi Threading /w Background Processing (Scrapped)</h5>
-                                    <p>Fusce ullamcorper ligula sit amet quam accumsan aliquet. Sed nulla odio,
-                                        tincidunt vitae nunc vitae, mollis pharetra velit. Sed nec tempor nibh...
+                                    <p>I had setup the script to have threading and allow it to start proessing as
+                                        orders were being entered to speed up the preflighting time. However people kept
+                                        closing out of the Script as it was running in the background, and the time
+                                        saved was insignficant to the time already saved by the script.
                                     </p>
                                 </li>
                                 <li>
                                     <h5>PEP8 Naming Conventions</h5>
-                                    <p>Fusce ullamcorper ligula sit amet quam accumsan aliquet. Sed nulla odio,
-                                        tincidunt vitae nunc vitae, mollis pharetra velit. Sed nec tempor nibh...
+                                    <p>I went through and fixed my variable and function names to comply with the PEP8
+                                        Standard Naming Conventions
                                     </p>
                                 </li>
-                                <li>
-                                    <h5>Page and Job Counters</h5>
-                                    <p>Fusce ullamcorper ligula sit amet quam accumsan aliquet. Sed nulla odio,
-                                        tincidunt vitae nunc vitae, mollis pharetra velit. Sed nec tempor nibh...
-                                    </p>
-                                </li>
+
                                 <li>
                                     <h5>Printer Load Balancing</h5>
-                                    <p>Fusce ullamcorper ligula sit amet quam accumsan aliquet. Sed nulla odio,
-                                        tincidunt vitae nunc vitae, mollis pharetra velit. Sed nec tempor nibh...
+                                    <p>As the Script sends jobs to the printers it keeps track of how many impressions
+                                        it sends to each one and sends the next job to the printer with the least amount
+                                        of impressions queued up to it. Also due to each Printer only supporting 40 jobs
+                                        at a time, the Script will pause after sending 40 jobs to wait for a manual
+                                        check to make sure it can send 40 more. <br>(40 is chosen and not 80 just in
+                                        case
+                                        one job ends up being 40 or greater file/job ids)
+                                    </p>
+                                </li>
+                                <li>
+                                    <h5>TODO</h5>
+                                    <ul>
+                                        <li>Bug Fixes</li>
+                                        <li>Double Staple & LandScape Staple</li>
+                                        <li>Fix Impression Counter File (Not Related to printing, just grabs total
+                                            counts for previous orders as data)</li>
+                                        <li>Generate an Excel File for all the orders using all the JSON information
+                                        </li>
+                                        <li>Print Pages Counts Directly onto Already Printed Order Sheets</li>
+                                        <li>GUI</li>
+
+                                    </ul>
                                     </p>
                                 </li>
                             </ul>
@@ -499,11 +530,12 @@
                 <div class="page-section" id="github">
                     <div class="col-md-12">
                         <div class="row">
-                            <h4 class="widget-title">GitHub</h4> <p>Through the course of this project I
-                                    used GitHub for my version control.......</p>
-                                    <a
-                                        href="https://github.com/ArthurVardevanyan/CPD_SO_Printing">https://github.com/ArthurVardevanyan/CPD_SO_Printing</a>
-                                    <br> <br>
+                            <h4 class="widget-title">GitHub</h4>
+                            <p>Through the course of this project I
+                                used GitHub for my version control.......</p>
+                            <a
+                                href="https://github.com/ArthurVardevanyan/CPD_SO_Printing">https://github.com/ArthurVardevanyan/CPD_SO_Printing</a>
+                            <br> <br>
                         </div>
                     </div>
                 </div>
@@ -513,7 +545,7 @@
                     <div class="col-md-12">
                         <div class="row">
                             <h4 class="widget-title">Documentation</h4>
-                            <p>.....</p>
+                            <p>Later.....</p>
 
 
                             <br> <br>
