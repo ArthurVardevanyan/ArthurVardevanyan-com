@@ -7,12 +7,12 @@
 .column {
     float: left;
     width: 50%;
-    padding: 10px;
+    padding: 0px 10px;
 }
 .tri-column {
     float: left;
     width: 33%;
-    padding: 10px;
+    padding: 0px 10px;
 }
 
 /* Clear floats after the columns */
