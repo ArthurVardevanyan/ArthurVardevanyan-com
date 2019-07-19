@@ -54,7 +54,7 @@
                         <div class="profile-image"> <img src="img/cpd/python_logo.svg"> </div>
                         <div class="profile-content">
                             <h3 class="profile-title">Arthur Vardevanyan</h3>
-                            <p class="profile-description">CS Software Engineering Student</p>
+                            <p class="profile-description">Automated Printing - A Python Script</p>
                         </div>
                     </div>
                 </div>
@@ -81,7 +81,7 @@
         <div class="top-section">
             <div class="profile-image"> <img src="img/cpd/python_logo.svg"> </div>
             <h3 class="profile-title">Arthur Vardevanyan</h3>
-            <p class="profile-description">CS Software Engineering Student</p>
+            <p class="profile-description">Automated Printing - A Python Script</p>
         </div>
         <!-- top-section -->
         <div class="main-navigation">
@@ -340,9 +340,8 @@
                                 <li>
 
                                     <h5>Python</h5>
-                                    <p>After doing some reaserch at differnet languages & their aviable libraries,
-                                        and
-                                        which languages I was most comfortable in, I settled on using <a
+                                    <p>After doing some reaserch with differnet languages, their available libraries,
+                                        & which languages I was most comfortable in. I settled on using <a
                                             href="https://www.python.org/">Python</a> as the language for my
                                         program.
                                     </p>
@@ -361,11 +360,8 @@
                                         Script, using the <a
                                             href="https://developers.google.com/gmil/api/quickstart/python">Gmail
                                             API</a> looks through the Unread Emails (under normal use case thier
-                                        is
-                                        no
-                                        human interaction with the email account) & downloads the Subject and
-                                        Contents
-                                        into a text file. I found a premade script <a
+                                        is no human interaction with the email account) & downloads the Subject &
+                                        Contents into a text file. I found a premade script <a
                                             href="https://gist.github.com/robulouski/7442321#file-gmail_imap_dump_eml-py">(Robulouski's
                                             "gmail_imap_dump_eml.py")</a> that shows the Gmail API in action,
                                         using
@@ -390,31 +386,37 @@
                                     <h5>Job Organization</h5>
                                     <p>All of the Jobs are sorted into folders in the format Order Number + Subject
                                         Line. The Order Number is referenced from within the body of the email, and
-                                        the
-                                        Subject Line takes the first 45 valid characters for windows.</p>
-                                    <p>All
-                                        the folders contain the Email in a text file, A JSON parameter file, All the
-                                        PDF's for the job & a PostScript Folder with all the pdfs converted to
-                                        postscript.
+                                        the Subject Line takes the first 45 valid characters (due to windows file path
+                                        limitations).</p>
+                                    <p>All the folders contain:
+                                        <ul>
+                                            <li>The Email in a text file</li>
+                                            <li>A JSON parameter file</li>
+                                            <li>All the PDF's for the job</li>
+                                            <li>A Folder with all the pdfs converted to Postscript.</li>
+                                        </ul>
                                     </p>
                                     <p>In addition, as needed their is a merged file of all the files if the job
-                                        needs
-                                        it, & during the printing process, & Banner Sheet file is created, and
+                                        needs it. During the printing process, a Banner Sheet file is created, and
                                         another folder is created with print ready postscript files, </p>
                                     <p>In the root, thier is also a folder with the default PJL (Printer Job
                                         Language)
                                         parameters for our <a
                                             href="https://www.xerox.com/en-us/digital-printing/digital-presses/xerox-d95-d110-d125">Xerox
                                             D110</a>. These get added to all the postscript files & it is modified
-                                        to
-                                        fit the parameters of the requested job.</p>
+                                        to fit the parameters of the requested job.</p>
 
                                 </li>
 
                                 <li>
                                     <h5>Error Checking</h5>
-                                    <p>Fusce ullamcorper ligula sit amet quam accumsan aliquet. Sed nulla odio,
-                                        tincidunt vitae nunc vitae, mollis pharetra velit. Sed nec tempor nibh...
+                                    <p>Due to human error, I have error checking built in for the order requests.
+                                        Depending on the mistake, the script will either:
+                                        <ul>
+                                            <li>Override & Run</li>
+                                            <li>Wait for Input</li>
+                                            <li>Consider the Order Not Valid & Not Run It</li>
+                                        </ul>
                                     </p>
                                 </li>
                                 <li>
@@ -436,7 +438,7 @@
                                     </p>
                                 </li>
                                 <li>
-                                    <h5>Started Devolpement & Scratched Web Pased Linux Printing Solution</h5>
+                                    <h5>Started Devolpement & Scratched Web Based Linux Printing Solution</h5>
                                     <p>Fusce ullamcorper ligula sit amet quam accumsan aliquet. Sed nulla odio,
                                         tincidunt vitae nunc vitae, mollis pharetra velit. Sed nec tempor nibh...
                                     </p>
@@ -455,15 +457,16 @@
                                 </li>
                                 <li>
                                     <h5>GhostScript</h5>
-                                    <p>Fusce ullamcorper ligula sit amet quam accumsan aliquet. Sed nulla odio,
-                                        tincidunt vitae nunc vitae, mollis pharetra velit. Sed nec tempor nibh...
+                                    <p> I used <a href="https://www.ghostscript.com/index.html">GhostScript</a> to
+                                        convert my pdf files into postscript files so I can inject the printer specific
+                                        commands before sending them to the printer.
                                     </p>
                                 </li>
 
                                 <li>
-                                    <h5>Pyton Logic</h5>
-                                    <p>Fusce ullamcorper ligula sit amet quam accumsan aliquet. Sed nulla odio,
-                                        tincidunt vitae nunc vitae, mollis pharetra velit. Sed nec tempor nibh...
+                                    <h5>Python Logic</h5>
+                                    <p>After getting all the little details on how do everything, it was just a matter
+                                        of throwing everything together, and building the logic behind it.
                                     </p>
                                 </li>
                                 <li>
@@ -474,8 +477,10 @@
                                 </li>
                                 <li>
                                     <h5>Job Banner Sheet</h5>
-                                    <p>Fusce ullamcorper ligula sit amet quam accumsan aliquet. Sed nulla odio,
-                                        tincidunt vitae nunc vitae, mollis pharetra velit. Sed nec tempor nibh...
+                                    <p>To make seperating jobs easier, I print a stripped version of the email, with the
+                                        file names, and page counts on a colored sheet of paper. The file is
+                                        genearted from scratch in postscript. This is also in addition to the banner
+                                        sheet that prints in front of each file that the printer auto generates.
                                     </p>
                                 </li>
                                 <li>

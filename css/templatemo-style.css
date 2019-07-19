@@ -227,10 +227,10 @@ h6 {
 
 @media screen and (max-width: 1290px) {
     .main-content, .banner-bg {
-        width: 70%;
+        width: 75%;
     }
     .banner-cpd {
-        width: 70%;
+        width: 75%;
     }
 }
 
@@ -291,7 +291,7 @@ hr {
 
 @media screen and (max-width: 1290px) {
     .sidebar-menu {
-        width: 30%;
+        width: 25%;
     }
 }
 

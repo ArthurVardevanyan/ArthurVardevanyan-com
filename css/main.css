@@ -9,12 +9,17 @@
     width: 50%;
     padding: 0px 10px;
 }
+
 .tri-column {
     float: left;
     width: 33%;
     padding: 0px 10px;
 }
+.col-blocks{
+    display: inline-block;
+    min-width: 100%;
 
+}
 /* Clear floats after the columns */
 
 .row:after {
@@ -26,7 +31,13 @@
 /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
 
 @media screen and (max-width: 600px) {
-    .column, .tri-column {
+    .column {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .tri-column {
         width: 100%;
     }
 }
@@ -57,7 +68,7 @@
 }
 
 /* Style the Image Used to Trigger the Modal https://www.w3schools.com/howto/howto_css_modal_images.asp */
-.img{
+.img {
     border-radius: 5px;
     cursor: pointer;
     transition: 0.3s;
@@ -90,18 +101,21 @@
     background-color: rgba(0, 0, 0, 0.9);
     /* Black w/ opacity */
 }
+
 .active {
     background-color: #424d5a;
-  }
+}
+
 /* Modal Content (Image) */
 .modal-content {
-  width: 90%;
-  margin: auto;
+    width: 90%;
+    margin: auto;
 }
-.model-content-img{
-  max-height: 85vh;
-  object-fit: contain;
-  cursor: pointer;
+
+.model-content-img {
+    max-height: 85vh;
+    object-fit: contain;
+    cursor: pointer;
 
 }
 
@@ -167,6 +181,7 @@ ul.timeline {
     list-style-type: none;
     position: relative;
 }
+
 ul.timeline:before {
     content: ' ';
     background: #d4d9df;
@@ -177,11 +192,13 @@ ul.timeline:before {
     height: 100%;
     z-index: 400;
 }
-ul.timeline > li {
+
+ul.timeline>li {
     margin: 20px 0;
     padding-left: 50px;
 }
-ul.timeline > li:before {
+
+ul.timeline>li:before {
     content: ' ';
     background: white;
     display: inline-block;
@@ -204,30 +221,31 @@ ul.timeline > li:before {
     text-align: left;
     outline: none;
     font-size: 15px;
-  }
-  
-  .collapsible.active, .collapsible:hover {
+}
+
+.collapsible.active,
+.collapsible:hover {
     background-color: #1a2633;
-  }
-  
-  .collapsible:after {
+}
+
+.collapsible:after {
     content: '\002B';
     color: white;
     font-weight: bold;
     float: right;
     margin-left: 5px;
-  }
-  
-  .collapsible.active:after {
+}
+
+.collapsible.active:after {
     content: "\2212";
-  }
-  
-  .content {
+}
+
+.content {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.5s ease-in-out;
     background-color: #2d2d2d;
-  }
+}
 
 
 /* https://stackoverflow.com/questions/50925138/responsive-youtube-video-inside-fixed-width-div */
