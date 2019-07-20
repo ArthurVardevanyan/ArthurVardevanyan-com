@@ -16,7 +16,7 @@
 }
 */
 
- (jQuery);
+(jQuery);
 // Get the modal https://www.w3schools.com/howto/howto_css_modal_images.asp
 var modal = document.getElementById("modal1");
 // Get the image and insert it inside the modal - use its "alt" text as a caption
@@ -209,6 +209,48 @@ var modal = document.getElementById("modal10");
 var img = document.getElementById("image10");
 var modalImg = document.getElementById("img10");
 var captionText = document.getElementById("caption10");
+img.onclick = function () {
+  modal.style.display = "block";
+  modalImg.src = this.src;
+  captionText.innerHTML = this.alt;
+}
+
+// Get the <span> element that closes the modal
+var span = modalImg
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function () {
+  modal.style.display = "none";
+}
+
+
+// Get the modal https://www.w3schools.com/howto/howto_css_modal_images.asp
+var modal = document.getElementById("modal11");
+// Get the image and insert it inside the modal - use its "alt" text as a caption
+var img = document.getElementById("image11");
+var modalImg = document.getElementById("img11");
+var captionText = document.getElementById("caption11");
+img.onclick = function () {
+  modal.style.display = "block";
+  modalImg.src = this.src;
+  captionText.innerHTML = this.alt;
+}
+
+// Get the <span> element that closes the modal
+var span = modalImg
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function () {
+  modal.style.display = "none";
+}
+
+
+// Get the modal https://www.w3schools.com/howto/howto_css_modal_images.asp
+var modal = document.getElementById("modal12");
+// Get the image and insert it inside the modal - use its "alt" text as a caption
+var img = document.getElementById("image12");
+var modalImg = document.getElementById("img12");
+var captionText = document.getElementById("caption12");
 img.onclick = function () {
   modal.style.display = "block";
   modalImg.src = this.src;
