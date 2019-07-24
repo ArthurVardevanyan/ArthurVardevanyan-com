@@ -1,10 +1,4 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js">
-<!--<![endif]-->
 
 <head>
   <meta charset="utf-8">
@@ -24,29 +18,9 @@
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/templatemo-style.css">
   <script src="js/vendor/modernizr-2.6.2.min.js"></script>
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-59427626-2"></script>
-  <script language="JavaScript">
-    var frmvalidator = new Validator("contactform");
-    frmvalidator.addValidation("name", "req", "Please provide your name");
-    frmvalidator.addValidation("email", "req", "Please provide your email");
-    frmvalidator.addValidation("email", "email",
-      "Please enter a valid email address");
-  </script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-
-    gtag('config', 'UA-59427626-2');
-  </script>
 </head>
 
 <body>
-  <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-
   <div class="responsive-header visible-xs visible-sm">
     <div class="container">
       <div class="row">
@@ -215,26 +189,6 @@
 
               <div class="col-blocks">
                 <br>
-                <div class="column">
-                  <h5 style="font-size: 13px">Increased productivity of the print center:</h5>
-                  <ul>
-                    <li>Wrote & Used Software to reduce redundant & repetitive tasks.</li>
-                    <li>Cut down on unnecessary & redundant actions & procedures.</li>
-                    <li>Reorganization of supplies to improve workflow</li>
-                  </ul>
-                  <br>
-
-                </div>
-                <div class="column">
-                  <h5 style="font-size: 13px">Skills enhanced directly:</h5>
-                  <ul>
-                    <li>Time Management</li>
-                    <li>Order Prioritization</li>
-                    <li>Communication Skills</li>
-                    <li>Group Work Skills</li>
-                    <li>Adobe & Microsoft Suites</li>
-                  </ul>
-                </div>
               </div>
               <div class="col-md-12">
                 <br>
@@ -252,12 +206,13 @@
                         <li>Automated System</li>
                       </ul>
                       <li>Providing Job Quotes & Time Estimates</li>
+                      <li>Time Management</li>
                       <li>Associate Training</li>
                       <li>Operating the Register</li>
                       <li>Providing Solutions for Customers</li>
                       <li>Order Intake, Scheduling & Prioritization</li>
-                      <li>Inventory & Resource Management</li>
-                      <li>Organization</li>
+                      <li>Organization (Digital & Physical), Inventory & Resource Management</li>
+                      <li>Standard Operating Procedure Changes</li>
                       <li>Manipulation & Creation of Customer Artwork</li>
                       <li>Providing Customers with Necessary "Up-sells"</li>
                       <li>Object* & Background* Removal</li>
@@ -392,7 +347,7 @@
                 </ul>
                 <h5>Database Class Project </h5>
                 <ul>
-                  <li>Web Based</li>
+                  <li>Web Based - PHP</li>
                   <li>Log In / Registration</li>
                   <li>Blog Style Website</li>
                   <li>Input/Search/Comments/Deletion of Blogs</li>
@@ -436,9 +391,27 @@
         </div>
       </div>
     </div>
+
     <script src="js/vendor/jquery-1.10.2.min.js"></script>
     <script src="js/min/plugins.min.js"></script>
     <script src="js/min/main.min.js"></script>
+    <script language="JavaScript" src="js/gen_validatorv31.js" type="text/javascript"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-59427626-2"></script>
+    <script language="JavaScript">
+      var frmvalidator = new Validator("contact_form");
+      frmvalidator.addValidation("name", "req", "Please provide your name");
+      frmvalidator.addValidation("email", "req", "Please provide your email");
+      frmvalidator.addValidation("email", "email",
+        "Please enter a valid email address");
+    </script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-59427626-2');
+    </script>
 </body>
 
 </html>
