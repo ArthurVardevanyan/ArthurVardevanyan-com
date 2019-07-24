@@ -17,7 +17,7 @@
 */
 $(function () {
   if (window.location.hash === "#emailsent") {
-    alert("Email Sent!, You should receive a copy in your email as well.");
+    alert("Email Sent!");
   }
 });
 

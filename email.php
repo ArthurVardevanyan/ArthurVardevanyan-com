@@ -41,9 +41,9 @@ if (isset($_POST['email'])) {
 
 
     //Email Copy To Submitter
-    $headers .= "Reply-To: $myemail";
-    $to = $email_address;
-    mail($to, $email_subject, $email_body, $headers);
+    //$headers .= "Reply-To: $myemail";
+    //$to = $email_address;
+    //mail($to, $email_subject, $email_body, $headers);
 
 
     //redirect to the 'thank you' page
