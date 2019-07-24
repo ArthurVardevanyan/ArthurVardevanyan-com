@@ -15,11 +15,12 @@
     width: 33%;
     padding: 0px 10px;
 }
-.col-blocks{
+
+.col-blocks {
     display: inline-block;
     min-width: 100%;
-
 }
+
 /* Clear floats after the columns */
 
 .row:after {
@@ -68,6 +69,7 @@
 }
 
 /* Style the Image Used to Trigger the Modal https://www.w3schools.com/howto/howto_css_modal_images.asp */
+
 .img {
     border-radius: 5px;
     cursor: pointer;
@@ -79,6 +81,7 @@
 }
 
 /* The Modal (background) */
+
 .modal {
     display: none;
     /* Hidden by default */
@@ -107,6 +110,7 @@
 }
 
 /* Modal Content (Image) */
+
 .modal-content {
     width: 90%;
     margin: auto;
@@ -116,10 +120,10 @@
     max-height: 85vh;
     object-fit: contain;
     cursor: pointer;
-
 }
 
 /* Caption of Modal Image (Image Text) - Same Width as the Image */
+
 .caption {
     margin: auto;
     display: block;
@@ -132,8 +136,8 @@
 }
 
 /* Add Animation - Zoom in the Modal */
-.modal-content,
-.caption {
+
+.modal-content, .caption {
     animation-name: zoom;
     animation-duration: 0.6s;
 }
@@ -142,13 +146,13 @@
     from {
         transform: scale(0)
     }
-
     to {
         transform: scale(1)
     }
 }
 
 /* The Close Button */
+
 .closex {
     position: absolute;
     top: 15px;
@@ -159,21 +163,19 @@
     transition: 0.3s;
 }
 
-.closex:hover,
-.closex:focus {
+.closex:hover, .closex:focus {
     color: #bbb;
     text-decoration: none;
     cursor: pointer;
 }
 
 /* 100% Image Width on Smaller Screens */
+
 @media only screen and (max-width: 700px) {
     .modal-content {
         width: 100%;
     }
 }
-
-
 
 /* https://bootsnipp.com/snippets/xrKXW */
 
@@ -223,8 +225,7 @@ ul.timeline>li:before {
     font-size: 15px;
 }
 
-.collapsible.active,
-.collapsible:hover {
+.collapsible.active, .collapsible:hover {
     background-color: #1a2633;
 }
 
@@ -247,5 +248,43 @@ ul.timeline>li:before {
     background-color: #2d2d2d;
 }
 
-
 /* https://stackoverflow.com/questions/50925138/responsive-youtube-video-inside-fixed-width-div */
+
+#scroll {
+    z-index: 999;
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    background-color: #495461;
+    text-indent: -9999px;
+    display: none;
+    -webkit-border-radius: 60px;
+    -moz-border-radius: 60px;
+    border-radius: 60px;
+    -webkit-transition: none;
+    transition: none;
+}
+
+#scroll span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -12px;
+    height: 0;
+    width: 0;
+    border: 8px solid transparent;
+    border-bottom-color: #ffffff;
+}
+
+#scroll:hover {
+    background-color: #2f5a80;
+    opacity: 1;
+    filter: "alpha(opacity=100)";
+    -ms-filter: "alpha(opacity=100)";
+    -webkit-transition: all 150ms ease-in-out;
+    transition: all 150ms ease-in-out;
+}
