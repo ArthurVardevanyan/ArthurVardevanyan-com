@@ -1,12 +1,13 @@
 <?php
-if(isset($_POST['email'])) {
+if (isset($_POST['email'])) {
   $errors = '';
-  $myemail = 'arthur@arthurvardevanyan.ml';//<-----Put Your email address here.
-  if(empty($_POST['name'])  ||
-     empty($_POST['email']) ||
-     empty($_POST['message']))
-  {
-      $errors .= "\n Error: all fields are required";
+  $myemail = 'arthur@arthurvardevanyan.ml'; //<-----Put Your email address here.
+  if (
+    empty($_POST['name'])  ||
+    empty($_POST['email']) ||
+    empty($_POST['message'])
+  ) {
+    $errors .= "\n Error: all fields are required";
   }
 
   $name = $_POST['name'];
@@ -14,38 +15,43 @@ if(isset($_POST['email'])) {
   $message = $_POST['message'];
 
   if (!preg_match(
-  "/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/i",
-  $email_address))
-  {
-      $errors .= "\n Error: Invalid email address";
+    "/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/i",
+    $email_address
+  )) {
+    $errors .= "\n Error: Invalid email address";
   }
 
-  if( empty($errors))
+  if (empty($errors)) {
 
-  {
+    $to = $myemail;
 
-  $to = $myemail;
+    $email_subject = "Contact form submission: $name";
 
-  $email_subject = "Contact form submission: $name";
+    $email_body = "You have received a new message. " .
 
-  $email_body = "You have received a new message. ".
+      " Here are the details:\n Name: $name \n " .
 
-  " Here are the details:\n Name: $name \n ".
+      "Email: $email_address\n Message \n $message";
 
-  "Email: $email_address\n Message \n $message";
+    $headers = "From: $myemail\n";
 
-  $headers = "From: $myemail\n";
+    $headers .= "Reply-To: $email_address";
 
-  $headers .= "Reply-To: $email_address";
+    mail($to, $email_subject, $email_body, $headers);
 
-  mail($to,$email_subject,$email_body,$headers);
 
-  //redirect to the 'thank you' page
+    //Email Copy To Submitter
+    $headers .= "Reply-To: $myemail";
+    $to = $email_address;
+    mail($to, $email_subject, $email_body, $headers);
 
-  header('Location: index.html');
 
+    //redirect to the 'thank you' page
+
+    //header('Location: index.html');
+
+    echo '<script type="text/javascript">',
+      'window.location="index.html#emailsent";',
+      '</script>';
   }
-
-
 }
-?>

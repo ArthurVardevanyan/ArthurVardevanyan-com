@@ -15,6 +15,11 @@
   });
 }
 */
+$(function () {
+  if (window.location.hash === "#emailsent") {
+    alert("Email Sent!, You should receive a copy in your email as well.");
+  }
+});
 
 (jQuery);
 // Get the modal https://www.w3schools.com/howto/howto_css_modal_images.asp
