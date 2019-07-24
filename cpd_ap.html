@@ -179,9 +179,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h4 class="widget-title">Demonstration</h4>
-                            <p>This python script is currently being used in production</p>
+                            <p>This python script is currently being used in production.</p>
                             <div class="row projects-holder">
-                                <p>Click an Image to Expand it</p>
+                                <p>Click on an Image to Expand it</p>
                                 <div class="col-md-3 col-sm-6">
                                     <div class="project-item">
                                         <img class="asyncImage img " id="img1"
@@ -250,7 +250,7 @@
                                     <div class="project-item">
                                         <img class="asyncImage img " id="img6" src="img/cpd/example/low-res/banner.jpg"
                                             data-src="img/cpd/example/banner.png"
-                                            alt="Example of BannerSheet File That Gets OutPutted For Each Job">
+                                            alt="Example of BannerSheet File That Gets Outputted For Each Job">
                                         <div id="modal6" class="modal">
                                             <div class="modal-content"> <img class="model-content-img" id="img06">
                                             </div>
@@ -264,7 +264,7 @@
                                     <div class="project-item">
                                         <img class="asyncImage img " id="img7" src="img/cpd/example/low-res/menu.jpg"
                                             data-src="img/cpd/example/menu.png"
-                                            alt="This is Print Menu for the Printing Utility">
+                                            alt="This is the Print Menu for the Printing Utility">
                                         <div id="modal7" class="modal">
                                             <div class="modal-content"> <img class="model-content-img" id="img07">
                                             </div>
@@ -277,7 +277,7 @@
                                     <div class="project-item">
                                         <img class="asyncImage img " id="img8" src="img/cpd/example/low-res/auto.jpg"
                                             data-src="img/cpd/example/auto.png"
-                                            alt="This is a an example of an order that can print full autonomously">
+                                            alt="This is a an example of an order that can print fully autonomously">
                                         <div id="modal8" class="modal">
                                             <div class="modal-content"> <img class="model-content-img" id="img08">
                                             </div>
@@ -375,7 +375,7 @@
                                     <p>After doing some research with different languages, their available libraries,
                                         & which languages I was most comfortable in. I settled on using <a
                                             href="https://www.python.org/">Python</a> as the language for my
-                                        program.
+                                        program/script.
                                     </p>
                                     <p>Im also using these libraries:
                                     </p>
@@ -396,13 +396,11 @@
                                         Contents into a text file. I found a pre-made script <a
                                             href="https://gist.github.com/robulouski/7442321#file-gmail_imap_dump_eml-py">(Robulouski's
                                             "gmail_imap_dump_eml.py")</a> that shows the Gmail API in action,
-                                        using
-                                        that
-                                        & modified it to my needs.</p>
+                                        used that as a starting point & modified it to my needs.</p>
                                 </li>
                                 <li>
                                     <h5>Google Drive API</h5>
-                                    <p>The Emails are formatted in an html for that is consistent between them all.
+                                    <p>The Emails are formatted in an html form, (Google Forms).
                                         After the contents of the Email are received, the Script parses through the
                                         information, pulling out the Google Drive Links, their Google Drive ID's and
                                         cleaning it up for the <a
@@ -423,7 +421,7 @@
                                     <p>All the folders contain:
                                         <ul>
                                             <li>The Email in a text file</li>
-                                            <li>A JSON parameter file</li>
+                                            <li>A JSON parameter file (Parsed from Email)</li>
                                             <li>All the PDF's for the job</li>
                                             <li>A Folder with all the pdfs converted to Postscript.</li>
                                         </ul>
@@ -435,19 +433,22 @@
                                         Language)
                                         parameters for our <a
                                             href="https://www.xerox.com/en-us/digital-printing/digital-presses/xerox-d95-d110-d125">Xerox
-                                            D110</a>. These get added to all the postscript files & it is modified
-                                        to fit the parameters of the requested job.</p>
+                                            D110</a>. These get added to all the postscript files & the parameters are
+                                        modified
+                                        based on the job specifications.</p>
 
                                 </li>
 
                                 <li>
                                     <h5>Error Checking</h5>
-                                    <p>Due to human error, I have error checking built in for the order requests.
-                                        Depending on the mistake, the script will either:
+                                    <p>Due to human error, Their is error checking built in for the order requests and
+                                        for input into the script.
+                                        <br>Depending on the mistake, the script will either:
                                         <ul>
                                             <li>Override & Run</li>
                                             <li>Wait for Input</li>
                                             <li>Consider the Order Not Valid & Not Run It</li>
+                                            <li>Crash</li>
                                         </ul>
                                     </p>
                                 </li>
@@ -478,17 +479,19 @@
                                     <h5>Postscript Injection & PJL Commands</h5>
                                     <p>Initially I went through the Printer and Postscript documentations to find out
                                         what commands needed to be added to files to send to the printer. Wether it be
-                                        for PDF or PS, i eventually ended up converting everything to PS using
+                                        for PDF or PS, I eventually ended up converting everything to PS using
                                         GhostScript. After talking to one of our support staff he recommended Print to
-                                        File. So I did that for all the possible configs we needed to figure out what
+                                        File, and after researching it, that seemed to be the best method to see what
+                                        file the printer driver generates for the printer. So I did that for all the
+                                        possible configs we needed to figure out what
                                         commands and values accomplished what. Some values seemed to have arbitrary
-                                        values while others had patterns to save on how many I have to do. The commands
+                                        values while others had patterns to save on how many I had to do. The commands
                                         get modified and inserted the front of each file before being send to the
                                         printer.
                                     </p>
                                 </li>
                                 <li>
-                                    <h5>Windows Line Printer Daemon Printing</h5>
+                                    <h5>Windows Line Printer Daemon</h5>
                                     <p><a
                                             href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/lpr">Windows
                                             LPR</a> Command Line Printing is what sends the postscript file to the
@@ -497,44 +500,46 @@
                                 </li>
                                 <li>
                                     <h5>GhostScript</h5>
-                                    <p> I used <a href="https://www.ghostscript.com/index.html">GhostScript</a> to
-                                        convert my pdf files into postscript files so I can inject the printer specific
-                                        commands before sending them to the printer.
+                                    <p><a href="https://www.ghostscript.com/index.html">GhostScript</a> is used to
+                                        convert the pdf files into postscript files so the printer specific
+                                        commands can be injected before sending them to the printer.
                                     </p>
                                 </li>
 
                                 <li>
                                     <h5>Python Logic</h5>
-                                    <p>After getting all the little details on how do everything, it was just a matter
-                                        of throwing everything together, and building the logic behind it.
+                                    <p>After figuring out how to to do each component, the logic was built to combine
+                                        everything together or add the new features.
                                     </p>
                                 </li>
                                 <li>
                                     <h5>Page & Job Counters</h5>
                                     <p>The script knows the page count of all the files, that information is stored in
-                                        the JSON file, & is used on the printed banner sheet & for load balancing.
+                                        the JSON file, & is used on the printed banner sheet for billing purposes & for
+                                        load balancing.
                                     </p>
                                 </li>
                                 <li>
                                     <h5>Job Banner Sheet</h5>
-                                    <p>To make separating jobs easier, I print a stripped version of the email, with the
-                                        file names, and page counts on a colored sheet of paper. The file is
-                                        generated from scratch in postscript. This is also in addition to the banner
+                                    <p>To make separating jobs easier, a stripped version of the email is printed with
+                                        the
+                                        file names, & page counts on a colored sheet of paper. The file is
+                                        generated from scratch using postscript. This is also in addition to the banner
                                         sheet that prints in front of each file that the printer auto generates.
                                     </p>
                                 </li>
                                 <li>
                                     <h5>Multi Threading /w Background Processing (Scrapped)</h5>
-                                    <p>I had setup the script to have threading & allow it to start processing as
-                                        orders were being entered to speed up the pre-flighting time. However people
-                                        kept
-                                        closing out of the Script as it was running in the background, & the time
-                                        saved was insignificant to the time already saved by the script.
+                                    <p>The script was setup to have threading & allow it to start processing as
+                                        orders were being entered to speed up the pre-flighting time. However it was not
+                                        very intuitive and it kept getting closed out as it was running in the
+                                        background. The time saved was insignificant to the time already saved by the
+                                        script.
                                     </p>
                                 </li>
                                 <li>
                                     <h5>PEP8 Naming Conventions</h5>
-                                    <p>I went through & fixed my variable & function names to comply with the PEP8
+                                    <p>I went through & fixed variable & function names to comply with the PEP8
                                         Standard Naming Conventions
                                     </p>
                                 </li>
@@ -546,8 +551,8 @@
                                         of impressions queued up to it. Also due to each Printer only supporting 40 jobs
                                         at a time, the Script will pause after sending 40 jobs to wait for a manual
                                         check to make sure it can send 40 more. <br>(40 is chosen & not 80 just in
-                                        case
-                                        one job ends up being 40 or greater file/job ids)
+                                        case one job ends up being 40 or greater file/job ids. The time it takes to send
+                                        a job is usually not instant either, their is some processing time.)
                                     </p>
                                 </li>
                                 <li>
@@ -587,8 +592,6 @@
                     <div class="col-md-12">
                         <div class="row">
                             <h4 class="widget-title">GitHub</h4>
-                            <p>Through the course of this project I
-                                used GitHub for my version control.......</p>
                             <a
                                 href="https://github.com/ArthurVardevanyan/CPD_SO_Automated_Printing">https://github.com/ArthurVardevanyan/CPD_SO_Automated_Printing</a>
                             <br> <br>
@@ -601,7 +604,7 @@
                     <div class="col-md-12">
                         <div class="row">
                             <h4 class="widget-title">Documentation</h4>
-                            <p>Later.....</p>
+                            <p>...</p>
 
 
                             <br> <br>
