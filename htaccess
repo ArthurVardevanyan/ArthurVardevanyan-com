@@ -1,4 +1,4 @@
-Header set X-Robots-Tag "noindex"
+#Header set X-Robots-Tag "noindex"
 
 
 # Do not remove this line, otherwise mod_rewrite rules will stop working
