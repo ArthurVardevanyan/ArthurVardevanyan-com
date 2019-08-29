@@ -171,6 +171,7 @@ body {
 
 a {
     color: #34495e;
+    font-weight: bold;
     -webkit-transition: all 150ms ease-in-out;
     -moz-transition: all 150ms ease-in-out;
     -ms-transition: all 150ms ease-in-out;
