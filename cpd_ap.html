@@ -72,7 +72,7 @@
                     <li><a href="#about"><i class="fa fa-user"></i>About</a></li>
                     <li><a href="#demonstration"><i class="fa fa-desktop"></i>Demonstration</a></li>
                     <li><a href="#timeline"><i class="fa fa-clock-o"></i>Timeline</a></li>
-                   <!--   <li><a href="#github"><i class="fa fa-github"></i>Github</a></li>
+                    <!--   <li><a href="#github"><i class="fa fa-github"></i>Github</a></li>
                    <li><a href="#doc"><i class="fa fa-code"></i>Documentation</a></li>-->
                 </ul>
             </div>
@@ -97,7 +97,7 @@
                 <li><a href="#about"><i class="fa fa-user"></i>About</a></li>
                 <li><a href="#demonstration"><i class="fa fa-desktop"></i>Demonstration</a></li>
                 <li><a href="#timeline"><i class="fa fa-clock-o"></i>Timeline</a></li>
-               <!-- <li><a href="#github"><i class="fa fa-github"></i>Github</a></li>
+                <!-- <li><a href="#github"><i class="fa fa-github"></i>Github</a></li>
                   <li><a href="#doc"><i class="fa fa-code"></i>Documentation</a></li>-->
 
             </ul>
@@ -554,11 +554,16 @@
                                     <h5>Printer Load Balancing</h5>
                                     <p>As the Script sends jobs to the printers it keeps track of how many impressions
                                         it sends to each one & sends the next job to the printer with the least amount
-                                        of impressions queued up to it. Also due to each Printer only supporting 40 jobs
-                                        at a time, the Script will pause after sending 40 jobs to wait for a manual
-                                        check to make sure it can send 40 more. <br>(40 is chosen & not 80 just in
-                                        case one job ends up being 40 or greater file/job ids. The time it takes to send
-                                        a job is usually not instant either, their is some processing time.)
+                                        of impressions queued up to it. <br>The script reads how many jobs are currently
+                                        running on the printer and sends more when space frees up. <a
+                                            href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/lpq">(LPQ
+                                            Command)</a><br>
+                                        <strike>Also due to each Printer only supporting 40 jobs
+                                            at a time, the Script will pause after sending 40 jobs to wait for a manual
+                                            check to make sure it can send 40 more.(40 is chosen & not 80 just in
+                                            case one job ends up being 40 or greater file/job ids. The time it takes to
+                                            send a job is usually not instant either, their is some processing
+                                            time.)</strike>
                                     </p>
                                 </li>
 
@@ -575,11 +580,18 @@
                                     <p>Added Color to emphasis certain aspects of the Python Script. </p>
                                 </li>
                                 <li>
-                                    <h5>Email Printing</h5>
-                                    <p>Added the ability to print the emails out directly and in bulk. It also throws
-                                        the
-                                        page counts onto the email for the files as well as prints a second copy on
-                                        another colored piece of paper to put in the box with the job. </p>
+                                    <h5>Credential Handling </h5>
+                                    <p>Storing Credential's in local folder</p>
+                                </li>
+                                <li>
+                                    <h5>AutoRun</h5>
+                                    <p>AutoRun Support, run a range of order numbers in bulk, or at the time of being
+                                        received and downloaded. Compatible jobs will auo run, for the incompatible
+                                        ones, the tickets will print to a different tray.</p>
+                                </li>
+                                <li>
+                                    <h5>Testing</h5>
+                                    <p>Started automating the testing, first with Special Instruction Processing.</p>
                                 </li>
                                 <li>
                                     <h5>Testing & Bug Fixes</h5>
@@ -588,19 +600,8 @@
                                 <li>
                                     <h5>TODO</h5>
                                     <ul>
-                                        <li>Bug Fixes</li>
-                                        <ul>
-                                            <li>Password Locked Files fail to convert to PostScript & Don't Print</li>
-                                            <li><strike>Large Collated Sets need the ability to be slip-sheeted</strike>
-                                            </li>
-                                        </ul>
-                                        <li>Double Staple & LandScape Staple</li>
-                                        <li>Fix Impression Counter File (Not Related to printing, just grabs total
-                                            counts for previous orders as data)</li>
-                                        <li>Generate an Excel File for all the orders using all the JSON information
-                                        </li>
+                                        <li>Double Staple</li>
                                         <li>GUI</li>
-
                                     </ul>
                                     </p>
                                 </li>
