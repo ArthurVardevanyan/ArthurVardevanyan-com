@@ -1,7 +1,7 @@
 <?php
 if (isset($_POST['email'])) {
   $errors = '';
-  $myemail = 'arthur@arthurvardevanyan.ml'; //<-----Put Your email address here.
+  $myemail = 'arthurva@arthurvardevanyan.ml'; //<-----Put Your email address here.
   if (
     empty($_POST['name'])  ||
     empty($_POST['email']) ||
