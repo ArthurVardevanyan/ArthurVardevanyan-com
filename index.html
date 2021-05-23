@@ -18,6 +18,19 @@
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/templatemo-style.css">
   <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+
+
+  <script src="https://www.google.com/recaptcha/api.js?render=6Let8-MaAAAAANGQmzXqHKT7kMTJkCguGz-EkTJ4"></script>
+  <script>
+    grecaptcha.ready(function () {
+      grecaptcha.execute('6Let8-MaAAAAANGQmzXqHKT7kMTJkCguGz-EkTJ4', { action: 'contact' }).then(function (token) {
+        var recaptcha_response = document.getElementById('recaptcha_response');
+        recaptcha_response.value = token;
+      });
+    });
+  </script>
+
+
 </head>
 
 <body>
@@ -112,7 +125,8 @@
             <div class="col-md-12">
               <h4 class="widget-title">About Me</h4>
               <p>Computer Science student with a passion for software development and engineering.
-                <br>I enjoy problem solving while also improving and automating workflow.</p>
+                <br>I enjoy problem solving while also improving and automating workflow.
+              </p>
             </div>
           </div>
         </div>
@@ -164,7 +178,8 @@
                 you have listened to
                 songs. It also monitors playlists to see which songs have been removed and are no longer playable on the
                 platform.
-                <a href="https://github.com/ArthurVardevanyan/Analytics-for-Spotify">Github</a></p>
+                <a href="https://github.com/ArthurVardevanyan/Analytics-for-Spotify">Github</a>
+              </p>
             </div>
             <div class="col-md-12">
               <br>
@@ -440,6 +455,7 @@
                   Message:<br>
                   <textarea rows="5" class="form-control" name="message"></textarea><br>
                   <input class="btn btn-primary" type="submit" value="Submit">
+                  <input type="hidden" name="recaptcha_response" id="recaptcha_response">
                 </form>
               </div>
             </div>
