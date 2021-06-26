@@ -1,0 +1,14 @@
+# rm docker-compose.yaml && nano docker-compose.yaml
+# docker-compose down
+# docker-compose pull
+# docker-compose --compatibility up --detach  --remove-orphans
+version: "3.7"
+
+services:
+  arthurvardevanyan:
+    hostname: arthurvardevanyan
+    container_name: arthurvardevanyan
+    image: "gitlab.arthurvardevanyan.com:5050/arthurvardevanyan/arthurvardevanyan:latest"
+    restart: always
+    ports:
+      - "8080:80"

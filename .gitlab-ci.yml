@@ -2,11 +2,6 @@ image: docker:latest
 
 services:
   - name: docker:dind
-    #command: ["--insecure-registry=$CI_REGISTRY"]
-    entrypoint: ["sh", "-c", "dockerd-entrypoint.sh $DOCKER_DAEMON_OPTIONS"]
-
-variables:
-  DOCKER_DAEMON_OPTIONS: "--insecure-registry=${CI_REGISTRY}"
 
 before_script:
   - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
