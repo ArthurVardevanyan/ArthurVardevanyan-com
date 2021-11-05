@@ -220,7 +220,7 @@ h6 {
     width: 80%;
 }
 
-.banner-cpd {
+.banner-cpd, .banner-homeLab {
     float: right;
     width: 80%;
 }
@@ -229,7 +229,7 @@ h6 {
     .main-content, .banner-bg {
         width: 75%;
     }
-    .banner-cpd {
+    .banner-cpd, .banner-homeLab {
         width: 75%;
     }
 }
@@ -238,7 +238,7 @@ h6 {
     .main-content, .banner-bg {
         width: 100%;
     }
-    .banner-cpd {
+    .banner-cpd, .banner-homeLab {
         width: 100%;
     }
 }
@@ -494,6 +494,15 @@ h3.profile-title {
     z-index: 2;
 }
 
+.banner-homeLab {
+    padding: 150px 80px;
+    position: relative;
+    background: url("../img/homelab/HomeLab_Banner.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    z-index: 2;
+}
 .banner-overlay {
     position: absolute;
     width: 100%;
