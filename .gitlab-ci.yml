@@ -1,7 +1,16 @@
-stages:
-  - build
+#include:
+  #- template: Security/Secret-Detection.gitlab-ci.yml
+  #- template: Security/SAST.gitlab-ci.yml
 
-build:
+#variables:
+  #SCAN_KUBERNETES_MANIFESTS: "true"
+
+stages:
+  #- test
+  - build
+  - deploy
+
+Build:
   stage: build
   image: docker:latest
   variables:
@@ -15,6 +24,16 @@ build:
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - docker build --network host -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA . -t $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
+    - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH || true
+    - docker build --network host --cache-from $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA . -t $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
+
+Deploy:
+  stage: deploy
+  image: dtzar/helm-kubectl
+  environment: production
+  script:
+    - sed -i "s,<IMAGE>,${CI_REGISTRY_IMAGE},g" kubernetes/deployment.yaml
+    - sed -i "s/<VERSION>/${CI_COMMIT_SHA}/g" kubernetes/deployment.yaml
+    - kubectl apply -f kubernetes

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arthur-vardevanyan
+  namespace: arthur-vardevanyan
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: arthur-vardevanyan
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: arthur-vardevanyan
+      annotations:
+        enable.version-checker.io/arthur-vardevanyan: "false"
+    spec:
+      containers:
+        - image: <IMAGE>:<VERSION>
+          imagePullPolicy: IfNotPresent
+          name: arthur-vardevanyan
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: "50M"
+              cpu: "25m"
+            limits:
+              memory: "75M"
+              cpu: "50m"
+      hostname: arthur-vardevanyan
+      restartPolicy: Always
