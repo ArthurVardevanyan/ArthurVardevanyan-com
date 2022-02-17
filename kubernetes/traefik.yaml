@@ -1,14 +1,14 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: arthur-vardevanyan
-  namespace: arthur-vardevanyan
+  name: <PROJECT>
+  namespace: <PROJECT>
 spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`me.arthurvardevanyan.com`)
+    - match: Host(`<URL>`)
       kind: Rule
       services:
-        - name: arthur-vardevanyan
+        - name: <PROJECT>
           port: 80

@@ -1,14 +1,15 @@
 #include:
-  #- template: Security/Secret-Detection.gitlab-ci.yml
-  #- template: Security/SAST.gitlab-ci.yml
+#- template: Security/Secret-Detection.gitlab-ci.yml
+#- template: Security/SAST.gitlab-ci.yml
 
 #variables:
-  #SCAN_KUBERNETES_MANIFESTS: "true"
+#SCAN_KUBERNETES_MANIFESTS: "true"
 
 stages:
   #- test
   - build
   - deploy
+  - github
 
 Build:
   stage: build
@@ -24,6 +25,13 @@ Build:
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
+    - sed -i "s/<RECAPTCHA_SECRET>/${RECAPTCHA_SECRET}/g" email.php
+    - sed -i "s/<URL>/${URL}/g" email.php
+    - sed -i "s/<URL>/${URL}/g" cpd_ap.html
+    - sed -i "s/<URL>/${URL}/g" homelab.html
+    - sed -i "s/<URL>/${URL}/g" index.html
+    - sed -i "s/[URL]/${URL}/g" sitemap.xml
+
     - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH || true
     - docker build --network host --cache-from $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA . -t $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
@@ -31,9 +39,25 @@ Build:
 
 Deploy:
   stage: deploy
-  image: dtzar/helm-kubectl
+  image: ${IMAGE}
   environment: production
   script:
+    - sed -i "s/<PROJECT>/${PROJECT}/g" kubernetes/namespace.yaml
+    - sed -i "s/<URL>/${URL}/g" kubernetes/traefik.yaml
+    - sed -i "s/<PROJECT>/${PROJECT}/g" kubernetes/traefik.yaml
+    - sed -i "s/<PROJECT>/${PROJECT}/g" kubernetes/resourceQuota.yaml
     - sed -i "s,<IMAGE>,${CI_REGISTRY_IMAGE},g" kubernetes/deployment.yaml
     - sed -i "s/<VERSION>/${CI_COMMIT_SHA}/g" kubernetes/deployment.yaml
+    - sed -i "s/<PROJECT>/${PROJECT}/g" kubernetes/deployment.yaml
+    - sed -i "s/<PROJECT>/${PROJECT}/g" kubernetes/service.yaml
+
+    - kubectl apply -f kubernetes/namespace.yaml
     - kubectl apply -f kubernetes
+
+GithubFinish:
+  stage: github
+  image: ${IMAGE}
+  script:
+    - export DESCRIPTION="Completed Successfully"
+    - export STATUS=success
+    - kubernetes/github-status.sh

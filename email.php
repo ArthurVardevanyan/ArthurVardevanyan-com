@@ -3,7 +3,7 @@ if (isset($_POST['email']) && isset($_POST['recaptcha_response'])) {
 
   // Build POST request:
   $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
-  $recaptcha_secret = '***REMOVED***';
+  $recaptcha_secret = '<RECAPTCHA_SECRET>';
   $recaptcha_response = $_POST['recaptcha_response'];
 
   // Make and decode POST request:
@@ -13,7 +13,7 @@ if (isset($_POST['email']) && isset($_POST['recaptcha_response'])) {
   // Take action based on the score returned:
   if ($recaptcha->score >= 0.5) {
     $errors = '';
-    $myEmail = 'arthurva@arthurvardevanyan.com'; //<-----Put Your email address here.
+    $myEmail = 'arthurva@<URL>'; //<-----Put Your email address here.
     if (
       empty($_POST['name'])  ||
       empty($_POST['email']) ||

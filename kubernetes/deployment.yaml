@@ -1,27 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: arthur-vardevanyan
-  namespace: arthur-vardevanyan
+  name: <PROJECT>
+  namespace: <PROJECT>
 spec:
   replicas: 1
   revisionHistoryLimit: 0
   selector:
     matchLabels:
-      app: arthur-vardevanyan
+      app: <PROJECT>
   strategy:
-    type: Recreate
+    type: RollingUpdate
   template:
     metadata:
       labels:
-        app: arthur-vardevanyan
+        app: <PROJECT>
       annotations:
-        enable.version-checker.io/arthur-vardevanyan: "false"
+        enable.version-checker.io/<PROJECT>: "false"
     spec:
       containers:
         - image: <IMAGE>:<VERSION>
           imagePullPolicy: IfNotPresent
-          name: arthur-vardevanyan
+          name: <PROJECT>
           ports:
             - containerPort: 80
           resources:
@@ -31,5 +31,5 @@ spec:
             limits:
               memory: "75M"
               cpu: "50m"
-      hostname: arthur-vardevanyan
+      hostname: <PROJECT>
       restartPolicy: Always

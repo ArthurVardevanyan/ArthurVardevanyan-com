@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: arthur-vardevanyan
-  namespace: arthur-vardevanyan
+  name: <PROJECT>
+  namespace: <PROJECT>
 spec:
   selector:
-    app: arthur-vardevanyan
+    app: <PROJECT>
   ports:
     - protocol: TCP
       port: 80

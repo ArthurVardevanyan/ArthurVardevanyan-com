@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?> 
-<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9"> 
-<url>
-  <loc>http://arthurvardevanyan.ml/index.html</loc>
-  <loc>http://arthurvardevanyan.ml/cpd_ap.html</loc>
-  <changefreq>monthly</changefreq>
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>http://[URL]/index.html</loc>
+    <loc>http://[URL]/cpd_ap.html</loc>
+    <loc>http://[URL]/homelab.html</loc>
+    <changefreq>monthly</changefreq>
   </url>
 </urlset>
