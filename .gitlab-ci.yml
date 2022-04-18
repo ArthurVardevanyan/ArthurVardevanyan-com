@@ -13,17 +13,9 @@ stages:
 
 Build:
   stage: build
-  image: docker:latest
-  variables:
-    DOCKER_HOST: tcp://docker:2375
-    DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ""
-  services:
-    - name: docker:dind
-      alias: docker
-      command: ["--tls=false"]
+  image: quay.io/buildah/stable:v1.23.3
   before_script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - buildah login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
     - sed -i "s/<RECAPTCHA_SECRET>/${RECAPTCHA_SECRET}/g" email.php
     - sed -i "s/<URL>/${URL}/g" email.php
@@ -32,27 +24,25 @@ Build:
     - sed -i "s/<URL>/${URL}/g" index.html
     - sed -i "s/[URL]/${URL}/g" sitemap.xml
 
-    - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH || true
-    - docker build --network host --cache-from $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA . -t $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
-    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
-    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
+    - buildah pull $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH || true
+    - buildah bud --network host -f dockerfile --cache-from $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA .
+    - buildah push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    - buildah tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
+    - buildah push $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
 
 Deploy:
   stage: deploy
   image: ${IMAGE}
   environment: production
   script:
-    - sed -i "s/<PROJECT>/${PROJECT}/g" kubernetes/namespace.yaml
-    - sed -i "s/<URL>/${URL}/g" kubernetes/traefik.yaml
-    - sed -i "s/<PROJECT>/${PROJECT}/g" kubernetes/traefik.yaml
-    - sed -i "s/<PROJECT>/${PROJECT}/g" kubernetes/resourceQuota.yaml
-    - sed -i "s,<IMAGE>,${CI_REGISTRY_IMAGE},g" kubernetes/deployment.yaml
-    - sed -i "s/<VERSION>/${CI_COMMIT_SHA}/g" kubernetes/deployment.yaml
-    - sed -i "s/<PROJECT>/${PROJECT}/g" kubernetes/deployment.yaml
-    - sed -i "s/<PROJECT>/${PROJECT}/g" kubernetes/service.yaml
-
-    - kubectl apply -f kubernetes/namespace.yaml
-    - kubectl apply -f kubernetes
+    - sed -i "s,<IMAGE>,${CI_REGISTRY_IMAGE},g" kubernetes/base/deployment.yaml
+    - sed -i "s/<VERSION>/${CI_COMMIT_SHA}/g" kubernetes/base/deployment.yaml
+    - sed -i "s/<PROJECT>/${PROJECT}/g" kubernetes/base/deployment.yaml
+    - sed -i "s/<PROJECT>/${PROJECT}/g" kubernetes/base/service.yaml
+    - sed -i "s/<PROJECT>/${PROJECT}/g" kubernetes/base/pipeline-sa.yaml
+    - sed -i "s/<PROJECT>/${PROJECT}/g" kubernetes/overlays/okd/route.yaml
+    - sed -i "s/<URL>/${URL}/g" kubernetes/overlays/okd/route.yaml
+    - kubectl apply -k  kubernetes/overlays/okd
 
 GithubFinish:
   stage: github

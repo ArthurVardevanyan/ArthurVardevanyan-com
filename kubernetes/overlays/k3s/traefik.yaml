@@ -3,6 +3,8 @@ kind: IngressRoute
 metadata:
   name: <PROJECT>
   namespace: <PROJECT>
+  labels:
+    app.kubernetes.io/instance: <PROJECT>
 spec:
   entryPoints:
     - web
