@@ -13,12 +13,25 @@
     "editor.tabSize": 2,
     "editor.renderControlCharacters": true,
     "editor.renderWhitespace": "all",
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[markdown]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[yaml]": {
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
     "cSpell.words": [
         "AAAAANG",
         "anyuid",
         "arthurva",
         "buildah",
         "CERTDIR",
+        "containerfile",
         "containo",
         "dind",
         "googlebot",
@@ -26,11 +39,14 @@
         "homelab",
         "kubectl",
         "KUBERNETES",
+        "Kustomization",
+        "kustomize",
         "loadbalancers",
         "nodeports",
         "noindex",
         "Nuvera",
         "officedepot",
+        "oneline",
         "openshift",
         "pdfs",
         "Photoshop",
@@ -38,6 +54,8 @@
         "Robulouski's",
         "SAST",
         "securitycontextconstraints",
+        "showlog",
+        "Tekton",
         "traefik",
         "Vardevanyan",
         "Volton"

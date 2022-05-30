@@ -1,18 +1,20 @@
 apiVersion: v1
 kind: ResourceQuota
 metadata:
-  name: <PROJECT>
-  namespace: <PROJECT>
+  name: arthur-vardevanyan
+  namespace: arthur-vardevanyan
   labels:
-    app.kubernetes.io/instance: <PROJECT>
+    app.kubernetes.io/instance: arthur-vardevanyan
 spec:
   hard:
-    requests.cpu: 150m
-    requests.memory: 100M
-    limits.cpu: 300m
-    limits.memory: 200M
+    requests.cpu: "2"
+    requests.memory: "2Gi"
+    limits.cpu: "4"
+    limits.memory: "4Gi"
     services.nodeports: "0"
     services.loadbalancers: "0"
-    requests.storage: "0"
     requests.ephemeral-storage: "0"
     limits.ephemeral-storage: "0"
+    local-path.storageclass.storage.k8s.io/requests.storage: "0"
+    longhorn.storageclass.storage.k8s.io/requests.storage: "500Mi"
+    longhorn-static.storageclass.storage.k8s.io/requests.storage: "500Mi"

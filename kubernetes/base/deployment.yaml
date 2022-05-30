@@ -1,27 +1,33 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: <PROJECT>
-  namespace: <PROJECT>
+  name: arthur-vardevanyan
+  namespace: arthur-vardevanyan
 spec:
   replicas: 1
   revisionHistoryLimit: 0
   selector:
     matchLabels:
-      app: <PROJECT>
+      app: arthur-vardevanyan
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: <PROJECT>
+        app: arthur-vardevanyan
       annotations:
-        enable.version-checker.io/<PROJECT>: "false"
+        enable.version-checker.io/arthur-vardevanyan: "false"
     spec:
       containers:
-        - image: <IMAGE>:<VERSION>
+        - image: registry.<path:secret/data/homelab/domain#url>/apps/arthur-vardevanyan:<VERSION>
           imagePullPolicy: IfNotPresent
-          name: <PROJECT>
+          name: arthur-vardevanyan
+          env:
+            - name: RECAPTCHA_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: RECAPTCHA_SECRET
+                  name: env
           ports:
             - containerPort: 80
           resources:
@@ -31,5 +37,5 @@ spec:
             limits:
               memory: "75M"
               cpu: "50m"
-      hostname: <PROJECT>
+      hostname: arthur-vardevanyan
       restartPolicy: Always

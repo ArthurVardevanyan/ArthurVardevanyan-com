@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://[URL]/index.html</loc>
-    <loc>http://[URL]/cpd_ap.html</loc>
-    <loc>http://[URL]/homelab.html</loc>
+    <loc>https://www.arthurvardevanyan.com/index.html</loc>
+    <loc>https://www.arthurvardevanyan.com/cpd_ap.html</loc>
+    <loc>https://www.arthurvardevanyan.com/homelab.html</loc>
     <changefreq>monthly</changefreq>
   </url>
 </urlset>

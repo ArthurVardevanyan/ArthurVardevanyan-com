@@ -1,0 +1,13 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: git-push
+  namespace: arthur-vardevanyan
+spec:
+  params:
+    - name: git-url
+      value: $(body.repository.clone_url)
+    - name: git-name
+      value: $(body.repository.full_name)
+    - name: git-commit
+      value: $(body.head_commit.id)

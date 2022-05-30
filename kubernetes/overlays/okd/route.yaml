@@ -1,16 +1,16 @@
 kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
-  name: <PROJECT>
-  namespace: <PROJECT>
+  name: arthur-vardevanyan
+  namespace: arthur-vardevanyan
   labels:
-    app: <PROJECT>
-    app.kubernetes.io/instance: <PROJECT>
+    app: arthur-vardevanyan
+    app.kubernetes.io/instance: arthur-vardevanyan
 spec:
-  host: <URL>
+  host: me.apps.okd.<path:secret/data/homelab/domain#url>
   to:
     kind: Service
-    name: <PROJECT>
+    name: arthur-vardevanyan
     weight: 100
   port:
     targetPort: 80
