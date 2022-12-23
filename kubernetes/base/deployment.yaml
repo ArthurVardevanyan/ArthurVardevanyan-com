@@ -22,6 +22,16 @@ spec:
         - image: registry.<path:secret/data/homelab/domain#url>/apps/arthur-vardevanyan:<VERSION>
           imagePullPolicy: IfNotPresent
           name: arthur-vardevanyan
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            privileged: false
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop:
+                - all
           env:
             - name: RECAPTCHA_SECRET
               valueFrom:
@@ -29,7 +39,7 @@ spec:
                   key: RECAPTCHA_SECRET
                   name: env
           ports:
-            - containerPort: 80
+            - containerPort: 8080
           resources:
             requests:
               memory: "50M"
@@ -37,5 +47,13 @@ spec:
             limits:
               memory: "75M"
               cpu: "50m"
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
       hostname: arthur-vardevanyan
       restartPolicy: Always
+      automountServiceAccountToken: false
+      volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 1Mi

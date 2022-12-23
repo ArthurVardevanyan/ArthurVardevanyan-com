@@ -1,7 +1,7 @@
 # Tekton
 
 ```bash
-tkn -n arthur-vardevanyan pipeline start arthur-vardevanyan -s pipeline-sa \
+tkn -n arthur-vardevanyan pipeline start arthur-vardevanyan -s pipeline \
     --workspace=name=data,volumeClaimTemplateFile=tekton/base/pvc.yaml \
     --param="IMAGE=registry.arthurvardevanyan.com/apps/arthur-vardevanyan" \
     --param="git-url=https://git.arthurvardevanyan.com/ArthurVardevanyan/ArthurVardevanyan-com.git" \

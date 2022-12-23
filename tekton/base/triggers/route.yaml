@@ -1,17 +1,15 @@
 kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
-  name: arthur-vardevanyan
+  name: el
   namespace: arthur-vardevanyan
   labels:
     app: arthur-vardevanyan
     app.kubernetes.io/instance: arthur-vardevanyan
 spec:
-  host: me.apps.okd.<path:secret/data/homelab/domain#url>
   to:
     kind: Service
-    name: arthur-vardevanyan
+    name: el-webhook
     weight: 100
   port:
     targetPort: 8080
-  wildcardPolicy: None

@@ -3,9 +3,8 @@ kind: Kustomization
 namespace: arthur-vardevanyan
 resources:
   - pipeline.yaml
-  - pipeline-sa.yaml
   - rbac.yaml
   - triggers/event-listener.yaml
-  - triggers/rbac.yaml
   - triggers/binding.yaml
   - triggers/template.yaml
+  - triggers/route.yaml
