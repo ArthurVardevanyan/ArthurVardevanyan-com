@@ -120,7 +120,7 @@ resource "google_project_service" "cloud-dns" {
 resource "google_cloud_run_domain_mapping" "custom_domain" {
   project  = local.project_id
   location = "us-central1"
-  name     = "website.gcp.arthurvardevanyan.com"
+  name     = "arthurvardevanyan.com"
   metadata {
     namespace = local.project_id
   }
@@ -130,7 +130,23 @@ resource "google_cloud_run_domain_mapping" "custom_domain" {
   depends_on = [google_cloud_run_v2_service.website, google_project_service.cloud-dns]
 }
 
-# Output the required DNS record for verification
 output "cloud_run_domain_mapping_dns" {
   value = google_cloud_run_domain_mapping.custom_domain.status[0].resource_records
+}
+
+resource "google_cloud_run_domain_mapping" "www_custom_domain" {
+  project  = local.project_id
+  location = "us-central1"
+  name     = "www.arthurvardevanyan.com"
+  metadata {
+    namespace = local.project_id
+  }
+  spec {
+    route_name = google_cloud_run_v2_service.website.name
+  }
+  depends_on = [google_cloud_run_v2_service.website, google_project_service.cloud-dns]
+}
+
+output "cloud_run_domain_mapping_dns_www" {
+  value = google_cloud_run_domain_mapping.www_custom_domain.status[0].resource_records
 }
