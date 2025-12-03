@@ -177,25 +177,58 @@ func emailHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var req EmailRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
-		return
+	isForm := false
+
+	contentType := r.Header.Get("Content-Type")
+	if strings.Contains(contentType, "application/json") {
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			return
+		}
+	} else {
+		// Assume form data
+		if err := r.ParseForm(); err != nil {
+			http.Error(w, "Invalid form data", http.StatusBadRequest)
+			return
+		}
+		req.Name = r.FormValue("name")
+		req.Email = r.FormValue("email")
+		req.Message = r.FormValue("message")
+		req.RecaptchaResponse = r.FormValue("recaptcha_response")
+		isForm = true
 	}
 
 	if len(req.Message) > 10000 {
+		if isForm {
+			http.Redirect(w, r, "/#emailFailed", http.StatusSeeOther)
+			return
+		}
 		http.Error(w, "Message too long", http.StatusBadRequest)
 		return
 	}
 
 	if err := verifyRecaptcha(req.RecaptchaResponse); err != nil {
 		log.Printf("Recaptcha verification failed: %v", err)
+		if isForm {
+			http.Redirect(w, r, "/#emailFailed", http.StatusSeeOther)
+			return
+		}
 		http.Error(w, "Recaptcha verification failed", http.StatusUnauthorized)
 		return
 	}
 
 	if err := sendEmail(req); err != nil {
 		log.Printf("Failed to send email: %v", err)
+		if isForm {
+			http.Redirect(w, r, "/#emailFailed", http.StatusSeeOther)
+			return
+		}
 		http.Error(w, "Failed to send email", http.StatusInternalServerError)
+		return
+	}
+
+	if isForm {
+		http.Redirect(w, r, "/#emailSent", http.StatusSeeOther)
 		return
 	}
 
