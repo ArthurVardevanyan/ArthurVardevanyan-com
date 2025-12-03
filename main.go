@@ -56,7 +56,7 @@ func verifyRecaptcha(responseToken string) error {
 
 func sanitizeHeader(input string) string {
 	// Only allow ASCII letters, digits, '@', '.', '+', and '-'. Remove everything else.
-	re := regexp.MustCompile(`[^a-zA-Z0-9@\.\+\-]`)
+	re := regexp.MustCompile(`[^a-zA-Z0-9@.+\-]`)
 	safe := re.ReplaceAllString(input, "")
 	// Remove any remaining CR/LF, just in case
 	safe = strings.ReplaceAll(safe, "\r", "")
@@ -73,7 +73,7 @@ func sanitizeBody(input string) string {
 }
 
 func isValidEmail(email string) bool {
-	re := regexp.MustCompile(`^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$`)
+	re := regexp.MustCompile(`^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`)
 	return re.MatchString(email)
 }
 
