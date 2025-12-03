@@ -72,8 +72,14 @@ func sanitizeBody(input string) string {
 	input = strings.ReplaceAll(input, "\r", " ")
 	input = strings.ReplaceAll(input, "\n", " ")
 	// Remove URLs in the message to prevent phishing/content injection.
-	urlRe := regexp.MustCompile(`https?://[^\s]+`)
+	// Remove http, https, www, ftp, and anything resembling a URL/email.
+	urlRe := regexp.MustCompile(`(?:https?://|www\.)[^\s]+|ftp://[^\s]+|[a-zA-Z0-9\.\-_]+@[a-zA-Z0-9\.\-_]+\.[a-zA-Z]{2,}`)
 	input = urlRe.ReplaceAllString(input, "")
+	// Remove any quoted or bracketed links: <...> or '...'
+	bracketRe := regexp.MustCompile(`<[^>]*>`)
+	input = bracketRe.ReplaceAllString(input, "")
+	quoteRe := regexp.MustCompile(`['"][^'"]+['"]`)
+	input = quoteRe.ReplaceAllString(input, "")
 	// Remove all non-printable ASCII chars.
 	re := regexp.MustCompile(`[^\x20-\x7E]`)
 	input = re.ReplaceAllString(input, "")
@@ -127,6 +133,10 @@ func sendEmail(req EmailRequest) error {
 
 	if !isValidEmail(safeEmail) || len(safeEmail) > 254 {
 		return fmt.Errorf("Invalid email address")
+	// Prevent user from entering an email with newlines, to block header injection
+	if strings.ContainsAny(safeEmail, "\r\n") {
+		return fmt.Errorf("Email address contains invalid newlines")
+	}
 	}
 
 	// Send the email to the configured sender (the site owner)
@@ -148,7 +158,7 @@ func sendEmail(req EmailRequest) error {
 	msgBuffer.WriteString("\r\n")
 
 	// Use text/template to safely construct the body
-	t := template.Must(template.New("emailBody").Parse("Submitted Name: {{.Name}}\nSubmitted Email: {{.Email}}\nMessage:\n{{.Message}}"))
+	t := template.Must(template.New("emailBody").Parse("Submitted Name: {{.Name}}\nSubmitted Email: {{.Email}}\nMessage:\n{{.Message}}\n\nNote: Any links, email addresses, or URLs in the submitted message have been removed automatically for your safety."))
 	if err := t.Execute(&msgBuffer, map[string]string{
 		"Name":    safeName,
 		"Email":   safeEmail,
