@@ -68,15 +68,18 @@ func sanitizeHeader(input string) string {
 }
 
 func sanitizeBody(input string) string {
-	// Remove all CR/LF characters to prevent header injection.
-	input = strings.ReplaceAll(input, "\r", " ")
-	input = strings.ReplaceAll(input, "\n", " ")
+	// Normalize newlines to \n
+	input = strings.ReplaceAll(input, "\r\n", "\n")
+	input = strings.ReplaceAll(input, "\r", "\n")
+
 	// Remove URLs in the message to prevent phishing/content injection.
 	urlRe := regexp.MustCompile(`https?://[^\s]+`)
-	input = urlRe.ReplaceAllString(input, "")
-	// Remove all non-printable ASCII chars.
-	re := regexp.MustCompile(`[^\x20-\x7E]`)
+	input = urlRe.ReplaceAllString(input, "[URL Removed]")
+
+	// Remove all non-printable ASCII chars except newline and tab.
+	re := regexp.MustCompile(`[^\x20-\x7E\n\t]`)
 	input = re.ReplaceAllString(input, "")
+
 	// Escape potential HTML, though body is text.
 	return html.EscapeString(input)
 }
