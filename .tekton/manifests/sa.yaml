@@ -1,0 +1,7 @@
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: pipeline
+  namespace: arthurvardevanyan-ci
+secrets:
+  - name: apps-push-pull-secret

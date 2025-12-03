@@ -1,0 +1,468 @@
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  name: arthurvardevanyan
+  annotations:
+    io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: "true"
+    pipelinesascode.tekton.dev/max-keep-runs: "1"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      (event == "push" || event == "pull_request") && (target_branch == "main")
+    pipelinesascode.tekton.dev/target-namespace: "arthurvardevanyan-ci"
+    pipelinesascode.tekton.dev/task-1: "https://raw.githubusercontent.com/ArthurVardevanyan/HomeLab/main/tekton/tasks/git-clone/0.9.1/git-clone.yaml"
+    pipelinesascode.tekton.dev/task-2: "https://raw.githubusercontent.com/ArthurVardevanyan/HomeLab/main/tekton/tasks/terraform/0.1.0/terraform.yaml"
+    pipelinesascode.tekton.dev/task-3: "https://raw.githubusercontent.com/ArthurVardevanyan/HomeLab/main/tekton/base/clair-action/clair-action-task.yaml"
+spec:
+  params:
+    - name: git-commit
+      value: "{{ revision }}"
+    - name: git-url
+      value: "{{ repo_url }}"
+    - name: event
+      value: "{{ event_type }}"
+    - name: vault_auth_path
+      value: "auth/arthurvardevanyan-ci/login"
+    - name: vault_role
+      value: "arthurvardevanyan-ci"
+    - name: vault_addr
+      value: "https://vault.arthurvardevanyan.com"
+    - name: terraform_path
+      value: "terraform"
+    - name: terraform_secret
+      value: "secret/gcp/project/av"
+    - name: terraform_simple_bucket
+      value: "true"
+
+  pipelineSpec:
+    params:
+      - name: git-commit
+        type: string
+      - name: git-url
+        type: string
+        description: Repository URL to clone from.
+      - name: event
+        type: string
+      - name: vault_addr
+        type: string
+      - name: vault_auth_path
+        type: string
+      - name: vault_role
+        type: string
+      - name: terraform_path
+        type: string
+      - name: terraform_secret
+        type: string
+      - name: terraform_simple_bucket
+        type: string
+
+    results:
+      - description: The common vulnerabilities and exposures (CVE) result
+        name: SCAN_OUTPUT
+        value: $(tasks.clair-action.results.SCAN_OUTPUT)
+
+    workspaces:
+      - name: data
+      - name: git_auth_secret
+
+    tasks:
+      - name: git-clone
+        when:
+          - input: "$(params.event)"
+            operator: in
+            values: ["pull_request", "push"]
+        taskRef:
+          name: git-clone
+          kind: Task
+        params:
+          - name: url
+            value: $(params.git-url)
+          - name: revision
+            value: $(params.git-commit)
+        workspaces:
+          - name: output
+            workspace: data
+          - name: basic-auth
+            workspace: git_auth_secret
+
+      - name: test-build
+        runAfter:
+          - git-clone
+        when:
+          - input: "$(params.event)"
+            operator: in
+            values: ["pull_request", "push"]
+        workspaces:
+          - name: output
+            workspace: data
+        params:
+          - name: revision
+            value: $(params.git-commit)
+        taskSpec:
+          results:
+            - name: IMAGE
+          workspaces:
+            - name: output
+              optional: false
+          volumes:
+            - name: cache
+              persistentVolumeClaim:
+                claimName: cache
+            - name: gcp-credentials-request
+              configMap:
+                name: gcp-credentials-request
+                defaultMode: 420
+            - name: serviceaccount-token
+              projected:
+                sources:
+                  - serviceAccountToken:
+                      audience: openshift
+                      expirationSeconds: 3600
+                      path: token
+                defaultMode: 420
+          steps:
+            - name: test-build
+              image: registry.arthurvardevanyan.com/homelab/toolbox:not_latest
+              computeResources:
+                requests:
+                  memory: 256Mi
+                  cpu: 100m
+                  ephemeral-storage: 100Mi
+                limits:
+                  cpu: "500m"
+                  memory: 1Gi
+                  ephemeral-storage: 100Mi
+              securityContext:
+                privileged: false
+                readOnlyRootFilesystem: true
+                runAsNonRoot: true
+                allowPrivilegeEscalation: false
+                seccompProfile:
+                  type: RuntimeDefault
+                capabilities:
+                  drop:
+                    - ALL
+              env:
+                - name: TAG
+                  value: $(params.revision)
+                - name: WORKSPACE_DATA_PATH
+                  value: $(workspaces.output.path)
+                - name: WORKSPACE_RESULTS_PATH
+                  value: $(results.IMAGE.path)
+                - name: GOOGLE_APPLICATION_CREDENTIALS
+                  value: /var/run/secrets/google/credentials_config.json
+                - name: CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE
+                  value: /var/run/secrets/google/credentials_config.json
+                - name: VAULT_ADDR
+                  value: $(params.vault_addr)
+                - name: VAULT_AUTH_PATH
+                  value: $(params.vault_auth_path)
+                - name: VAULT_ROLE
+                  value: $(params.vault_role)
+              volumeMounts:
+                - name: cache
+                  mountPath: /go/pkg
+                  subpath: go
+                - name: cache
+                  mountPath: /tmp
+                  subpath: tmp
+                - name: gcp-credentials-request
+                  readOnly: true
+                  mountPath: /var/run/secrets/google
+                - name: serviceaccount-token
+                  readOnly: true
+                  mountPath: /var/run/secrets/openshift/serviceaccount
+              script: |
+                set -o errexit
+                set -o nounset
+                set -o pipefail
+
+                cd ${WORKSPACE_DATA_PATH}
+                git config --global --add safe.directory "${WORKSPACE_DATA_PATH}"
+
+                make build-quay
+
+                export CI_JOB_JWT="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
+                export VAULT_TOKEN="$(vault write -field=token ${VAULT_AUTH_PATH} role=${VAULT_ROLE} jwt=${CI_JOB_JWT})"
+                make build-artifact-registry
+
+      - name: clair-action
+        runAfter:
+          - test-build
+        taskRef:
+          name: clair-action
+          kind: Task
+        params:
+          - name: IMAGE
+            value: $(tasks.test-build.results.IMAGE)
+
+      - name: terraform-plan
+        runAfter:
+          - test-build
+        when:
+          - input: "$(params.event)"
+            operator: in
+            values: ["pull_request"]
+        params:
+          - name: terraform_action
+            value: plan
+          - name: vault_addr
+            value: $(params.vault_addr)
+          - name: vault_auth_path
+            value: $(params.vault_auth_path)
+          - name: vault_role
+            value: $(params.vault_role)
+          - name: terraform_path
+            value: $(params.terraform_path)
+          - name: terraform_secret
+            value: $(params.terraform_secret)
+          - name: terraform_simple_bucket
+            value: $(params.terraform_simple_bucket)
+          - name: terraform_vars
+            value: -var=image_tag={{ revision }}
+        taskRef:
+          name: terraform
+          kind: Task
+        workspaces:
+          - name: data
+            workspace: data
+
+      - name: terraform-apply
+        runAfter:
+          - clair-action
+        when:
+          - input: "$(params.event)"
+            operator: in
+            values: ["push"]
+        params:
+          - name: terraform_action
+            value: apply
+          - name: vault_addr
+            value: $(params.vault_addr)
+          - name: vault_auth_path
+            value: $(params.vault_auth_path)
+          - name: vault_role
+            value: $(params.vault_role)
+          - name: terraform_path
+            value: $(params.terraform_path)
+          - name: terraform_secret
+            value: $(params.terraform_secret)
+          - name: terraform_simple_bucket
+            value: $(params.terraform_simple_bucket)
+          - name: terraform_vars
+            value: -var=image_tag={{ revision }}
+        taskRef:
+          name: terraform
+          kind: Task
+        workspaces:
+          - name: data
+            workspace: data
+
+      - name: validate-deployment
+        runAfter:
+          - terraform-apply
+        when:
+          - input: "$(params.event)"
+            operator: in
+            values: ["push"]
+        workspaces:
+          - name: output
+            workspace: data
+          - name: git-auth
+            workspace: git_auth_secret
+        params:
+          - name: vault_addr
+            value: $(params.vault_addr)
+          - name: vault_auth_path
+            value: $(params.vault_auth_path)
+          - name: vault_role
+            value: $(params.vault_role)
+          - name: repo_url
+            value: $(params.git-url)
+          - name: git_commit
+            value: $(params.git-commit)
+        taskSpec:
+          workspaces:
+            - name: git-auth
+          volumes:
+            - name: tmp
+              emptyDir:
+                sizeLimit: "100Mi"
+            - name: gcp-credentials-request
+              configMap:
+                name: gcp-credentials-request
+                defaultMode: 420
+            - name: serviceaccount-token
+              projected:
+                sources:
+                  - serviceAccountToken:
+                      audience: openshift
+                      expirationSeconds: 3600
+                      path: token
+                defaultMode: 420
+          steps:
+            - name: validate
+              image: registry.arthurvardevanyan.com/homelab/toolbox:not_latest
+              computeResources:
+                requests:
+                  memory: 64Mi
+                  cpu: 10m
+                  ephemeral-storage: 100Mi
+                limits:
+                  cpu: "100m"
+                  memory: 128Mi
+                  ephemeral-storage: 100Mi
+              securityContext:
+                privileged: false
+                readOnlyRootFilesystem: true
+                runAsNonRoot: true
+                allowPrivilegeEscalation: false
+                seccompProfile:
+                  type: RuntimeDefault
+                capabilities:
+                  drop:
+                    - ALL
+              env:
+                - name: GOOGLE_APPLICATION_CREDENTIALS
+                  value: /var/run/secrets/google/credentials_config.json
+                - name: CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE
+                  value: /var/run/secrets/google/credentials_config.json
+                - name: VAULT_ADDR
+                  value: $(params.vault_addr)
+                - name: VAULT_AUTH_PATH
+                  value: $(params.vault_auth_path)
+                - name: VAULT_ROLE
+                  value: $(params.vault_role)
+              volumeMounts:
+                - name: tmp
+                  mountPath: /tmp
+                - name: gcp-credentials-request
+                  readOnly: true
+                  mountPath: /var/run/secrets/google
+                - name: serviceaccount-token
+                  readOnly: true
+                  mountPath: /var/run/secrets/openshift/serviceaccount
+              script: |
+                set -o errexit
+                set -o nounset
+                set -o pipefail
+
+                export CI_JOB_JWT="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
+                export VAULT_TOKEN="$(vault write -field=token ${VAULT_AUTH_PATH} role=${VAULT_ROLE} jwt=${CI_JOB_JWT})"
+
+                export PROJECT_ID="$(vault kv get -field=project_id secret/gcp/project/av)"
+
+                # GitHub Deployment Setup
+                gh auth login --hostname "github.com" --with-token <"$(workspaces.git-auth.path)/git-provider-token"
+
+                DEP_ID=""
+                REPO_FULL=$(echo "$(params.repo_url)" | sed 's|https://github.com/||' | sed 's|.git$||')
+                SHA="$(params.git_commit)"
+
+                echo "Creating GitHub Deployment for $REPO_FULL at $SHA"
+
+                    # Create deployment using gh api
+                    echo "{\"ref\": \"$SHA\", \"environment\": \"production\", \"auto_merge\": false, \"required_contexts\": []}" > /tmp/deployment_payload.json
+
+                    if gh api \
+                      --method POST \
+                      -H "Accept: application/vnd.github+json" \
+                      "/repos/$REPO_FULL/deployments" \
+                      --input /tmp/deployment_payload.json \
+                      --jq '.id' > /tmp/gh_response.txt 2> /tmp/gh_error.txt; then
+
+                        DEP_ID=$(cat /tmp/gh_response.txt)
+                        echo "Created Deployment ID: $DEP_ID"
+                    else
+                        echo "Failed to create deployment."
+                        echo "Error: $(cat /tmp/gh_error.txt)"
+                    fi
+
+                echo "Validating Cloud Run service: ${PROJECT_ID} in project ${PROJECT_ID}"
+
+                # Check if service is ready with retries
+                MAX_RETRIES=5
+                count=0
+                while [ $count -lt $MAX_RETRIES ]; do
+                  if gcloud run services describe ${PROJECT_ID} \
+                      --project ${PROJECT_ID} \
+                      --region us-central1 \
+                      --format="value(status.conditions[0].status)" | grep "True"; then
+                    echo "Service is ready!"
+                    break
+                  fi
+                  echo "Service not ready yet. Retrying in 10 seconds..."
+                  sleep 10
+                  count=$((count + 1))
+                done
+
+                if [ $count -eq $MAX_RETRIES ]; then
+                  echo "Service failed to become ready after $MAX_RETRIES attempts."
+                fi
+
+                # Optional: curl the URL to check if it returns 200
+                HEALTH_CHECK_PASSED=false
+                if curl -f -s -o /dev/null "https://arthurvardevanyan.com/" && \
+                   curl -f -s -o /dev/null "https://www.arthurvardevanyan.com/"; then
+                    echo "Health check passed!"
+                    HEALTH_CHECK_PASSED=true
+                else
+                    echo "Health check failed!"
+                fi
+
+                # Update GitHub Deployment Status
+                if [ -n "$DEP_ID" ]; then
+                    if [ $count -eq $MAX_RETRIES ]; then
+                        STATE="failure"
+                        DESC="Deployment failed to become ready"
+                    elif [ "$HEALTH_CHECK_PASSED" != "true" ]; then
+                        STATE="failure"
+                        DESC="Deployment failed health check"
+                    else
+                        STATE="success"
+                        DESC="Deployment successful"
+                    fi
+
+                    echo "Updating deployment status to $STATE..."
+                    if gh api \
+                      --method POST \
+                      -H "Accept: application/vnd.github+json" \
+                      "/repos/$REPO_FULL/deployments/$DEP_ID/statuses" \
+                      -f state="$STATE" \
+                      -f description="$DESC" \
+                      -f environment_url="https://arthurvardevanyan.com" > /dev/null 2> /tmp/gh_status_error.txt; then
+                        echo "Successfully updated deployment status."
+                    else
+                        echo "Failed to update deployment status."
+                        cat /tmp/gh_status_error.txt
+                    fi
+
+                    if [ "$STATE" = "failure" ]; then
+                        echo "Deployment failed. Exiting with error."
+                        exit 1
+                    fi
+                else
+                    echo "Skipping status update because DEP_ID is missing."
+                fi
+  taskRunTemplate:
+    serviceAccountName: pipeline
+    podTemplate:
+      runtimeClassName: selinux
+      securityContext:
+        fsGroupChangePolicy: OnRootMismatch
+  workspaces:
+    - name: data
+      volumeClaimTemplate:
+        apiVersion: v1
+        kind: PersistentVolumeClaim
+        metadata:
+          name: data
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: "500Mi"
+          storageClassName: rook-ceph-block-ci
+    - name: git_auth_secret
+      secret:
+        secretName: "{{ git_auth_secret }}"
