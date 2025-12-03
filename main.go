@@ -1,15 +1,18 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"html"
 	"log"
+	"net"
 	"net/http"
 	"net/smtp"
 	"os"
 	"regexp"
 	"strings"
+	"text/template"
 )
 
 type EmailRequest struct {
@@ -108,11 +111,9 @@ func singleLine(input string) string {
 func sendEmail(req EmailRequest) error {
 	from := os.Getenv("SMTP_FROM")
 	password := os.Getenv("SMTP_PASSWORD")
-	to := os.Getenv("SMTP_TO")
 	smtpHost := os.Getenv("SMTP_HOST")
-	smtpPort := os.Getenv("SMTP_PORT")
 
-	if from == "" || password == "" || to == "" || smtpHost == "" || smtpPort == "" {
+	if from == "" || password == "" || smtpHost == "" {
 		return fmt.Errorf("SMTP configuration missing")
 	}
 
@@ -128,6 +129,9 @@ func sendEmail(req EmailRequest) error {
 		return fmt.Errorf("Invalid email address")
 	}
 
+	// The recipient is the email provided in the form
+	to := safeEmail
+
 	// Construct the email message with proper headers
 	headers := make(map[string]string)
 	// IMPORTANT: Never use user-supplied data in headers. Only use config/env values here.
@@ -136,18 +140,30 @@ func sendEmail(req EmailRequest) error {
 	headers["Subject"] = "Contact Form Submission"
 	headers["Content-Type"] = "text/plain; charset=UTF-8"
 
-	message := ""
+	var msgBuffer bytes.Buffer
 	for k, v := range headers {
-		message += fmt.Sprintf("%s: %s\r\n", k, v)
+		msgBuffer.WriteString(fmt.Sprintf("%s: %s\r\n", k, v))
 	}
-	message += "\r\n"
-	// Do not include raw user-supplied email address in body to prevent email content injection.
-	message += fmt.Sprintf("Submitted Name: %s\nMessage:\n%s",
-		safeName,
-		safeMessage)
+	msgBuffer.WriteString("\r\n")
 
-	auth := smtp.PlainAuth("", from, password, smtpHost)
-	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, []string{to}, []byte(message))
+	// Use text/template to safely construct the body
+	t := template.Must(template.New("emailBody").Parse("Submitted Name: {{.Name}}\nSubmitted Email: {{.Email}}\nMessage:\n{{.Message}}"))
+	if err := t.Execute(&msgBuffer, map[string]string{
+		"Name":    safeName,
+		"Email":   safeEmail,
+		"Message": safeMessage,
+	}); err != nil {
+		return err
+	}
+
+	// Extract host from smtpHost (which is expected to be host:port) for authentication
+	host, _, err := net.SplitHostPort(smtpHost)
+	if err != nil {
+		return fmt.Errorf("invalid SMTP_HOST format: %v", err)
+	}
+
+	auth := smtp.PlainAuth("", from, password, host)
+	err = smtp.SendMail(smtpHost, auth, from, []string{to}, msgBuffer.Bytes())
 	if err != nil {
 		return err
 	}
