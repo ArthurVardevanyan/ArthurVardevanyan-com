@@ -91,11 +91,11 @@ func sanitizeName(input string) string {
 
 // singleLine removes any newlines or carriage returns and collapses to a single line.
 func singleLine(input string) string {
-	// Remove newlines, carriage returns, tabs
-	input = strings.ReplaceAll(input, "\n", " ")
-	input = strings.ReplaceAll(input, "\r", " ")
-	input = strings.ReplaceAll(input, "\t", " ")
-	// Collapse multiple spaces, trim
+	// Remove any control characters, line/paragraph separators, etc.
+	// This protects against email content and header injection.
+	// Unicode controls: [0x00-0x1F], [0x7F], [U+2028], [U+2029]
+	re := regexp.MustCompile(`[\x00-\x1F\x7F\u2028\u2029]`)
+	input = re.ReplaceAllString(input, " ")
 	spaceRe := regexp.MustCompile(` +`)
 	return strings.TrimSpace(spaceRe.ReplaceAllString(input, " "))
 }
@@ -114,8 +114,9 @@ func sendEmail(req EmailRequest) error {
 		return fmt.Errorf("invalid SMTP_FROM configuration: %v", err)
 	}
 
+	// Apply robust sanitization to all fields before use in body
 	safeName := singleLine(sanitizeName(req.Name))
-	safeMessage := sanitizeBody(req.Message)
+	safeMessage := singleLine(sanitizeBody(req.Message))
 
 	if len(safeName) == 0 || len(safeName) > 100 {
 		return fmt.Errorf("Invalid name format")
@@ -137,7 +138,7 @@ func sendEmail(req EmailRequest) error {
 
 	// Construct the email message with proper headers
 	headers := make(map[string]string)
-	// IMPORTANT: Never use user-supplied data in headers. Only use config/env values here.
+	// IMPORTANT SECURITY: Never use user-supplied data in headers. All header values MUST come from trusted config/env.
 	headers["From"] = from
 	headers["To"] = to
 	// headers["Reply-To"] = safeEmail // Removed to prevent header injection
@@ -150,7 +151,7 @@ func sendEmail(req EmailRequest) error {
 	}
 	msgBuffer.WriteString("\r\n")
 
-	// Use text/template to safely construct the body
+	// Use text/template to safely construct the body. All variables strictly sanitized.
 	t := template.Must(template.New("emailBody").Parse("Submitted Name: {{.Name}}\nSubmitted Email: {{.Email}}\nMessage:\n{{.Message}}"))
 	if err := t.Execute(&msgBuffer, map[string]string{
 		"Name":    safeName,
