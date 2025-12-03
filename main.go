@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"html"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
@@ -140,15 +142,28 @@ func sendEmail(req EmailRequest) error {
 
 	m.SetBodyString(mail.TypeTextPlain, body)
 
-	// Setup the client
-	// It automatically handles port splitting and authentication
-	c, err := mail.NewClient(smtpHost,
+	host, portStr, err := net.SplitHostPort(smtpHost)
+	if err != nil {
+		host = smtpHost
+	}
+
+	opts := []mail.Option{
 		mail.WithSMTPAuth(mail.SMTPAuthPlain),
 		mail.WithUsername(from),
 		mail.WithPassword(password),
-		mail.WithTimeout(10*time.Second),
-		// mail.WithTLSPolicy(mail.TLSMandatory), // Recommended for security
-	)
+		mail.WithTimeout(10 * time.Second),
+	}
+
+	if portStr != "" {
+		port, err := strconv.Atoi(portStr)
+		if err == nil {
+			opts = append(opts, mail.WithPort(port))
+		}
+	}
+
+	// Setup the client
+	// It automatically handles port splitting and authentication
+	c, err := mail.NewClient(host, opts...)
 	if err != nil {
 		return fmt.Errorf("failed to create mail client: %w", err)
 	}
