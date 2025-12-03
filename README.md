@@ -15,7 +15,7 @@ This project is a simple Go webserver, designed for both local development and p
 
 ### Prerequisites
 
-- [Go](https://golang.org/dl/) 1.18 or newer (for local development)
+- [Go](https://golang.org/dl/) 1.15 or newer (for local development)
 - [ko](https://github.com/ko-build/ko) for container builds
 - [Terraform](https://www.terraform.io/) or [OpenTofu](https://opentofu.org/) for infrastructure
 

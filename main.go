@@ -135,9 +135,9 @@ func sendEmail(req EmailRequest) error {
 		message += fmt.Sprintf("%s: %s\r\n", k, v)
 	}
 	message += "\r\n"
-	message += fmt.Sprintf("Submitted Name: %s\nSubmitted Email: %s\nMessage:\n%s",
+	// Do not include raw user-supplied email address in body to prevent email content injection.
+	message += fmt.Sprintf("Submitted Name: %s\nMessage:\n%s",
 		safeName,
-		safeEmail,
 		safeMessage)
 
 	auth := smtp.PlainAuth("", from, password, smtpHost)
