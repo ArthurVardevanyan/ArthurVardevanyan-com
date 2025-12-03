@@ -133,7 +133,7 @@ func sendEmail(req EmailRequest) error {
 	if err != nil {
 		return fmt.Errorf("invalid email address: %v", err)
 	}
-	safeEmail := addr.Address
+	safeEmail := singleLine(addr.Address)
 
 	if len(safeEmail) > 254 {
 		return fmt.Errorf("email address too long")
