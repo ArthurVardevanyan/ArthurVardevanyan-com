@@ -3,7 +3,7 @@ WORKSPACE_RESULTS_PATH ?= /tmp/image
 # No MultiArch SHA Currently Present
 export KO_DEFAULTBASEIMAGE=cgr.dev/chainguard/static:latest
 TAG ?= $(shell date --utc '+%Y%m%d-%H%M')
-EXPIRE ?= 26w
+EXPIRE ?= 4w
 
 .PHONY: build-quay
 build-quay:
@@ -18,8 +18,7 @@ build-artifact-registry:
     --password-stdin us-docker.pkg.dev && \
 	export PROJECT_ID="$$(vault kv get -field=project_id secret/gcp/project/av)" && \
 	export KO_DOCKER_REPO=us-docker.pkg.dev/$$PROJECT_ID/$$PROJECT_ID/$$PROJECT_ID && \
-	ko build --platform=linux/amd64,linux/arm64 --bare --sbom none --image-label quay.expires-after="${EXPIRE}" --tags "${TAG}" && \
-	echo "$$KO_DOCKER_REPO:${TAG}" > "${WORKSPACE_RESULTS_PATH}"
+	ko build --platform=linux/amd64 --bare --sbom none --image-label quay.expires-after="${EXPIRE}" --tags "${TAG}"
 
 
 .PHONY: build-quay podman-run

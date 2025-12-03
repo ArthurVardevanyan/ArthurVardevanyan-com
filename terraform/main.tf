@@ -6,12 +6,25 @@ data "vault_generic_secret" "project_id" {
   path = "secret/gcp/project/av"
 }
 
+data "vault_generic_secret" "homelab" {
+  path = "secret/gcp/org/av/folders/homelab"
+}
+
 data "google_project" "project" {
   project_id = data.vault_generic_secret.project_id.data["project_id"]
 }
 
 locals {
-  project_id = data.google_project.project.project_id
+  project_id          = data.google_project.project.project_id
+  homelab_project_num = data.vault_generic_secret.homelab.data["homelab_project_num"]
+}
+
+
+
+resource "google_project_service" "cloudresourcemanager" {
+  project            = local.project_id
+  service            = "cloudresourcemanager.googleapis.com"
+  disable_on_destroy = false
 }
 
 resource "google_project_service" "artifact-registry" {
@@ -30,6 +43,23 @@ resource "google_artifact_registry_repository" "artifact_registry" {
 
   docker_config {
     immutable_tags = false
+  }
+
+  cleanup_policies {
+    id     = "delete-old-images"
+    action = "DELETE"
+    condition {
+      tag_state  = "ANY"
+      older_than = "604800s" # 7 days
+    }
+  }
+
+  cleanup_policies {
+    id     = "keep-minimum-versions"
+    action = "KEEP"
+    most_recent_versions {
+      keep_count = 3
+    }
   }
 
   depends_on = [google_project_service.artifact-registry]
@@ -69,7 +99,7 @@ resource "google_cloud_run_v2_service" "website" {
     }
 
     containers {
-      image = "us-docker.pkg.dev/${local.project_id}/${local.project_id}/${local.project_id}:20251130-2354"
+      image = "us-docker.pkg.dev/${local.project_id}/${local.project_id}/${local.project_id}:${var.image_tag}"
       ports {
         container_port = 8080
       }
@@ -130,9 +160,6 @@ resource "google_cloud_run_domain_mapping" "custom_domain" {
   depends_on = [google_cloud_run_v2_service.website, google_project_service.cloud-dns]
 }
 
-output "cloud_run_domain_mapping_dns" {
-  value = google_cloud_run_domain_mapping.custom_domain.status[0].resource_records
-}
 
 resource "google_cloud_run_domain_mapping" "www_custom_domain" {
   project  = local.project_id
@@ -149,4 +176,37 @@ resource "google_cloud_run_domain_mapping" "www_custom_domain" {
 
 output "cloud_run_domain_mapping_dns_www" {
   value = google_cloud_run_domain_mapping.www_custom_domain.status[0].resource_records
+}
+
+
+resource "google_service_account" "tekton" {
+  project      = local.project_id
+  account_id   = "tekton"
+  display_name = "tekton"
+}
+
+
+# TODO SCOPE DOWN
+resource "google_project_iam_member" "tekton-editor" {
+  #checkov:skip=CKV_GCP_49: Used for Automation
+  #checkov:skip=CKV_GCP_117: Used for Automation
+  project = local.project_id
+  role    = "roles/editor"
+  member  = google_service_account.tekton.member
+}
+
+resource "google_project_iam_member" "tekton-cloud-run" {
+  #checkov:skip=CKV_GCP_49: Used for Automation
+  #checkov:skip=CKV_GCP_117: Used for Automation
+  project = local.project_id
+  role    = "roles/run.admin"
+  member  = google_service_account.tekton.member
+}
+
+
+resource "google_service_account_iam_member" "tekton" {
+  #checkov:skip=CKV_GCP_49: Used for Automation
+  service_account_id = google_service_account.tekton.id
+  role               = "roles/iam.workloadIdentityUser"
+  member             = "principal://iam.googleapis.com/projects/${local.homelab_project_num}/locations/global/workloadIdentityPools/okd-homelab-wif/subject/system:serviceaccount:arthurvardevanyan-ci:pipeline"
 }
