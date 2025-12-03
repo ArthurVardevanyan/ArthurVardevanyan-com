@@ -1,19 +1,16 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"html"
 	"log"
-	"net"
 	"net/http"
-	"net/mail"
-	"net/smtp"
 	"os"
 	"regexp"
 	"strings"
-	"text/template"
+
+	"github.com/wneessen/go-mail"
 )
 
 type EmailRequest struct {
@@ -109,11 +106,6 @@ func sendEmail(req EmailRequest) error {
 		return fmt.Errorf("SMTP configuration missing")
 	}
 
-	// Validate SMTP_FROM to ensure it's a valid email and prevent injection from env
-	if _, err := mail.ParseAddress(from); err != nil {
-		return fmt.Errorf("invalid SMTP_FROM configuration: %v", err)
-	}
-
 	// Apply robust sanitization to all fields before use in body
 	safeName := singleLine(sanitizeName(req.Name))
 	safeMessage := singleLine(sanitizeBody(req.Message))
@@ -122,56 +114,46 @@ func sendEmail(req EmailRequest) error {
 		return fmt.Errorf("Invalid name format")
 	}
 
-	// Validate and parse email using net/mail
-	addr, err := mail.ParseAddress(req.Email)
+	// Create a new message
+	m := mail.NewMsg()
+	if err := m.From(from); err != nil {
+		return fmt.Errorf("failed to set From address: %w", err)
+	}
+	if err := m.To(from); err != nil {
+		return fmt.Errorf("failed to set To address: %w", err)
+	}
+
+	// The library validates this email address automatically
+	// We set Reply-To so you can reply to the user
+	if err := m.ReplyTo(req.Email); err != nil {
+		log.Printf("Invalid Reply-To email provided: %v", err)
+		// We continue without Reply-To if invalid
+	}
+
+	m.Subject("Contact Form Submission")
+
+	// Construct body
+	body := fmt.Sprintf("Submitted Name: %s\nSubmitted Email: %s\nMessage:\n%s",
+		safeName, req.Email, safeMessage)
+
+	m.SetBodyString(mail.TypeTextPlain, body)
+
+	// Setup the client
+	// It automatically handles port splitting and authentication
+	c, err := mail.NewClient(smtpHost,
+		mail.WithSMTPAuth(mail.SMTPAuthPlain),
+		mail.WithUsername(from),
+		mail.WithPassword(password),
+		// mail.WithTLSPolicy(mail.TLSMandatory), // Recommended for security
+	)
 	if err != nil {
-		return fmt.Errorf("invalid email address: %v", err)
-	}
-	safeEmail := singleLine(addr.Address)
-
-	if len(safeEmail) > 254 {
-		return fmt.Errorf("email address too long")
+		return fmt.Errorf("failed to create mail client: %w", err)
 	}
 
-	// Send the email to the configured sender (the site owner)
-	to := from
-
-	// Construct the email message with proper headers
-	headers := make(map[string]string)
-	// IMPORTANT SECURITY: Never use user-supplied data in headers. All header values MUST come from trusted config/env.
-	headers["From"] = from
-	headers["To"] = to
-	// headers["Reply-To"] = safeEmail // Removed to prevent header injection
-	headers["Subject"] = "Contact Form Submission"
-	headers["Content-Type"] = "text/plain; charset=UTF-8"
-
-	var msgBuffer bytes.Buffer
-	for k, v := range headers {
-		msgBuffer.WriteString(fmt.Sprintf("%s: %s\r\n", k, v))
-	}
-	msgBuffer.WriteString("\r\n")
-
-	// Use text/template to safely construct the body. All variables strictly sanitized.
-	t := template.Must(template.New("emailBody").Parse("Submitted Name: {{.Name}}\nSubmitted Email: {{.Email}}\nMessage:\n{{.Message}}"))
-	if err := t.Execute(&msgBuffer, map[string]string{
-		"Name":    safeName,
-		"Email":   safeEmail,
-		"Message": safeMessage,
-	}); err != nil {
-		return err
+	if err := c.DialAndSend(m); err != nil {
+		return fmt.Errorf("failed to send mail: %w", err)
 	}
 
-	// Extract host from smtpHost (which is expected to be host:port) for authentication
-	host, _, err := net.SplitHostPort(smtpHost)
-	if err != nil {
-		return fmt.Errorf("invalid SMTP_HOST format: %v", err)
-	}
-
-	auth := smtp.PlainAuth("", from, password, host)
-	err = smtp.SendMail(smtpHost, auth, from, []string{to}, msgBuffer.Bytes())
-	if err != nil {
-		return err
-	}
 	return nil
 }
 
