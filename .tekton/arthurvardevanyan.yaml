@@ -65,6 +65,96 @@ spec:
       - name: git_auth_secret
 
     tasks:
+      - name: create-deployment
+        when:
+          - input: "$(params.event)"
+            operator: in
+            values: ["push"]
+        workspaces:
+          - name: git-auth
+            workspace: git_auth_secret
+        params:
+          - name: repo_url
+            value: $(params.git-url)
+          - name: git_commit
+            value: $(params.git-commit)
+        taskSpec:
+          results:
+            - name: deployment_id
+          params:
+            - name: repo_url
+            - name: git_commit
+          workspaces:
+            - name: git-auth
+          volumes:
+            - name: tmp
+              emptyDir:
+                sizeLimit: "100Mi"
+          steps:
+            - name: create-deployment
+              image: registry.arthurvardevanyan.com/homelab/toolbox:not_latest
+              computeResources:
+                requests:
+                  memory: 64Mi
+                  cpu: 10m
+                  ephemeral-storage: 100Mi
+                limits:
+                  cpu: "100m"
+                  memory: 128Mi
+                  ephemeral-storage: 100Mi
+              securityContext:
+                privileged: false
+                readOnlyRootFilesystem: true
+                runAsNonRoot: true
+                allowPrivilegeEscalation: false
+                seccompProfile:
+                  type: RuntimeDefault
+                capabilities:
+                  drop:
+                    - ALL
+              volumeMounts:
+                - name: tmp
+                  mountPath: /tmp
+              script: |
+                set -o errexit
+                set -o nounset
+                set -o pipefail
+
+                # GitHub Deployment Setup
+                gh auth login --hostname "github.com" --with-token <"$(workspaces.git-auth.path)/git-provider-token"
+
+                REPO_FULL=$(echo "$(params.repo_url)" | sed 's|https://github.com/||' | sed 's|.git$||')
+                SHA="$(params.git_commit)"
+
+                echo "Creating GitHub Deployment for $REPO_FULL at $SHA"
+
+                echo "{\"ref\": \"$SHA\", \"environment\": \"production\", \"auto_merge\": false, \"required_contexts\": []}" > /tmp/deployment_payload.json
+
+                if gh api \
+                  --method POST \
+                  -H "Accept: application/vnd.github+json" \
+                  "/repos/$REPO_FULL/deployments" \
+                  --input /tmp/deployment_payload.json \
+                  --jq '.id' > /tmp/gh_response.txt 2> /tmp/gh_error.txt; then
+
+                    DEP_ID=$(cat /tmp/gh_response.txt)
+                    echo "Created Deployment ID: $DEP_ID"
+                    echo -n "$DEP_ID" > $(results.deployment_id.path)
+
+                    echo "Setting deployment status to pending..."
+                    gh api \
+                      --method POST \
+                      -H "Accept: application/vnd.github+json" \
+                      "/repos/$REPO_FULL/deployments/$DEP_ID/statuses" \
+                      -f state="pending" \
+                      -f description="Deployment in progress" \
+                      -f environment_url="https://arthurvardevanyan.com"
+                else
+                    echo "Failed to create deployment."
+                    echo "Error: $(cat /tmp/gh_error.txt)"
+                    exit 1
+                fi
+
       - name: git-clone
         when:
           - input: "$(params.event)"
@@ -87,6 +177,7 @@ spec:
       - name: test-build
         runAfter:
           - git-clone
+          - create-deployment
         when:
           - input: "$(params.event)"
             operator: in
@@ -278,9 +369,15 @@ spec:
             value: $(params.vault_role)
           - name: repo_url
             value: $(params.git-url)
-          - name: git_commit
-            value: $(params.git-commit)
+          - name: deployment_id
+            value: $(tasks.create-deployment.results.deployment_id)
         taskSpec:
+          params:
+            - name: vault_addr
+            - name: vault_auth_path
+            - name: vault_role
+            - name: repo_url
+            - name: deployment_id
           workspaces:
             - name: git-auth
           volumes:
@@ -354,28 +451,8 @@ spec:
                 # GitHub Deployment Setup
                 gh auth login --hostname "github.com" --with-token <"$(workspaces.git-auth.path)/git-provider-token"
 
-                DEP_ID=""
+                DEP_ID="$(params.deployment_id)"
                 REPO_FULL=$(echo "$(params.repo_url)" | sed 's|https://github.com/||' | sed 's|.git$||')
-                SHA="$(params.git_commit)"
-
-                echo "Creating GitHub Deployment for $REPO_FULL at $SHA"
-
-                    # Create deployment using gh api
-                    echo "{\"ref\": \"$SHA\", \"environment\": \"production\", \"auto_merge\": false, \"required_contexts\": []}" > /tmp/deployment_payload.json
-
-                    if gh api \
-                      --method POST \
-                      -H "Accept: application/vnd.github+json" \
-                      "/repos/$REPO_FULL/deployments" \
-                      --input /tmp/deployment_payload.json \
-                      --jq '.id' > /tmp/gh_response.txt 2> /tmp/gh_error.txt; then
-
-                        DEP_ID=$(cat /tmp/gh_response.txt)
-                        echo "Created Deployment ID: $DEP_ID"
-                    else
-                        echo "Failed to create deployment."
-                        echo "Error: $(cat /tmp/gh_error.txt)"
-                    fi
 
                 echo "Validating Cloud Run service: ${PROJECT_ID} in project ${PROJECT_ID}"
 
@@ -443,6 +520,76 @@ spec:
                 else
                     echo "Skipping status update because DEP_ID is missing."
                 fi
+    finally:
+      - name: update-deployment-status
+        when:
+          - input: "$(params.event)"
+            operator: in
+            values: ["push"]
+          - input: "$(tasks.create-deployment.status)"
+            operator: in
+            values: ["Succeeded"]
+          - input: "$(tasks.validate-deployment.status)"
+            operator: notin
+            values: ["Succeeded"]
+        workspaces:
+          - name: git-auth
+            workspace: git_auth_secret
+        params:
+          - name: repo_url
+            value: $(params.git-url)
+          - name: deployment_id
+            value: $(tasks.create-deployment.results.deployment_id)
+        taskSpec:
+          params:
+            - name: repo_url
+            - name: deployment_id
+          workspaces:
+            - name: git-auth
+          volumes:
+            - name: tmp
+              emptyDir:
+                sizeLimit: "100Mi"
+          steps:
+            - name: update-status
+              image: registry.arthurvardevanyan.com/homelab/toolbox:not_latest
+              computeResources:
+                requests:
+                  memory: 64Mi
+                  cpu: 10m
+                  ephemeral-storage: 100Mi
+                limits:
+                  cpu: "100m"
+                  memory: 128Mi
+                  ephemeral-storage: 100Mi
+              securityContext:
+                privileged: false
+                readOnlyRootFilesystem: true
+                runAsNonRoot: true
+                allowPrivilegeEscalation: false
+                seccompProfile:
+                  type: RuntimeDefault
+                capabilities:
+                  drop:
+                    - ALL
+              volumeMounts:
+                - name: tmp
+                  mountPath: /tmp
+              script: |
+                set -o errexit
+                gh auth login --hostname "github.com" --with-token <"$(workspaces.git-auth.path)/git-provider-token"
+                REPO_FULL=$(echo "$(params.repo_url)" | sed 's|https://github.com/||' | sed 's|.git$||')
+                DEP_ID="$(params.deployment_id)"
+
+                echo "Marking deployment $DEP_ID as failure"
+                gh api \
+                  --method POST \
+                  -H "Accept: application/vnd.github+json" \
+                  "/repos/$REPO_FULL/deployments/$DEP_ID/statuses" \
+                  -f state="failure" \
+                  -f description="Pipeline failed" \
+                  -f environment_url="https://arthurvardevanyan.com"
+
   taskRunTemplate:
     serviceAccountName: pipeline
     podTemplate:
