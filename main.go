@@ -8,6 +8,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"net/mail"
 	"net/smtp"
 	"os"
 	"regexp"
@@ -121,15 +122,21 @@ func sendEmail(req EmailRequest) error {
 	}
 
 	safeName := singleLine(sanitizeName(req.Name))
-	safeEmail := sanitizeHeader(req.Email)
 	safeMessage := sanitizeBody(req.Message)
 
 	if len(safeName) == 0 || len(safeName) > 100 {
 		return fmt.Errorf("Invalid name format")
 	}
 
-	if !isValidEmail(safeEmail) || len(safeEmail) > 254 {
-		return fmt.Errorf("Invalid email address")
+	// Validate and parse email using net/mail
+	addr, err := mail.ParseAddress(req.Email)
+	if err != nil {
+		return fmt.Errorf("invalid email address: %v", err)
+	}
+	safeEmail := addr.Address
+
+	if len(safeEmail) > 254 {
+		return fmt.Errorf("email address too long")
 	}
 
 	// Send the email to the configured sender (the site owner)
@@ -140,7 +147,7 @@ func sendEmail(req EmailRequest) error {
 	// IMPORTANT: Never use user-supplied data in headers. Only use config/env values here.
 	headers["From"] = from
 	headers["To"] = to
-	headers["Reply-To"] = safeEmail
+	// headers["Reply-To"] = safeEmail // Removed to prevent header injection
 	headers["Subject"] = "Contact Form Submission"
 	headers["Content-Type"] = "text/plain; charset=UTF-8"
 
