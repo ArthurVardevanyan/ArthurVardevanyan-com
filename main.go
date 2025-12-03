@@ -58,16 +58,6 @@ func verifyRecaptcha(responseToken string) error {
 	return nil
 }
 
-func sanitizeHeader(input string) string {
-	// Only allow ASCII letters, digits, '@', '.', '+', and '-'. Remove everything else.
-	re := regexp.MustCompile(`[^a-zA-Z0-9@.+\-]`)
-	safe := re.ReplaceAllString(input, "")
-	// Remove any remaining CR/LF, just in case
-	safe = strings.ReplaceAll(safe, "\r", "")
-	safe = strings.ReplaceAll(safe, "\n", "")
-	return safe
-}
-
 func sanitizeBody(input string) string {
 	// Normalize newlines to \n
 	input = strings.ReplaceAll(input, "\r\n", "\n")
@@ -82,12 +72,10 @@ func sanitizeBody(input string) string {
 	input = re.ReplaceAllString(input, "")
 
 	// Escape potential HTML, though body is text.
-	return html.EscapeString(input)
-}
+	safe := html.EscapeString(input)
 
-func isValidEmail(email string) bool {
-	re := regexp.MustCompile(`^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`)
-	return re.MatchString(email)
+	// Convert newlines to \r\n for SMTP compliance
+	return strings.ReplaceAll(safe, "\n", "\r\n")
 }
 
 func sanitizeName(input string) string {
@@ -119,6 +107,11 @@ func sendEmail(req EmailRequest) error {
 
 	if from == "" || password == "" || smtpHost == "" {
 		return fmt.Errorf("SMTP configuration missing")
+	}
+
+	// Validate SMTP_FROM to ensure it's a valid email and prevent injection from env
+	if _, err := mail.ParseAddress(from); err != nil {
+		return fmt.Errorf("invalid SMTP_FROM configuration: %v", err)
 	}
 
 	safeName := singleLine(sanitizeName(req.Name))
