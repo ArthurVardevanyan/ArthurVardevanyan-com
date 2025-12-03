@@ -129,14 +129,15 @@ func sendEmail(req EmailRequest) error {
 		return fmt.Errorf("Invalid email address")
 	}
 
-	// The recipient is the email provided in the form
-	to := safeEmail
+	// Send the email to the configured sender (the site owner)
+	to := from
 
 	// Construct the email message with proper headers
 	headers := make(map[string]string)
 	// IMPORTANT: Never use user-supplied data in headers. Only use config/env values here.
 	headers["From"] = from
 	headers["To"] = to
+	headers["Reply-To"] = safeEmail
 	headers["Subject"] = "Contact Form Submission"
 	headers["Content-Type"] = "text/plain; charset=UTF-8"
 
