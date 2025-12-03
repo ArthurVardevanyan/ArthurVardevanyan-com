@@ -50,6 +50,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install file utility
+        run: apt-get update && apt-get install -y file
+
       - uses: actions/setup-go@v5
         with:
           go-version: ">=1.22.0"
