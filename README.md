@@ -58,18 +58,51 @@ This project is a simple Go webserver, designed for both local development and p
    ```sh
    cd terraform
    tofu apply
-   # or
-   terraform apply
    ```
 
-3. After apply, check the outputs for DNS records to add for your custom domain (e.g., `gcp.arthurvardevanyan.com`).
+## Repository Structure
 
-### Project Structure
+- **`kodata/`**: Contains the static website content (HTML, CSS, JS, images). This directory is embedded into the Go binary/container image by `ko`.
+- **`kubernetes/`**: Kubernetes manifests for deploying the application.
+  - `base/`: Base Kustomize configuration.
+  - `overlays/`: Environment-specific overlays (e.g., `k3s`, `okd`).
+- **`tekton/`**: Tekton pipeline definitions and tasks for CI/CD.
+- **`terraform/`**: Terraform configurations for provisioning Google Cloud infrastructure (Cloud Run, Artifact Registry, etc.).
+- **`.tekton/`**: Tekton PipelineRun definitions that trigger on git events.
+- **`main.go`**: The Go application source code.
+- **`Makefile`**: Helper commands for building and running the application.
 
-- `main.go` - Entry point for the Go webserver
-- `static/` - Directory for static files (HTML, CSS, JS, images)
-- `ko.yaml` - ko build configuration (ensures static files are included)
-- `terraform/` - Infrastructure as code for Cloud Run, Load Balancer, and Domain Mapping
+## Infrastructure & CI/CD
+
+### Infrastructure
+
+The infrastructure is managed via **Terraform** and deployed to **Google Cloud Platform (GCP)**. Key components include:
+
+- **Cloud Run**: Hosts the serverless Go application.
+- **Artifact Registry**: Stores the container images.
+- **Vault**: Used for secret management (retrieving GCP project IDs, credentials, etc.).
+
+### CI/CD Pipeline
+
+The project uses **Tekton** for Continuous Integration and Continuous Deployment. The pipeline is defined in `.tekton/arthurvardevanyan.yaml` and performs the following steps:
+
+1. **Git Clone**: Clones the repository.
+2. **Build**: Uses `ko` to build the container image and push it to Quay.io and Google Artifact Registry.
+3. **Security Scan**: Scans the image for vulnerabilities using Clair.
+4. **Terraform Plan/Apply**:
+   - On Pull Requests: Runs `terraform plan`.
+   - On Push to Main: Runs `terraform apply` to update the infrastructure.
+5. **Deployment Validation**:
+   - Creates a GitHub Deployment.
+   - Validates that the Cloud Run service is healthy.
+   - Updates the GitHub Deployment status (Success/Failure).
+
+## Kubernetes
+
+The application can also be deployed to Kubernetes clusters. The `kubernetes/` directory contains Kustomize configurations for different environments:
+
+- **k3s**: For lightweight/edge clusters (uses Traefik Ingress).
+- **okd**: For OpenShift/OKD clusters (uses Routes).
 
 ### Example: Serving Static Files
 
