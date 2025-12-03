@@ -339,6 +339,14 @@ resource "google_project_iam_member" "tekton-cloud-run" {
   member  = google_service_account.tekton.member
 }
 
+resource "google_project_iam_member" "tekton-secret" {
+  #checkov:skip=CKV_GCP_49: Used for Automation
+  #checkov:skip=CKV_GCP_117: Used for Automation
+  project = local.project_id
+  role    = "roles/secretmanager.admin"
+  member  = google_service_account.tekton.member
+}
+
 
 resource "google_service_account_iam_member" "tekton" {
   #checkov:skip=CKV_GCP_49: Used for Automation
