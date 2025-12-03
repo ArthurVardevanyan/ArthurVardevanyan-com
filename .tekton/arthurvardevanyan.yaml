@@ -319,7 +319,7 @@ spec:
 
       - name: terraform-apply
         runAfter:
-          - clair-action
+          - test-build
         when:
           - input: "$(params.event)"
             operator: in
@@ -351,6 +351,7 @@ spec:
       - name: validate-deployment
         runAfter:
           - terraform-apply
+          - clair-action
         when:
           - input: "$(params.event)"
             operator: in

@@ -5,10 +5,11 @@ export KO_DEFAULTBASEIMAGE=cgr.dev/chainguard/static:latest
 TAG ?= $(shell date --utc '+%Y%m%d-%H%M')
 EXPIRE ?= 4w
 
+# ,linux/arm64
 .PHONY: build-quay
 build-quay:
 		export KO_DOCKER_REPO=registry.arthurvardevanyan.com/apps/arthurvardevanyan && \
-    ko build --platform=linux/amd64,linux/arm64 --bare --sbom none --image-label quay.expires-after="${EXPIRE}" --tags "${TAG}" && \
+    ko build --platform=linux/amd64 --bare --sbom none --image-label quay.expires-after="${EXPIRE}" --tags "${TAG}" && \
     echo "$$KO_DOCKER_REPO:${TAG}" > "${WORKSPACE_RESULTS_PATH}"
 
 .PHONY: build-artifact-registry
