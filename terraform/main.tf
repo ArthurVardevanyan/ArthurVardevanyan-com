@@ -10,6 +10,15 @@ data "vault_generic_secret" "homelab" {
   path = "secret/gcp/org/av/folders/homelab"
 }
 
+data "vault_generic_secret" "smtp" {
+  path = "secret/smtp"
+}
+
+
+data "vault_generic_secret" "arthurvardevanyan" {
+  path = "secret/arthur_vardevanyan"
+}
+
 data "google_project" "project" {
   project_id = data.vault_generic_secret.project_id.data["project_id"]
 }
@@ -17,6 +26,10 @@ data "google_project" "project" {
 locals {
   project_id          = data.google_project.project.project_id
   homelab_project_num = data.vault_generic_secret.homelab.data["homelab_project_num"]
+  smtp_host           = data.vault_generic_secret.smtp.data["host"]
+  smtp_username       = data.vault_generic_secret.smtp.data["username"]
+  smtp_password       = data.vault_generic_secret.smtp.data["password"]
+  recaptcha_secret    = data.vault_generic_secret.arthurvardevanyan.data["recaptcha_secret"]
 }
 
 
@@ -72,6 +85,92 @@ resource "google_project_service" "cloud-run" {
   disable_on_destroy = false
 }
 
+resource "google_project_service" "secretmanager" {
+  project            = local.project_id
+  service            = "secretmanager.googleapis.com"
+  disable_on_destroy = false
+}
+
+resource "google_secret_manager_secret" "smtp_host" {
+  project   = local.project_id
+  secret_id = "smtp-host"
+  replication {
+    auto {}
+  }
+  depends_on = [google_project_service.secretmanager]
+}
+
+resource "google_secret_manager_secret_version" "smtp_host" {
+  secret      = google_secret_manager_secret.smtp_host.id
+  secret_data = local.smtp_host
+}
+
+resource "google_secret_manager_secret" "smtp_username" {
+  project   = local.project_id
+  secret_id = "smtp-username"
+  replication {
+    auto {}
+  }
+  depends_on = [google_project_service.secretmanager]
+}
+
+resource "google_secret_manager_secret_version" "smtp_username" {
+  secret      = google_secret_manager_secret.smtp_username.id
+  secret_data = local.smtp_username
+}
+
+resource "google_secret_manager_secret" "smtp_password" {
+  project   = local.project_id
+  secret_id = "smtp-password"
+  replication {
+    auto {}
+  }
+  depends_on = [google_project_service.secretmanager]
+}
+
+resource "google_secret_manager_secret_version" "smtp_password" {
+  secret      = google_secret_manager_secret.smtp_password.id
+  secret_data = local.smtp_password
+}
+
+resource "google_secret_manager_secret" "recaptcha_secret" {
+  project   = local.project_id
+  secret_id = "recaptcha-secret"
+  replication {
+    auto {}
+  }
+  depends_on = [google_project_service.secretmanager]
+}
+
+resource "google_secret_manager_secret_version" "recaptcha_secret" {
+  secret      = google_secret_manager_secret.recaptcha_secret.id
+  secret_data = local.recaptcha_secret
+}
+
+resource "google_secret_manager_secret_iam_member" "smtp_host_access" {
+  secret_id = google_secret_manager_secret.smtp_host.id
+  role      = "roles/secretmanager.secretAccessor"
+  member    = google_service_account.default.member
+}
+
+resource "google_secret_manager_secret_iam_member" "smtp_username_access" {
+  secret_id = google_secret_manager_secret.smtp_username.id
+  role      = "roles/secretmanager.secretAccessor"
+  member    = google_service_account.default.member
+}
+
+resource "google_secret_manager_secret_iam_member" "smtp_password_access" {
+  secret_id = google_secret_manager_secret.smtp_password.id
+  role      = "roles/secretmanager.secretAccessor"
+  member    = google_service_account.default.member
+}
+
+resource "google_secret_manager_secret_iam_member" "recaptcha_secret_access" {
+  secret_id = google_secret_manager_secret.recaptcha_secret.id
+  role      = "roles/secretmanager.secretAccessor"
+  member    = google_service_account.default.member
+}
+
 
 resource "google_service_account" "default" {
   project      = local.project_id
@@ -102,6 +201,43 @@ resource "google_cloud_run_v2_service" "website" {
       image = "us-docker.pkg.dev/${local.project_id}/${local.project_id}/${local.project_id}:${var.image_tag}"
       ports {
         container_port = 8080
+      }
+
+      env {
+        name = "SMTP_HOST"
+        value_source {
+          secret_key_ref {
+            secret  = google_secret_manager_secret.smtp_host.secret_id
+            version = "latest"
+          }
+        }
+      }
+      env {
+        name = "SMTP_FROM"
+        value_source {
+          secret_key_ref {
+            secret  = google_secret_manager_secret.smtp_username.secret_id
+            version = "latest"
+          }
+        }
+      }
+      env {
+        name = "SMTP_PASSWORD"
+        value_source {
+          secret_key_ref {
+            secret  = google_secret_manager_secret.smtp_password.secret_id
+            version = "latest"
+          }
+        }
+      }
+      env {
+        name = "RECAPTCHA_SECRET_KEY"
+        value_source {
+          secret_key_ref {
+            secret  = google_secret_manager_secret.recaptcha_secret.secret_id
+            version = "latest"
+          }
+        }
       }
 
       resources {
