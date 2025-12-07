@@ -285,10 +285,405 @@
             <div class="row">
               <div class="col-md-12">
                 <h4 class="widget-title">Timeline / Process</h4>
+                <p>
+                  For more detailed and up to date information check:
+                  <a
+                    href="https://github.com/ArthurVardevanyan/HomeLab/blob/main/CHANGELOG.md"
+                    >CHANGELOG</a
+                  >
+                </p>
                 <ul class="timeline">
                   <li>
-                    <h5>HomeLab Inception</h5>
-                    <p>HomeLab Inception</p>
+                    <h5>Windows Server</h5>
+                    <p>Early 2016</p>
+                    <ul>
+                      <li>
+                        <b>Focus:</b> Enterprise Windows environment simulation.
+                      </li>
+                      <li><b>OS:</b> Windows Server 2012 R2.</li>
+                      <li>
+                        <b>Key Tech:</b> Active Directory Domain Services, IIS,
+                        DNS, DHCP.
+                      </li>
+                      <li>
+                        <b>Hardware:</b> Initial dedicated server hardware
+                        acquisition.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>VMware Workstation</h5>
+                    <p>Late 2016</p>
+                    <ul>
+                      <li>
+                        <b>Focus:</b> Desktop Virtualization and Linux
+                        exploration.
+                      </li>
+                      <li>
+                        <b>Platform:</b> VMware Workstation Pro 12 running on
+                        Windows.
+                      </li>
+                      <li>
+                        <b>Experiments:</b> Early Linux adoption (Ubuntu, Kali,
+                        Mint) running as VMs. <b>OpenVPN</b> (August 2016)
+                        running in a custom VM.
+                      </li>
+                      <li>
+                        <b>Key Tech:</b> XRDP for remote access, Virtual Network
+                        Editor.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>The Rise of Self-Hosting</h5>
+                    <p>2017 - 2018</p>
+                    <ul>
+                      <li>
+                        <b>Infrastructure:</b> Introduction of
+                        <b>FreeNAS</b> for storage and <b>pfSense</b> for
+                        routing (August 2017). <b>OpenVPN</b> on pfSense
+                        (February 2017).
+                      </li>
+                      <li>
+                        <b>Workloads:</b> <b>Nextcloud</b> (v11) inception,
+                        Bind9 DNS.
+                      </li>
+                      <li>
+                        <b>OS:</b> Shift towards Ubuntu Server 16.04 as the
+                        primary host.
+                      </li>
+                      <li>
+                        <b>Desktop:</b> Deep dive into Ubuntu Desktop and ZFS on
+                        Linux.
+                      </li>
+                      <li>
+                        <b>Apps:</b> Nextcloud, Spotify on Linux, and Minecraft
+                        Servers.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>Advanced Storage & Networking</h5>
+                    <p>2019</p>
+                    <ul>
+                      <li>
+                        <b>Storage:</b> Heavy focus on <b>FreeNAS</b> tuning
+                        (ZFS RAID levels, SSD Caching, Scrubs).
+                      </li>
+                      <li>
+                        <b>Networking:</b> Virtualizing <b>pfSense</b>, VLAN
+                        segmentation
+                      </li>
+                      <li>
+                        <b>Key Tech:</b> iSCSI for VM storage, NFS for file
+                        sharing.
+                      </li>
+                      <li>
+                        <b>Experiments:</b> Active Directory on Linux (Samba 4).
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>Hardware & Passthrough</h5>
+                    <p>2020</p>
+                    <ul>
+                      <li><b>Hardware:</b> Raspberry Pi 4 for OctoPrint.</li>
+                      <li>
+                        <b>OS:</b> Distro hopping (Pop!_OS, Manjaro, Fedora).
+                      </li>
+                      <li>
+                        <b>Migrations:</b> P2V (Physical to Virtual) migrations
+                        of legacy Windows machines.
+                      </li>
+                      <li>
+                        <b>Networking:</b> <b>WireGuard</b> (April 2020)
+                        exploration.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>The Docker Era</h5>
+                    <p>Early 2021 - August 2021</p>
+                    <ul>
+                      <li>
+                        <b>Early 2021</b>: Researching Docker, Podman, and
+                        container networking.
+                      </li>
+                      <li>
+                        <b>June 15, 2021</b>: Initial Commit establishing the
+                        Docker environment.
+                      </li>
+                      <li>
+                        <b>June 18, 2021</b>: Implementation of `macvlan`
+                        network routes, moving away from simple bridge
+                        networking.
+                      </li>
+                      <li>
+                        <b>June 25, 2021</b>: <b>Cockpit</b> configuration for
+                        server management.
+                      </li>
+                      <li>
+                        <b>July 31, 2021</b>: Introduction of
+                        <b>Portainer</b> for UI-based container management.
+                      </li>
+                      <li>
+                        <b>Workloads:</b> Nextcloud, MariaDB, HomeAssistant,
+                        Spotify Analytics, Pi-Hole, <b>GitLab</b> (Code
+                        Hosting).
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>Kubernetes Migration</h5>
+                    <p>August 2021 - December 2021</p>
+                    <ul>
+                      <li>
+                        <b>August 22, 2021</b>: First Kubernetes-related commits
+                        appear.
+                      </li>
+                      <li>
+                        <b>September 8, 2021</b>: "Kubernetes Move" - The
+                        official migration point from Docker Compose.
+                      </li>
+                      <li>
+                        <b>November 28, 2021</b>: Full conversion to Longhorn
+                        PV/PVCs, enabling stateful workload mobility.
+                      </li>
+                      <li>
+                        <b>December 10, 2021</b>: <b>Bitwarden</b> (Vaultwarden)
+                        inception for password management.
+                      </li>
+                      <li>
+                        <b>Late 2021</b>: Introduction of
+                        <b>Kubernetes Dashboard</b>, <b>Metrics Server</b>, and
+                        <b>Kube Eagle</b> for cluster visibility.
+                      </li>
+                      <li>
+                        <b>Workloads</b>: Prometheus/Grafana stack, Heimdall
+                        Dashboard, Bitwarden, Uptime Kuma, Cert-Manager,
+                        Hashicorp Vault.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>The OKD Migration</h5>
+                    <p>Early 2022</p>
+                    <ul>
+                      <li>
+                        <b>January 16, 2022</b>: Upgrade of K3s to
+                        <b>High Availability (HA)</b> mode.
+                      </li>
+                      <li>
+                        <b>February 6, 2022</b>: <b>pfSense</b> physical
+                        inception, replacing the default ISP router.
+                      </li>
+                      <li>
+                        <b>March 27, 2022</b>: Automated Sandbox OKD
+                        Installation.
+                      </li>
+                      <li>
+                        <b>March 28, 2022</b>: Inception of <b>ArgoCD</b>,
+                        establishing the GitOps workflow.
+                      </li>
+                      <li>
+                        <b>May 21, 2022</b>: <b>Gitea</b> inception, replacing
+                        GitLab.
+                      </li>
+                      <li>
+                        <b>May 21, 2022</b>: <b>Tekton</b> pipelines
+                        implemented.
+                      </li>
+                      <li>
+                        <b>May 22, 2022</b>: <b>MinIO</b>, <b>Quay</b>, and
+                        <b>Postgres</b> inception.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>Security & Stability</h5>
+                    <p>Late 2022</p>
+                    <ul>
+                      <li>
+                        <b>October 20, 2022</b>: <b>Stackrox</b> inception for
+                        continuous security monitoring.
+                      </li>
+                      <li>
+                        <b>November 3, 2022</b>: <b>TrueNAS</b> inception
+                        serving as an S3 backup target.
+                      </li>
+                      <li>
+                        <b>November 25, 2022</b>:
+                        <b>Smoke Tests</b> implementation for cluster
+                        validation.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>Identity & Observability</h5>
+                    <p>Early 2023</p>
+                    <ul>
+                      <li>
+                        <b>January 11, 2023</b>:
+                        <b>Network Observability</b> inception.
+                      </li>
+                      <li>
+                        <b>April 27, 2023</b>: <b>Keep Alive</b> service for
+                        connection persistence.
+                      </li>
+                      <li>
+                        <b>May 1, 2023</b>: <b>Zitadel</b> inception, replacing
+                        Keycloak.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>Developer Experience & Serverless</h5>
+                    <p>Late 2023</p>
+                    <ul>
+                      <li>
+                        <b>October 29, 2023</b>: <b>Eclipse Che</b> inception.
+                      </li>
+                      <li>
+                        <b>October 30, 2023</b>: <b>Kyverno</b> and
+                        <b>Image Puller</b> inception.
+                      </li>
+                      <li>
+                        <b>November 21, 2023</b>: <b>Knative</b> Serverless
+                        inception.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>Hybrid Networking & Storage</h5>
+                    <p>Early 2024</p>
+                    <ul>
+                      <li>
+                        <b>January 31, 2024</b>: <b>Kube-VIP</b> inception.
+                      </li>
+                      <li>
+                        <b>February 9, 2024</b>:
+                        <b>UniFi Network Application</b> inception, marking the
+                        shift from pfSense to UniFi hardware.
+                      </li>
+                      <li>
+                        <b>February 2024</b>:
+                        <b>External Secrets Operator</b> and
+                        <b>MongoDB Operator</b>.
+                      </li>
+                      <li>
+                        <b>March 7, 2024</b>: <b>GitHub Runners</b> for
+                        self-hosted CI/CD capacity.
+                      </li>
+                      <li>
+                        <b>April 5, 2024</b>: Strategic shift to <b>Ceph</b>.
+                      </li>
+                      <li>
+                        <b>May 27, 2024</b>: <b>Velero</b> inception for
+                        disaster recovery.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>Virtualization & Edge</h5>
+                    <p>Late 2024</p>
+                    <ul>
+                      <li><b>June 28, 2024</b>: <b>KubeVirt</b> inception.</li>
+                      <li>
+                        <b>July 4, 2024</b>: <b>NMState</b> for declarative
+                        network configuration.
+                      </li>
+                      <li>
+                        <b>July 13, 2024</b>:
+                        <b>Nested Virtualization</b> enabled in KubeVirt.
+                      </li>
+                      <li>
+                        <b>September 8, 2024</b>: <b>MicroShift</b> inception.
+                      </li>
+                      <li>
+                        <b>September 11, 2024</b>: <b>External DNS</b> and
+                        <b>OLM</b> (Operator Lifecycle Manager) enhancements.
+                      </li>
+                      <li><b>October 10, 2024</b>: <b>AWX</b> inception.</li>
+                      <li>
+                        <b>Late 2024</b>: <b>Blackbox Exporter</b>,
+                        <b>Observability Operator</b>, and
+                        <b>NTP</b> standardization.
+                      </li>
+                      <li>
+                        <b>December 2024</b>:
+                        <b>UniFi WireGuard</b> implementation.
+                      </li>
+                      <li>
+                        <b>December 13, 2024</b>: <b>Netbox</b> inception.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>The Bare Metal Rebuild</h5>
+                    <p>Early 2025</p>
+                    <ul>
+                      <li>
+                        <b>Early 2025</b>: <b>Major Rebuild</b> - Transition to
+                        OKD Baremetal IPI with Agent-based Installer.
+                      </li>
+                      <li>
+                        <b>March 7, 2025</b>:
+                        <b>Single Node OpenShift (SNO)</b> deployment with LVM
+                        storage serving as a critical stop-gap during the
+                        bare-metal migration.
+                      </li>
+                      <li>
+                        <b>March 31, 2025</b>:
+                        <b>Deployment Validation</b> operator.
+                      </li>
+                      <li>
+                        <b>April 1, 2025</b>: <b>OpenShift Power Monitoring</b>.
+                      </li>
+                      <li>
+                        <b>April 5, 2025</b>:
+                        <b>Automated Nested OKD/OpenShift</b> support in
+                        KubeVirt.
+                      </li>
+                      <li>
+                        <b>April 16, 2025</b>: <b>KFCA</b> (Kubernetes Full
+                        Cluster Audit).
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>Hardware Acceleration & Observability 2.0</h5>
+                    <p>Late 2025</p>
+                    <ul>
+                      <li><b>July 22, 2025</b>: <b>Immich</b> inception.</li>
+                      <li>
+                        <b>August 9, 2025</b>: <b>Kube Descheduler</b> for
+                        workload optimization.
+                      </li>
+                      <li>
+                        <b>August 30, 2025</b>: <b>UNAS</b> inception for
+                        storage workloads.
+                      </li>
+                      <li>
+                        <b>October 3, 2025</b>:
+                        <b>Nextcloud Architecture Rebuild</b> - Migration to
+                        FPM/S3 architecture.
+                      </li>
+                      <li>
+                        <b>November 8, 2025</b>: <b>GPU Integration</b> (#281)
+                        and <b>Node Feature Discovery</b>.
+                      </li>
+                      <li>
+                        <b>November 15, 2025</b>: <b>OpenShift Service Mesh</b>.
+                      </li>
+                      <li>
+                        <b>November 18, 2025</b>: Adoption of
+                        <b>VictoriaMetrics</b>.
+                      </li>
+                      <li>
+                        <b>Late 2025</b>: <b>BMC Shim</b> for bare-metal
+                        autoscaling.
+                      </li>
+                    </ul>
                   </li>
                 </ul>
               </div>
