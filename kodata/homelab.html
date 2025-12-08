@@ -94,7 +94,7 @@
           <br />
           <ul class="navigation">
             <li>
-              <a href="#about"><i class="fa fa-user"></i>About</a>
+              <a href="#overview"><i class="fa fa-user"></i>Overview</a>
             </li>
             <li>
               <a href="#github"><i class="fab fa-github"></i>Github</a>
@@ -140,7 +140,7 @@
         <br />
         <ul class="navigation">
           <li>
-            <a href="#about"><i class="fa fa-user"></i>About</a>
+            <a href="#overview"><i class="fa fa-user"></i>Overview</a>
           </li>
           <li>
             <a href="#github"><i class="fab fa-github"></i>Github</a>
@@ -189,35 +189,142 @@
     <div class="main-content">
       <div class="fluid-container">
         <div class="content-wrapper">
-          <!-- ABOUT -->
-          <div class="page-section" id="about">
+          <!-- overview -->
+          <div class="page-section" id="overview">
             <div class="row">
               <div class="col-md-12">
-                <h4 class="widget-title">About</h4>
-                <p>TBD</p>
+                <h4 class="widget-title">Overview</h4>
+                <p>
+                  Architected, deployed, and maintained an enterprise-grade
+                  on-premise infrastructure, evolving from legacy virtualization
+                  to a sophisticated, fully automated Cloud-Native platform.
+                  Spearheaded the migration to Kubernetes (OKD/OpenShift),
+                  implementing GitOps practices, Zero Trust security, and
+                  full-stack observability.
+                </p>
                 <br />
-                <a href="https://github.com/ArthurVardevanyan/HomeLab">Code</a>
-                <br />
-                <br />
-                <h4 class="widget-title">Main Project Points</h4>
-                <div class="column">
-                  <h5>TBD</h5>
-                  <ul>
-                    <li>TBD</li>
-                  </ul>
-                  <br />
+                <div class="row">
+                  <div class="col-md-6">
+                    <h5>Cloud-Native Infrastructure & Orchestration</h5>
+                    <ul>
+                      <li>
+                        <strong>Kubernetes Migration:</strong> Led the strategic
+                        migration of workloads from Docker Compose to K3s, and
+                        ultimately to OKD (OpenShift), enabling enterprise-level
+                        orchestration.
+                      </li>
+                      <li>
+                        <strong>GitOps Implementation:</strong> Established a
+                        declarative delivery model using ArgoCD for continuous
+                        deployment and Tekton for CI pipelines, integrating with
+                        self-hosted Gitea and Quay registries.
+                      </li>
+                      <li>
+                        <strong>Cluster Management:</strong> Managed full
+                        lifecycle of bare-metal clusters (IPI/SNO), including
+                        automated provisioning, scaling, and seamless upgrades
+                        (up to OKD 4.21).
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col-md-6">
+                    <h5>Storage & Virtualization</h5>
+                    <ul>
+                      <li>
+                        <strong>Software-Defined Storage:</strong> Deployed and
+                        tuned Ceph/ODF (Rook) and MinIO for high-performance
+                        block and object storage.
+                      </li>
+                      <li>
+                        <strong>Hybrid Workloads:</strong> Leveraged KubeVirt to
+                        orchestrate legacy Virtual Machines alongside
+                        containerized microservices.
+                      </li>
+                      <li>
+                        <strong>Historical Evolution:</strong> Progressed
+                        through VMware Workstation, KVM/QEMU, and
+                        FreeNAS/TrueNAS before converging on hyper-converged
+                        infrastructure.
+                      </li>
+                    </ul>
+                  </div>
                 </div>
-                <div class="column">
-                  <h5>TBD</h5>
-                  <ul>
-                    <li>TBD</li>
-                  </ul>
-                  <br />
+                <div class="row">
+                  <div class="col-md-6">
+                    <h5>Networking & Security</h5>
+                    <ul>
+                      <li>
+                        <strong>Advanced Networking:</strong> Implemented
+                        OVN-K8s, MetalLB, Gateway API, and Istio Service Mesh
+                        for complex traffic management and ingress control.
+                      </li>
+                      <li>
+                        <strong>Zero Trust Security:</strong> Enforced security
+                        policies using Kyverno, Stackrox, and NetworkPolicies.
+                        Managed identity and access via Zitadel (OIDC) and
+                        Vault.
+                      </li>
+                      <li>
+                        <strong>Edge Networking:</strong> Configured pfSense,
+                        UniFi, and Cloudflare DDNS for robust edge routing and
+                        connectivity.
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col-md-6">
+                    <h5>Observability & Reliability</h5>
+                    <ul>
+                      <li>
+                        <strong>Full-Stack Monitoring:</strong> Built
+                        comprehensive observability pipelines using Prometheus,
+                        Grafana, Loki, and VictoriaMetrics for metrics and logs.
+                      </li>
+                      <li>
+                        <strong>Performance Tuning:</strong> Implemented Network
+                        Observability, Power Monitoring, and Dragonfly for
+                        efficient image distribution.
+                      </li>
+                      <li>
+                        <strong>Resiliency:</strong> Designed backup and
+                        disaster recovery strategies using Velero and External
+                        Secrets.
+                      </li>
+                    </ul>
+                  </div>
                 </div>
+                <br />
+                <h4 class="widget-title">Technology Stack</h4>
+                <ul>
+                  <li>
+                    <strong>Platforms:</strong> OKD (OpenShift), Kubernetes,
+                    K3s, Docker, MicroShift.
+                  </li>
+                  <li>
+                    <strong>IaC & Config:</strong> Ansible, Terraform, Helm,
+                    Kustomize.
+                  </li>
+                  <li>
+                    <strong>CI/CD:</strong> ArgoCD, Tekton, GitLab CI, GitHub
+                    Actions.
+                  </li>
+                  <li>
+                    <strong>Storage:</strong> Ceph, Rook, MinIO, Longhorn,
+                    TrueNAS (ZFS).
+                  </li>
+                  <li>
+                    <strong>Networking:</strong> Istio, Traefik, MetalLB,
+                    OVN-K8s, pfSense.
+                  </li>
+                  <li>
+                    <strong>Observability:</strong> Prometheus, Grafana, Loki,
+                    VictoriaMetrics, Stackrox.
+                  </li>
+                  <li><strong>Languages:</strong> Python, Bash, Go.</li>
+                </ul>
                 <hr />
               </div>
             </div>
-            <!-- #about -->
+            <!-- #overview -->
           </div>
 
           <div class="page-section" id="github">
