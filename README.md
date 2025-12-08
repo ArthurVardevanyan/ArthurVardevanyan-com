@@ -1,15 +1,49 @@
-# Go Webserver with Cloud Run & Google Cloud Load Balancer
+# ArthurVardevanyan.com
+
+- [ArthurVardevanyan.com](#arthurvardevanyancom)
+  - [Overview](#overview)
+  - [Features](#features)
+  - [Configuration](#configuration)
+  - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Local Development](#local-development)
+    - [Cloud Build \& Deployment](#cloud-build--deployment)
+  - [Repository Structure](#repository-structure)
+  - [Infrastructure \& CI/CD](#infrastructure--cicd)
+    - [Infrastructure](#infrastructure)
+    - [CI/CD Pipeline](#cicd-pipeline)
+  - [Kubernetes Deployment](#kubernetes-deployment)
+    - [Example: Serving Static Files](#example-serving-static-files)
+    - [Customization](#customization)
+    - [Domain Mapping](#domain-mapping)
+  - [License](#license)
+
+## Overview
 
 This project is a simple Go webserver, designed for both local development and production deployment on Google Cloud Run behind a Google Cloud HTTP(S) Load Balancer, with support for custom domains.
 
 ## Features
 
 - Serves static files (HTML, CSS, JS, images)
+- **Contact Form**: Integrated email sending with Google Recaptcha v3 protection and SMTP support.
 - Easy to configure and extend
 - Minimal dependencies
 - Cloud-native deployment with [ko](https://github.com/ko-build/ko)
 - Google Cloud Run and HTTP(S) Load Balancer integration
 - Custom domain mapping (e.g., `gcp.arthurvardevanyan.com`)
+
+## Configuration
+
+The application is configured via environment variables:
+
+| Variable               | Description                                      | Default               |
+| :--------------------- | :----------------------------------------------- | :-------------------- |
+| `PORT`                 | The port to listen on.                           | `8080`                |
+| `KO_DATA_PATH`         | Path to the static files directory.              | `./kodata`            |
+| `RECAPTCHA_SECRET_KEY` | Google Recaptcha v3 Secret Key.                  | Required for `/email` |
+| `SMTP_HOST`            | SMTP Server Host (e.g., `smtp.example.com:587`). | Required for `/email` |
+| `SMTP_FROM`            | SMTP Sender Email / Username.                    | Required for `/email` |
+| `SMTP_PASSWORD`        | SMTP Password.                                   | Required for `/email` |
 
 ## Getting Started
 
@@ -63,11 +97,11 @@ This project is a simple Go webserver, designed for both local development and p
 ## Repository Structure
 
 - **`kodata/`**: Contains the static website content (HTML, CSS, JS, images). This directory is embedded into the Go binary/container image by `ko`.
-- **`kubernetes/`**: Kubernetes manifests for deploying the application.
+- **`kubernetes/`**: Kubernetes manifests for deploying the application to self-hosted clusters (e.g., OKD, K3s).
   - `base/`: Base Kustomize configuration.
-  - `overlays/`: Environment-specific overlays (e.g., `k3s`, `okd`).
+  - `overlays/`: Environment-specific overlays.
 - **`tekton/`**: Tekton pipeline definitions and tasks for CI/CD.
-- **`terraform/`**: Terraform configurations for provisioning Google Cloud infrastructure (Cloud Run, Artifact Registry, etc.).
+- **`terraform/`**: Terraform configurations for provisioning Google Cloud infrastructure (Cloud Run, Artifact Registry, Secret Manager, etc.).
 - **`.tekton/`**: Tekton PipelineRun definitions that trigger on git events.
 - **`main.go`**: The Go application source code.
 - **`Makefile`**: Helper commands for building and running the application.
@@ -80,7 +114,8 @@ The infrastructure is managed via **Terraform** and deployed to **Google Cloud P
 
 - **Cloud Run**: Hosts the serverless Go application.
 - **Artifact Registry**: Stores the container images.
-- **Vault**: Used for secret management (retrieving GCP project IDs, credentials, etc.).
+- **Secret Manager**: Stores sensitive configuration like Recaptcha keys and SMTP credentials.
+- **Vault**: Used for secret management (retrieving GCP project IDs, credentials, etc.) during the build process.
 
 ### CI/CD Pipeline
 
@@ -94,12 +129,21 @@ The project uses **Tekton** for Continuous Integration and Continuous Deployment
    - On Push to Main: Runs `terraform apply` to update the infrastructure.
 5. **Deployment Validation**:
    - Creates a GitHub Deployment.
-   - Validates that the Cloud Run service is healthy.
+   - Validates that the Cloud Run service is healthy and serving traffic.
    - Updates the GitHub Deployment status (Success/Failure).
 
-## Kubernetes
+## Kubernetes Deployment
 
-The application can also be deployed to Kubernetes clusters. The `kubernetes/` directory contains Kustomize configurations for different environments:
+In addition to Cloud Run, this application is designed to run on Kubernetes. The `kubernetes/` directory contains Kustomize manifests for deploying to clusters like OKD or K3s. These manifests are typically applied via a GitOps tool like **ArgoCD**, which manages the synchronization between this repository and the cluster state.
+
+The Kubernetes deployment includes:
+
+- **Deployment**: Manages the application pods.
+- **Service**: Exposes the application internally.
+- **Secret**: Mounts sensitive environment variables (synced from Vault via External Secrets in some environments).
+- **Ingress/Route**: Exposes the application externally (Traefik for K3s, Route for OKD).
+
+The `kubernetes/` directory contains Kustomize configurations for different environments:
 
 - **k3s**: For lightweight/edge clusters (uses Traefik Ingress).
 - **okd**: For OpenShift/OKD clusters (uses Routes).

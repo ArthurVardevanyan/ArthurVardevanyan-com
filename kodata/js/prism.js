@@ -4,9 +4,9 @@ var _self =
     "undefined" != typeof window
       ? window
       : "undefined" != typeof WorkerGlobalScope &&
-        self instanceof WorkerGlobalScope
-      ? self
-      : {},
+          self instanceof WorkerGlobalScope
+        ? self
+        : {},
   Prism = (function (e) {
     var n = /(?:^|\s)lang(?:uage)?-([\w-]+)(?=\s|$)/i,
       t = 0,
@@ -20,11 +20,11 @@ var _self =
             return n instanceof i
               ? new i(n.type, e(n.content), n.alias)
               : Array.isArray(n)
-              ? n.map(e)
-              : n
-                  .replace(/&/g, "&amp;")
-                  .replace(/</g, "&lt;")
-                  .replace(/\u00a0/g, " ");
+                ? n.map(e)
+                : n
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/\u00a0/g, " ");
           },
           type: function (e) {
             return Object.prototype.toString.call(e).slice(8, -1);
@@ -154,7 +154,7 @@ var _self =
           };
           a.hooks.run("before-highlightall", r),
             (r.elements = Array.prototype.slice.apply(
-              r.container.querySelectorAll(r.selector)
+              r.container.querySelectorAll(r.selector),
             )),
             a.hooks.run("before-all-elements-highlight", r);
           for (var i, l = 0; (i = r.elements[l++]); )
@@ -195,7 +195,7 @@ var _self =
                     language: s.language,
                     code: s.code,
                     immediateClose: !0,
-                  })
+                  }),
                 );
             } else u(a.highlight(s.code, s.grammar, s.language));
           else u(a.util.encode(s.code));
@@ -204,7 +204,7 @@ var _self =
           var r = { code: e, grammar: n, language: t };
           if ((a.hooks.run("before-tokenize", r), !r.grammar))
             throw new Error(
-              'The language "' + r.language + '" has no grammar.'
+              'The language "' + r.language + '" has no grammar.',
             );
           return (
             (r.tokens = a.tokenize(r.code, r.grammar)),
@@ -400,7 +400,7 @@ var _self =
                 e.postMessage(a.highlight(i, a.languages[r], r)),
                   l && e.close();
               },
-              !1
+              !1,
             ),
           a)
         : a;
@@ -418,8 +418,8 @@ var _self =
       "loading" === h || ("interactive" === h && g && g.defer)
         ? document.addEventListener("DOMContentLoaded", f)
         : window.requestAnimationFrame
-        ? window.requestAnimationFrame(f)
-        : window.setTimeout(f, 16);
+          ? window.requestAnimationFrame(f)
+          : window.setTimeout(f, 16);
     }
     return a;
   })(_self);
