@@ -962,6 +962,13 @@
                         <strong>Covers</strong> (front/back) and
                         <strong>Double Stapling</strong>.
                       </li>
+                      <li>
+                        <strong>Google Forms Integration:</strong> Added
+                        <code>emailsender.js</code>, a Google Apps Script that
+                        triggers on form submission to format and send orders to
+                        the system. This standardized the input for the Email
+                        Printing feature.
+                      </li>
                     </ul>
                   </li>
                   <li>
@@ -1011,6 +1018,137 @@
                         <strong>Nov 2020:</strong>
                         <strong>GhostScript Dependency Removal</strong>. Moved
                         to a standalone executable format for easier deployment.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>Experimental AI/ML Research (2020)</h5>
+                    <p>
+                      Although not deployed to production, there was significant
+                      research into using AI for document processing.
+                    </p>
+                    <ul>
+                      <li>
+                        <strong>Jan 2020:</strong> Initial research into
+                        <strong>OCR (Optical Character Recognition)</strong>
+                        solutions.
+                      </li>
+                      <li>
+                        <strong>Mar 2020:</strong> Investigation into
+                        <strong>Tesseract OCR</strong> with Python, likely for
+                        reading text from scanned documents.
+                      </li>
+                      <li>
+                        <strong>Nov 2020:</strong> A major research spike into
+                        <strong>Machine Learning</strong> and
+                        <strong>Computer Vision</strong> for document
+                        orientation and classification:
+                        <ul>
+                          <li>
+                            <strong>Frameworks:</strong> Extensive searches for
+                            <strong>Keras</strong> and
+                            <strong>TensorFlow</strong>, focusing on model
+                            training (epochs, batch sizes, input shapes).
+                          </li>
+                          <li>
+                            <strong>Image Processing:</strong> Research into
+                            handling image rotation ("Photo Rotated 90 deg") and
+                            using pre-trained models like
+                            <strong>InceptionV3</strong> and
+                            <strong>VGG16</strong>.
+                          </li>
+                          <li>
+                            <strong>Prototypes:</strong> Development of
+                            <code>Orientation_Modeler</code> and
+                            <code>Orientation_Tester</code> notebooks using
+                            Keras/TensorFlow to detect document orientation
+                            (Up/Down).
+                          </li>
+                          <li>
+                            <strong>Integration Attempt:</strong>
+                            <code>booklet_orientation_integration.py</code>
+                            (v20201130) shows an attempt to integrate this logic
+                            into the booklet printing workflow to automatically
+                            correct page orientation.
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>Experimental & Deprecated Features</h5>
+                    <ul>
+                      <li>
+                        <strong>Web Interface (PHP)</strong>
+                        <p>
+                          A web-based dashboard was developed to manage and
+                          print orders.
+                        </p>
+                        <ul>
+                          <li>
+                            <strong>Technology:</strong> PHP frontend
+                            interacting with the Python backend via
+                            <code>shell_exec</code> (calling
+                            <code>webPrint.exe</code>).
+                          </li>
+                          <li>
+                            <strong>Features:</strong>
+                            <ul>
+                              <li>
+                                <strong>Order Lookup:</strong> View file
+                                information and open files for specific order
+                                numbers (<code>index.php</code>).
+                              </li>
+                              <li>
+                                <strong>Web Printing:</strong> Triggering print
+                                jobs directly from the web interface
+                                (<code>webPrint.php</code>).
+                              </li>
+                              <li>
+                                <strong>Status Tracking:</strong> Pages for
+                                tracking order status (<code>status.html</code>,
+                                <code>shipping.html</code>).
+                              </li>
+                              <li>
+                                <strong>Dashboard:</strong> Utilized
+                                <strong>DataTables</strong> and
+                                <strong>Chart.js</strong> (researched July 2019)
+                                to visualize order volume and status ("Left to
+                                Print", "Printing").
+                              </li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <strong>Order Shipping MVP (April 2020)</strong>
+                        <p>
+                          A specific module for handling order shipping was
+                          developed but remained in the testing branch.
+                        </p>
+                        <ul>
+                          <li>
+                            <strong>Features:</strong>
+                            <ul>
+                              <li>
+                                <strong>Validation:</strong> Logic to validate
+                                shipping addresses and zip codes ("zip code
+                                formating fix").
+                              </li>
+                              <li>
+                                <strong>CSV Export:</strong> Functionality to
+                                process shipments and likely export data for
+                                carrier integration (<code>shipping.js</code>).
+                              </li>
+                              <li>
+                                <strong>Database Integration:</strong> Fetched
+                                shipping data from a dedicated
+                                <code>deliver</code> table
+                                (<code>shipping.php</code>).
+                              </li>
+                            </ul>
+                          </li>
+                        </ul>
                       </li>
                     </ul>
                   </li>
