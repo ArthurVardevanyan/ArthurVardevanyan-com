@@ -553,308 +553,498 @@
                 <h4 class="widget-title">Timeline / Process</h4>
                 <ul class="timeline">
                   <li>
-                    <h5>Initial Research</h5>
+                    <h5>Phase 1: Research & Discovery (2017 – March 2019)</h5>
                     <p>
-                      My first plan was to use pre-existing software to automate
-                      my workflow Acrobat Pro and
-                      <a href="https://www.print-conductor.com/"
-                        >Print Conductor</a
-                      >
-                      were tools I was able to find, and while they do provide a
-                      level of automation, I was looking for more.
+                      Before any code was written, there was a significant
+                      period of research into professional printing hardware,
+                      software workflows, and automation feasibility.
                     </p>
-                  </li>
-                  <li>
-                    <h5>Python</h5>
-                    <p>
-                      After doing some research with different languages, their
-                      available libraries, & which languages I was most
-                      comfortable in. I settled on using
-                      <a href="https://www.python.org/">Python</a> as the
-                      language for my program/script.
-                    </p>
-                    <p>Im also using these libraries:</p>
                     <ul>
-                      <li>PdfFileReader from PyPDF2 for page counts</li>
-                      <li>glob for getting the list of files & folders</li>
-                    </ul>
-                  </li>
-                  <li>
-                    <h5>Gmail API</h5>
-                    <p>
-                      All of our jobs come to us via Email to a dedicated Gmail
-                      account. The Python Script, using the
-                      <a
-                        href="https://developers.google.com/gmil/api/quickstart/python"
-                        >Gmail API</a
-                      >
-                      looks through the Unread Emails (under normal use case
-                      their is no human interaction with the email account) &
-                      downloads the Subject & Contents into a text file. I found
-                      a pre-made script
-                      <a
-                        href="https://gist.github.com/robulouski/7442321#file-gmail_imap_dump_eml-py"
-                        >(Robulouski's "gmail_imap_dump_eml.py")</a
-                      >
-                      that shows the Gmail API in action, used that as a
-                      starting point & modified it to my needs.
-                    </p>
-                  </li>
-                  <li>
-                    <h5>Google Drive API</h5>
-                    <p>
-                      The Emails are formatted in an html form, (Google Forms).
-                      After the contents of the Email are received, the Script
-                      parses through the information, pulling out the Google
-                      Drive Links, their Google Drive ID's and cleaning it up
-                      for the
-                      <a
-                        href="https://developers.google.com/drive/api/v3/quickstart/python"
-                        >Google Drive API</a
-                      >. This
-                      <a
-                        href="https://stackoverflow.com/questions/52211886/downloading-file-from-google-drive-using-api-nameerror-name-service-is-not-d"
-                        >StackOverFlow Response</a
-                      >
-                      helped me understand the Drive API & adapt it to my needs.
-                    </p>
-                  </li>
-                  <li>
-                    <h5>Job Organization</h5>
-                    <p>
-                      All of the Jobs are sorted into folders in the format
-                      Order Number + Subject Line. The Order Number is
-                      referenced from within the body of the email, and the
-                      Subject Line takes the first 45 valid characters (due to
-                      windows file path limitations).
-                    </p>
-                    <p>All the folders contain:</p>
-                    <ul>
-                      <li>The Email in a text file</li>
-                      <li>A JSON parameter file (Parsed from Email)</li>
-                      <li>All the PDF's for the job</li>
                       <li>
-                        A Folder with all the pdfs converted to Postscript.
+                        <strong>Feb 2017:</strong> Early research into
+                        <strong>Xerox</strong> printer supplies and carbonless
+                        paper.
+                      </li>
+                      <li>
+                        <strong>Oct 2017:</strong> Investigation of
+                        <strong>Xerox FreeFlow MakeReady</strong> workflow
+                        software.
+                      </li>
+                      <li>
+                        <strong>Dec 2017:</strong> Research into
+                        <strong>Xerox Nuvera</strong> production printers.
+                      </li>
+                      <li>
+                        <strong>Aug 2018:</strong> Deep dive into
+                        <strong>EFI Fiery Command WorkStation</strong>, a key
+                        component for managing professional print jobs.
+                        <p>
+                          Googling how to send files to the printers via command
+                          line, ideally natively. In Windows/Linux, using the
+                          LPR/LP command was the way to go.
+                        </p>
+                      </li>
+                      <li>
+                        <strong>Dec 2018:</strong>
+                        <ul>
+                          <li>
+                            <strong>Batch Printing Software:</strong> Evaluated
+                            <strong>Print Conductor</strong> as a potential
+                            off-the-shelf solution for batch printing multiple
+                            PDFs.
+                            <p>
+                              My first plan was to use pre-existing software to
+                              automate my workflow Acrobat Pro and
+                              <a href="https://www.print-conductor.com/"
+                                >Print Conductor</a
+                              >
+                              were tools I was able to find, and while they do
+                              provide a level of automation, I was looking for
+                              more.
+                            </p>
+                          </li>
+                          <li>
+                            <strong>Xerox Ecosystem:</strong> Extensive research
+                            into
+                            <strong>Xerox FreeFlow Print Server</strong> and
+                            <strong>Remote Print Server</strong>
+                            installation and configuration.
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <strong>Feb 2019:</strong>
+                        <ul>
+                          <li>
+                            <strong>Large Format Printing:</strong> Detailed
+                            investigation of
+                            <strong>HP DesignJet Z5600</strong> PostScript
+                            printers, including manuals, parts, and ink cost
+                            estimation.
+                          </li>
+                          <li>
+                            <strong>Database:</strong> Early research into
+                            <strong>MySQL</strong> table creation, hinting at
+                            data management requirements.
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <strong>Mar 2019:</strong>
+                        <ul>
+                          <li>
+                            <strong>Fleet Management:</strong> Research into
+                            <strong>Xerox CentreWare Web</strong> for managing
+                            printer fleets.
+                          </li>
+                          <li>
+                            <strong>Initial Automation Attempts:</strong>
+                            Searches for <strong>PHP shell_exec</strong> and
+                            execution handling suggest an initial attempt to
+                            build the automation logic using PHP before settling
+                            on Python.
+                            <p>
+                              I started developing a website to send the printer
+                              commands, it was running on linux, and it worked,
+                              however the commands available were limited, and
+                              all other required software for that box were
+                              running Windows. Also ran into other network
+                              issues outside my control, which defeated the
+                              purpose of having it being web based. The logic
+                              was taken and converted to python, and then
+                              further expanded upon.
+                            </p>
+                          </li>
+                          <li>
+                            <strong>PostScript & GhostScript:</strong> Continued
+                            research into <strong>PostScript</strong> handling,
+                            which would become the core of the printing engine.
+                            <p>
+                              Initially I went through the Printer and
+                              Postscript documentations to find out what
+                              commands needed to be added to files to send to
+                              the printer. Wether it be for PDF or PS, I
+                              eventually ended up converting everything to PS
+                              using GhostScript. After talking to one of our
+                              support staff he recommended Print to File, and
+                              after researching it, that seemed to be the best
+                              method to see what file the printer driver
+                              generates for the printer. So I did that for all
+                              the possible configs we needed to figure out what
+                              commands and values accomplished what. Some values
+                              seemed to have arbitrary values while others had
+                              patterns to save on how many I had to do. The
+                              commands get modified and inserted the front of
+                              each file before being send to the printer.
+                            </p>
+                          </li>
+                        </ul>
                       </li>
                     </ul>
-                    <p>
-                      In addition, as needed their is a merged file of all the
-                      files if the job needs it. During the printing process, a
-                      Banner Sheet file is created, and another folder is
-                      created with print ready postscript files,
-                    </p>
-                    <p>
-                      In the root, there is also a folder with the default PJL
-                      (Printer Job Language) parameters for our
-                      <a
-                        href="https://www.xerox.com/en-us/digital-printing/digital-presses/xerox-d95-d110-d125"
-                        >Xerox D110</a
-                      >. These get added to all the postscript files & the
-                      parameters are modified based on the job specifications.
-                    </p>
-                  </li>
-
-                  <li>
-                    <h5>Error Checking</h5>
-                    <p>
-                      Due to human error, Their is error checking built in for
-                      the order requests and for input into the script.
-                    </p>
-                    <br />Depending on the mistake, the script will either:
-                    <ul>
-                      <li>Override & Run</li>
-                      <li>Wait for Input</li>
-                      <li>Consider the Order Not Valid & Not Run It</li>
-                      <li>Crash</li>
-                    </ul>
-                  </li>
-
-                  <li>
-                    <h5>Command Line Based Printing Research</h5>
-                    <p>
-                      Googling how to send files to the printers via command
-                      line, ideally natively. In Windows/Linux, using the LPR/LP
-                      command was the way to go.
-                    </p>
-                  </li>
-                  <li>
-                    <h5>JSON</h5>
-                    <p>
-                      Started using JSON to store the Job Specifications to make
-                      it easier to quickly access the specifications either
-                      later in the script or from the desktop.
-                    </p>
                   </li>
                   <li>
                     <h5>
-                      Started Development & Scratched Web Based Linux Printing
-                      Solution
+                      Phase 2: Inception & Core Development (April 2019 – June
+                      2019)
                     </h5>
                     <p>
-                      I started developing a website to send the printer
-                      commands, it was running on linux, and it worked, however
-                      the commands available were limited, and all other
-                      required software for that box were running Windows. Also
-                      ran into other network issues outside my control, which
-                      defeated the purpose of having it being web based. The
-                      logic was taken and converted to python, and then further
-                      expanded upon.
+                      The code repository was initialized, and the fundamental
+                      features were built rapidly.
                     </p>
+                    <ul>
+                      <li>
+                        <strong>Apr 1, 2019:</strong>
+                        <strong>Initial Commit</strong>. The project officially
+                        starts in git.
+                        <p>
+                          After doing some research with different languages,
+                          their available libraries, & which languages I was
+                          most comfortable in. I settled on using
+                          <a href="https://www.python.org/">Python</a> as the
+                          language for my program/script.
+                        </p>
+                        <p>Im also using these libraries:</p>
+                        <ul>
+                          <li>PdfFileReader from PyPDF2 for page counts</li>
+                          <li>glob for getting the list of files & folders</li>
+                        </ul>
+                      </li>
+                      <li>
+                        <strong>Apr 2019:</strong> Implementation of JSON data
+                        handling and basic styling.
+                        <p>
+                          Started using JSON to store the Job Specifications to
+                          make it easier to quickly access the specifications
+                          either later in the script or from the desktop.
+                        </p>
+                      </li>
+                      <li>
+                        <strong>May 2019:</strong>
+                        <ul>
+                          <li>
+                            <strong>PostScript Integration:</strong> Added
+                            ability to generate and print PostScript files
+                            directly.
+                            <p>
+                              <a href="https://www.ghostscript.com/index.html"
+                                >GhostScript</a
+                              >
+                              is used to convert the pdf files into postscript
+                              files so the printer specific commands can be
+                              injected before sending them to the printer.
+                            </p>
+                            <p>
+                              All of the Jobs are sorted into folders in the
+                              format Order Number + Subject Line. The Order
+                              Number is referenced from within the body of the
+                              email, and the Subject Line takes the first 45
+                              valid characters (due to windows file path
+                              limitations).
+                            </p>
+                            <p>All the folders contain:</p>
+                            <ul>
+                              <li>The Email in a text file</li>
+                              <li>A JSON parameter file (Parsed from Email)</li>
+                              <li>All the PDF's for the job</li>
+                              <li>
+                                A Folder with all the pdfs converted to
+                                Postscript.
+                              </li>
+                            </ul>
+                            <p>
+                              In addition, as needed their is a merged file of
+                              all the files if the job needs it. During the
+                              printing process, a Banner Sheet file is created,
+                              and another folder is created with print ready
+                              postscript files,
+                            </p>
+                            <p>
+                              In the root, there is also a folder with the
+                              default PJL (Printer Job Language) parameters for
+                              our
+                              <a
+                                href="https://www.xerox.com/en-us/digital-printing/digital-presses/xerox-d95-d110-d125"
+                                >Xerox D110</a
+                              >. These get added to all the postscript files &
+                              the parameters are modified based on the job
+                              specifications.
+                            </p>
+                          </li>
+                          <li>
+                            <strong>AutoPrint:</strong> Automated printing
+                            features introduced.
+                            <p>
+                              <a
+                                href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/lpr"
+                                >Windows LPR</a
+                              >
+                              Command Line Printing is what sends the postscript
+                              file to the desired Printer.
+                            </p>
+                            <p>
+                              <strong>AutoRun Support:</strong> Run a range of
+                              order numbers in bulk, or at the time of being
+                              received and downloaded. Compatible jobs will auto
+                              run, for the incompatible ones, the tickets will
+                              print to a different tray.
+                            </p>
+                          </li>
+                          <li>
+                            <strong>Banner Sheets:</strong> Custom banner sheet
+                            generation.
+                            <p>
+                              To make separating jobs easier, a stripped version
+                              of the email is printed with the file names, &
+                              page counts on a colored sheet of paper. The file
+                              is generated from scratch using postscript. This
+                              is also in addition to the banner sheet that
+                              prints in front of each file that the printer auto
+                              generates.
+                            </p>
+                          </li>
+                          <li>
+                            <strong>Load Balancing:</strong> Logic to distribute
+                            jobs across printers.
+                            <p>
+                              As the Script sends jobs to the printers it keeps
+                              track of how many impressions it sends to each one
+                              & sends the next job to the printer with the least
+                              amount of impressions queued up to it. <br />The
+                              script reads how many jobs are currently running
+                              on the printer and sends more when space frees up.
+                              <a
+                                href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/lpq"
+                                >(LPQ Command)</a
+                              ><br />
+                              <strike
+                                >Also due to each Printer only supporting 40
+                                jobs at a time, the Script will pause after
+                                sending 40 jobs to wait for a manual check to
+                                make sure it can send 40 more.(40 is chosen &
+                                not 80 just in case one job ends up being 40 or
+                                greater file/job ids. The time it takes to send
+                                a job is usually not instant either, their is
+                                some processing time.)</strike
+                              >
+                            </p>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <strong>June 2019:</strong> Added support for
+                        <strong>colored paper</strong>, output counting, and
+                        significant code optimization.
+                        <p>
+                          The script knows the page count of all the files, that
+                          information is stored in the JSON file, & is used on
+                          the printed banner sheet for billing purposes & for
+                          load balancing.
+                        </p>
+                      </li>
+                    </ul>
                   </li>
                   <li>
-                    <h5>Postscript Injection & PJL Commands</h5>
+                    <h5>Phase 3: Feature Expansion (July 2019 – Dec 2019)</h5>
                     <p>
-                      Initially I went through the Printer and Postscript
-                      documentations to find out what commands needed to be
-                      added to files to send to the printer. Wether it be for
-                      PDF or PS, I eventually ended up converting everything to
-                      PS using GhostScript. After talking to one of our support
-                      staff he recommended Print to File, and after researching
-                      it, that seemed to be the best method to see what file the
-                      printer driver generates for the printer. So I did that
-                      for all the possible configs we needed to figure out what
-                      commands and values accomplished what. Some values seemed
-                      to have arbitrary values while others had patterns to save
-                      on how many I had to do. The commands get modified and
-                      inserted the front of each file before being send to the
-                      printer.
+                      The project grew from a printing script into a
+                      comprehensive system handling emails, invoicing, and
+                      complex print jobs.
                     </p>
+                    <ul>
+                      <li>
+                        <strong>Aug 2019:</strong>
+                        <ul>
+                          <li>
+                            <strong>Email Printing:</strong> Automated printing
+                            from email sources.
+                            <p>
+                              Added the Ability to print out a set of
+                              Emails/Orders Out, while also duplicating onto
+                              another colored sheet, and displaying page counts.
+                              Previously Emails were printing manually, copied
+                              and hand collated. Page counts were also written
+                              on manually previously.
+                            </p>
+                            <p>
+                              All of our jobs come to us via Email to a
+                              dedicated Gmail account. The Python Script, using
+                              the
+                              <a
+                                href="https://developers.google.com/gmil/api/quickstart/python"
+                                >Gmail API</a
+                              >
+                              looks through the Unread Emails (under normal use
+                              case their is no human interaction with the email
+                              account) & downloads the Subject & Contents into a
+                              text file. I found a pre-made script
+                              <a
+                                href="https://gist.github.com/robulouski/7442321#file-gmail_imap_dump_eml-py"
+                                >(Robulouski's "gmail_imap_dump_eml.py")</a
+                              >
+                              that shows the Gmail API in action, used that as a
+                              starting point & modified it to my needs.
+                            </p>
+                            <p>
+                              The Emails are formatted in an html form, (Google
+                              Forms). After the contents of the Email are
+                              received, the Script parses through the
+                              information, pulling out the Google Drive Links,
+                              their Google Drive ID's and cleaning it up for the
+                              <a
+                                href="https://developers.google.com/drive/api/v3/quickstart/python"
+                                >Google Drive API</a
+                              >. This
+                              <a
+                                href="https://stackoverflow.com/questions/52211886/downloading-file-from-google-drive-using-api-nameerror-name-service-is-not-d"
+                                >StackOverFlow Response</a
+                              >
+                              helped me understand the Drive API & adapt it to
+                              my needs.
+                            </p>
+                          </li>
+                          <li>
+                            <strong>Color Support:</strong> Added logic to
+                            handle color vs. B&W jobs.
+                            <p>
+                              Added Color to emphasis certain aspects of the
+                              Python Script.
+                            </p>
+                          </li>
+                          <li>
+                            <strong>Duplicate Handling:</strong> Logic to detect
+                            and handle duplicate orders.
+                          </li>
+                          <li>
+                            <strong>Credential Handling:</strong> Storing
+                            Credential's in local folder.
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <strong>Sep 2019:</strong>
+                        <strong>Printer Status</strong> monitoring and "Special
+                        Instructions" (SPI) handling.
+                        <p>
+                          Due to human error, Their is error checking built in
+                          for the order requests and for input into the script.
+                        </p>
+                        <br />Depending on the mistake, the script will either:
+                        <ul>
+                          <li>Override & Run</li>
+                          <li>Wait for Input</li>
+                          <li>Consider the Order Not Valid & Not Run It</li>
+                          <li>Crash</li>
+                        </ul>
+                        <p>
+                          <strong>Testing:</strong> Started automating the
+                          testing, first with Special Instruction Processing.
+                        </p>
+                      </li>
+                      <li>
+                        <strong>Nov 2019:</strong>
+                        <ul>
+                          <li>
+                            <strong>Booklet Printing:</strong> Support for
+                            booklet formatting and proofing.
+                          </li>
+                          <li>
+                            <strong>Invoicing & Database:</strong> Initial
+                            database connection and invoice generation.
+                          </li>
+                          <li>
+                            <strong>Web Interface:</strong> Early work on a
+                            web-based job manager.
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <strong>Dec 2019:</strong> Support for
+                        <strong>Covers</strong> (front/back) and
+                        <strong>Double Stapling</strong>.
+                      </li>
+                    </ul>
                   </li>
                   <li>
-                    <h5>Windows Line Printer Daemon</h5>
+                    <h5>
+                      Phase 4: Refactoring & Maturity (Jan 2020 – Jan 2021)
+                    </h5>
                     <p>
-                      <a
-                        href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/lpr"
-                        >Windows LPR</a
-                      >
-                      Command Line Printing is what sends the postscript file to
-                      the desired Printer.
+                      The codebase was professionalized with better
+                      architecture, logging, and deployment tools.
                     </p>
+                    <ul>
+                      <li>
+                        <strong>Jan 2020:</strong>
+                        <strong>OOP Conversion</strong>. A major refactor moving
+                        the codebase to Object-Oriented Programming.
+                        <p>
+                          I went through & fixed variable & function names to
+                          comply with the PEP8 Standard Naming Conventions
+                        </p>
+                      </li>
+                      <li>
+                        <strong>Jan 2020:</strong>
+                        <strong>Multi-Up Printing</strong>. Added support for
+                        printing multiple pages per sheet (2up).
+                      </li>
+                      <li>
+                        <strong>Feb 2020:</strong> Web Order Status Tracker
+                        implemented.
+                      </li>
+                      <li>
+                        <strong>Mar 2020:</strong> Threaded Printer Status for
+                        better performance.
+                        <p>
+                          The script was setup to have threading & allow it to
+                          start processing as orders were being entered to speed
+                          up the pre-flighting time. However it was not very
+                          intuitive and it kept getting closed out as it was
+                          running in the background. The time saved was
+                          insignificant to the time already saved by the script.
+                        </p>
+                      </li>
+                      <li>
+                        <strong>July 2020:</strong> Added
+                        <strong>Docstrings</strong> and improved documentation.
+                      </li>
+                      <li>
+                        <strong>Nov 2020:</strong>
+                        <strong>GhostScript Dependency Removal</strong>. Moved
+                        to a standalone executable format for easier deployment.
+                      </li>
+                    </ul>
                   </li>
                   <li>
-                    <h5>GhostScript</h5>
-                    <p>
-                      <a href="https://www.ghostscript.com/index.html"
-                        >GhostScript</a
-                      >
-                      is used to convert the pdf files into postscript files so
-                      the printer specific commands can be injected before
-                      sending them to the printer.
-                    </p>
-                  </li>
-
-                  <li>
-                    <h5>Python Logic</h5>
-                    <p>
-                      After figuring out how to to do each component, the logic
-                      was built to combine everything together or add the new
-                      features.
-                    </p>
-                  </li>
-                  <li>
-                    <h5>Page & Job Counters</h5>
-                    <p>
-                      The script knows the page count of all the files, that
-                      information is stored in the JSON file, & is used on the
-                      printed banner sheet for billing purposes & for load
-                      balancing.
-                    </p>
-                  </li>
-                  <li>
-                    <h5>Job Banner Sheet</h5>
-                    <p>
-                      To make separating jobs easier, a stripped version of the
-                      email is printed with the file names, & page counts on a
-                      colored sheet of paper. The file is generated from scratch
-                      using postscript. This is also in addition to the banner
-                      sheet that prints in front of each file that the printer
-                      auto generates.
-                    </p>
-                  </li>
-                  <li>
-                    <h5>Multi Threading /w Background Processing (Scrapped)</h5>
-                    <p>
-                      The script was setup to have threading & allow it to start
-                      processing as orders were being entered to speed up the
-                      pre-flighting time. However it was not very intuitive and
-                      it kept getting closed out as it was running in the
-                      background. The time saved was insignificant to the time
-                      already saved by the script.
-                    </p>
-                  </li>
-                  <li>
-                    <h5>PEP8 Naming Conventions</h5>
-                    <p>
-                      I went through & fixed variable & function names to comply
-                      with the PEP8 Standard Naming Conventions
-                    </p>
-                  </li>
-
-                  <li>
-                    <h5>Printer Load Balancing</h5>
-                    <p>
-                      As the Script sends jobs to the printers it keeps track of
-                      how many impressions it sends to each one & sends the next
-                      job to the printer with the least amount of impressions
-                      queued up to it. <br />The script reads how many jobs are
-                      currently running on the printer and sends more when space
-                      frees up.
-                      <a
-                        href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/lpq"
-                        >(LPQ Command)</a
-                      ><br />
-                      <strike
-                        >Also due to each Printer only supporting 40 jobs at a
-                        time, the Script will pause after sending 40 jobs to
-                        wait for a manual check to make sure it can send 40
-                        more.(40 is chosen & not 80 just in case one job ends up
-                        being 40 or greater file/job ids. The time it takes to
-                        send a job is usually not instant either, their is some
-                        processing time.)</strike
-                      >
-                    </p>
-                  </li>
-
-                  <li>
-                    <h5>Email Printing</h5>
-                    <p>
-                      Added the Ability to print out a set of Emails/Orders Out,
-                      while also duplicating onto another colored sheet, and
-                      displaying page counts. Previously Emails were printing
-                      manually, copied and hand collated. Page counts were also
-                      written on manually previously.
-                    </p>
-                  </li>
-                  <li>
-                    <h5>Color</h5>
-                    <p>
-                      Added Color to emphasis certain aspects of the Python
-                      Script.
-                    </p>
-                  </li>
-                  <li>
-                    <h5>Credential Handling</h5>
-                    <p>Storing Credential's in local folder</p>
-                  </li>
-                  <li>
-                    <h5>AutoRun</h5>
-                    <p>
-                      AutoRun Support, run a range of order numbers in bulk, or
-                      at the time of being received and downloaded. Compatible
-                      jobs will auo run, for the incompatible ones, the tickets
-                      will print to a different tray.
-                    </p>
-                  </li>
-                  <li>
-                    <h5>Testing</h5>
-                    <p>
-                      Started automating the testing, first with Special
-                      Instruction Processing.
-                    </p>
-                  </li>
-                  <li>
-                    <h5>Testing & Bug Fixes</h5>
-                    <p>Bugs pop up over time while testing different inputs.</p>
+                    <h5>Milestones</h5>
+                    <ul>
+                      <li>
+                        <strong>Proof of Concept (Late 2018):</strong>
+                        Validating that Python + PostScript could control
+                        Xerox/EFI hardware.
+                      </li>
+                      <li>
+                        <strong>v1.0 (April 2019):</strong> First working
+                        version with basic printing.
+                      </li>
+                      <li>
+                        <strong>Automation Suite (Summer 2019):</strong> The
+                        system became fully automated with Email Printing and
+                        AutoPrint.
+                      </li>
+                      <li>
+                        <strong>Enterprise Features (Late 2019):</strong>
+                        Database, Invoicing, and Web Interface transformed it
+                        into a business tool.
+                      </li>
+                      <li>
+                        <strong>2.0 Architecture (Jan 2020):</strong> Complete
+                        rewrite to OOP for maintainability.
+                      </li>
+                      <li>
+                        <strong>Standalone App (Nov 2020):</strong> Removed
+                        external dependencies to create a portable application.
+                      </li>
+                    </ul>
                   </li>
                   <li>
                     <h5>TODO</h5>
