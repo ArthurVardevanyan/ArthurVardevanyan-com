@@ -175,6 +175,7 @@ spec:
             workspace: git_auth_secret
 
       - name: test-build
+        retries: 1
         runAfter:
           - git-clone
           - create-deployment
@@ -277,6 +278,7 @@ spec:
                 make build-artifact-registry
 
       - name: clair-action
+        retries: 1
         runAfter:
           - test-build
         taskRef:
