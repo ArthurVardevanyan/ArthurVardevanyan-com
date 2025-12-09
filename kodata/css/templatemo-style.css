@@ -599,8 +599,24 @@ h3.profile-title {
 
 /*------ banner ------ */
 
+@media screen and (max-width: 992px) {
+  .banner-bg {
+    padding: 150px !important;
+    background-image: url("../img/Background-mobile.jpg") !important;
+  }
+  .banner-cpd {
+    padding: 100px 25px !important;
+  }
+  .banner-homeLab {
+    padding: 100px 25px !important;
+  }
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
 .banner-bg {
-  padding: 150px 80px;
+  padding: 175px 450px 175px 80px;
   position: relative;
   background: url("../img/Background.jpg");
   background-repeat: no-repeat;
@@ -610,7 +626,7 @@ h3.profile-title {
 }
 
 .banner-cpd {
-  padding: 150px 80px;
+  padding: 175px 80px;
   position: relative;
   background: url("../img/cpd/python.jpg");
   background-repeat: no-repeat;
@@ -620,7 +636,7 @@ h3.profile-title {
 }
 
 .banner-homeLab {
-  padding: 150px 80px;
+  padding: 175px 80px;
   position: relative;
   background: url("../img/homelab/HomeLab_Banner.png");
   background-repeat: no-repeat;
