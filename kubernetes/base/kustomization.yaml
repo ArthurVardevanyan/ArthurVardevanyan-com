@@ -8,3 +8,4 @@ resources:
   - ./hpa.yaml
   - ./pdb.yaml
   - ./network-policy.yaml
+  - ./rbac.yaml
