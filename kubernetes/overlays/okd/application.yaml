@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: arthurvardevanyan-com
+  namespace: arthurvardevanyan-com
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    notifications.argoproj.io/subscribe.on-sync-succeeded.gh-tenant: ""
+    notifications.argoproj.io/subscribe.on-sync-failed.gh-tenant: ""
+    notifications.argoproj.io/subscribe.on-sync-status-unknown.gh-tenant: ""
+    notifications.argoproj.io/subscribe.on-health-degraded.gh-tenant: ""
+spec:
+  destination:
+    namespace: arthurvardevanyan-com
+    server: https://kubernetes.default.svc
+  project: arthurvardevanyan-com
+  source:
+    path: kubernetes/overlays/okd
+    repoURL: https://git.arthurvardevanyan.com/ArthurVardevanyan/ArthurVardevanyan-com.git
+    targetRevision: HEAD
+  syncPolicy:
+    syncOptions:
+      - ServerSideApply=true
+      - RespectIgnoreDifferences=true
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/template/spec/containers/0/image
