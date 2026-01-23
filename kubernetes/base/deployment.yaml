@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arthurvardevanyan
+  namespace: arthurvardevanyan-com
+spec:
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: arthurvardevanyan
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: arthurvardevanyan
+      annotations:
+        enable.version-checker.io/arthurvardevanyan: "false"
+    spec:
+      hostname: arthurvardevanyan
+      restartPolicy: Always
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+        runAsNonRoot: true
+      containers:
+        - image: registry.arthurvardevanyan.com/apps/arthurvardevanyan@sha256:19eeef4f1ad90ff3377b1bf1647402594147da198bb9a9a5611498259bcf2fc6
+          imagePullPolicy: IfNotPresent
+          name: arthurvardevanyan
+          securityContext:
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop:
+                - ALL
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SMTP_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: env
+                  key: SMTP_HOST
+            - name: SMTP_FROM
+              valueFrom:
+                secretKeyRef:
+                  name: env
+                  key: SMTP_FROM
+            - name: SMTP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: env
+                  key: SMTP_PASSWORD
+            - name: RECAPTCHA_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: env
+                  key: RECAPTCHA_SECRET_KEY
+          resources:
+            requests:
+              cpu: "25m"
+              memory: "24M"
+              ephemeral-storage: "100Mi"
+            limits:
+              cpu: "100m"
+              memory: "48Mi"
+              ephemeral-storage: "100Mi"
+          startupProbe:
+            httpGet:
+              path: /startupz
+              port: 8080
+            initialDelaySeconds: 0
+            timeoutSeconds: 1
+            periodSeconds: 1
+            failureThreshold: 5
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 0
+            timeoutSeconds: 1
+            periodSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 0
+            timeoutSeconds: 1
+            periodSeconds: 10
+            failureThreshold: 3
