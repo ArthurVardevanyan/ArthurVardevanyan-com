@@ -1,0 +1,65 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: test
+  namespace: arthurvardevanyan-com
+  annotations:
+    externaldns.k8s.io: pihole
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: https-gateway
+      namespace: openshift-ingress
+  hostnames: ["test.arthurvardevanyan.com"]
+  rules:
+    - backendRefs:
+        - group: ""
+          kind: Service
+          name: arthurvardevanyan
+          namespace: arthurvardevanyan-com
+          port: 8080
+          weight: 1
+      matches:
+        - path:
+            type: PathPrefix
+            value: /
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: arthurvardevanyan
+  namespace: arthurvardevanyan-com
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: https-gateway-external
+      namespace: openshift-ingress
+  hostnames:
+    - arthurvardevanyan.com
+    - www.arthurvardevanyan.com
+  rules:
+    - backendRefs:
+        - group: ""
+          kind: Service
+          name: arthurvardevanyan
+          namespace: arthurvardevanyan-com
+          port: 8080
+          weight: 1
+      matches:
+        - path:
+            type: PathPrefix
+            value: /
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            port: 443
+            statusCode: 301
