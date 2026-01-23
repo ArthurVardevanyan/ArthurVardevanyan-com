@@ -1,12 +1,13 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  # - ./namespace.yaml # Admin Scoped, Skipped for Tenant Argo
   - ./configmap.yaml
-  - ./namespace.yaml
   - ./push-secret.yaml
   - ./pvc.yaml
   - ./repo.yaml
   - ./sa.yaml
   - ./network-policy.yaml
-  - ./token-review.yaml
+  # - ./token-review.yaml # Admin Scoped, Skipped for Tenant Argo
   - ./limit-range.yaml
+  - ./application.yaml
