@@ -27,3 +27,17 @@ spec:
       kind: Deployment
       jsonPointers:
         - /spec/template/spec/containers/0/image
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: argocd
+  namespace: arthurvardevanyan
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admin
+subjects:
+  - kind: ServiceAccount
+    name: argocd-apps-argocd-application-controller
+    namespace: argocd-apps
