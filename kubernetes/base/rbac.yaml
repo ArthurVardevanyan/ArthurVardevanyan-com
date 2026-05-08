@@ -138,3 +138,17 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
   name: arthurvardevanyan-admin
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: argocd-admin
+  namespace: arthurvardevanyan-com
+subjects:
+  - kind: ServiceAccount
+    name: argocd-apps-argocd-application-controller
+    namespace: argocd-apps
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: arthurvardevanyan-admin
