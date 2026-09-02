@@ -2,7 +2,11 @@
 <urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.arthurvardevanyan.com/index.html</loc>
+  </url>
+  <url>
     <loc>https://www.arthurvardevanyan.com/cpd_ap.html</loc>
+  </url>
+  <url>
     <loc>https://www.arthurvardevanyan.com/homelab.html</loc>
     <changefreq>monthly</changefreq>
   </url>
