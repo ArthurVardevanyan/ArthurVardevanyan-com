@@ -2,11 +2,11 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "7.43.0"
+      version = "7.46.1"
     }
     vault = {
       source  = "hashicorp/vault"
-      version = "5.10.1"
+      version = "5.11.0"
     }
   }
 }
