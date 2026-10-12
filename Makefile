@@ -10,7 +10,7 @@ EXPIRE ?= 4w
 build-quay:
 		export KO_DOCKER_REPO=registry.arthurvardevanyan.com/apps/arthurvardevanyan && \
     ko build --platform=linux/amd64 --bare --sbom none --image-label quay.expires-after="${EXPIRE}" --tags "${TAG}" && \
-    echo "$$KO_DOCKER_REPO:${TAG}" > "${WORKSPACE_RESULTS_PATH}"
+	printf '%s' "$$KO_DOCKER_REPO:${TAG}" > "${WORKSPACE_RESULTS_PATH}"
 
 .PHONY: build-artifact-registry
 build-artifact-registry:
