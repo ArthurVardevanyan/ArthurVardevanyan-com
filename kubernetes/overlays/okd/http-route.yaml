@@ -2,54 +2,10 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: test
-  namespace: arthurvardevanyan-com
-  annotations:
-    externaldns.k8s.io: pihole
-spec:
-  parentRefs:
-    - group: gateway.networking.k8s.io
-      kind: Gateway
-      name: https-gateway
-      namespace: openshift-ingress
-    - group: gateway.networking.k8s.io
-      kind: ListenerSet
-      name: test
-      namespace: arthurvardevanyan-com
-  hostnames: ["test.arthurvardevanyan.com"]
-  rules:
-    - backendRefs:
-        - group: ""
-          kind: Service
-          name: arthurvardevanyan
-          namespace: arthurvardevanyan-com
-          port: 8080
-          weight: 1
-      matches:
-        - path:
-            type: PathPrefix
-            value: /
-    - filters:
-        - requestRedirect:
-            scheme: https
-            statusCode: 301
-          type: RequestRedirect
-      matches:
-        - path:
-            type: PathPrefix
-            value: /
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
   name: arthurvardevanyan
   namespace: arthurvardevanyan-com
 spec:
   parentRefs:
-    - group: gateway.networking.k8s.io
-      kind: Gateway
-      name: https-gateway-external
-      namespace: openshift-ingress
     - group: gateway.networking.k8s.io
       kind: ListenerSet
       name: arthurvardevanyan-com
