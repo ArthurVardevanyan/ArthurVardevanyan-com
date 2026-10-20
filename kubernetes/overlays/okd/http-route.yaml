@@ -12,6 +12,10 @@ spec:
       kind: Gateway
       name: https-gateway
       namespace: openshift-ingress
+    - group: gateway.networking.k8s.io
+      kind: ListenerSet
+      name: test
+      namespace: arthurvardevanyan-com
   hostnames: ["test.arthurvardevanyan.com"]
   rules:
     - backendRefs:
@@ -46,6 +50,10 @@ spec:
       kind: Gateway
       name: https-gateway-external
       namespace: openshift-ingress
+    - group: gateway.networking.k8s.io
+      kind: ListenerSet
+      name: arthurvardevanyan-com
+      namespace: arthurvardevanyan-com
   hostnames:
     - arthurvardevanyan.com
     - www.arthurvardevanyan.com
