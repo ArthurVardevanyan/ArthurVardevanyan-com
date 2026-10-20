@@ -3,6 +3,7 @@ kind: Namespace
 metadata:
   name: arthurvardevanyan-com
   labels:
+    gateway-tenancy: external
     pod-security.kubernetes.io/enforce: restricted
     pod-security.kubernetes.io/enforce-version: latest
     pod-security.kubernetes.io/warn: restricted
