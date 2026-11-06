@@ -204,46 +204,48 @@
                 <h4 class="widget-title">Overview</h4>
                 <p>
                   In a mature GitOps environment, <em>everything</em> is a pull
-                  request. When you combine human engineers, automated
-                  dependency bots like Renovate, and AI coding agents, PR volume
-                  explodes. The human review queue becomes the bottleneck —
-                  reviewers get "YAML fatigue" looking at hundreds of
-                  plausible-looking manifests a day, and that is precisely when
-                  semantic bugs slip through.
+                  request. With human engineers, Renovate, and AI coding agents
+                  all opening them, PR volume explodes and reviewers get "YAML
+                  fatigue". That is exactly when plausible-looking manifests
+                  slip through, like a Kustomize patch that silently applies to
+                  nothing or a selector that doesn't match its own template. The
+                  old multi-task Tekton pipeline took minutes per run and kept
+                  its logic in Bash that could not be unit-tested (see the
+                  <a href="#timeline">Timeline</a>).
                 </p>
                 <p>
-                  AI raises the ceiling on output, but it also introduces the
-                  "plausibility trap": an LLM writes YAML that looks perfect —
-                  right kind, right fields, perfect indentation — and then it
-                  dies at admission (a Kustomize patch that silently applies to
-                  nothing, a network config that doesn't parse, a selector that
-                  doesn't match its own template). An AI agent is only as
-                  productive as its feedback loop, so CI has to answer in
-                  seconds, deterministically, every single time.
-                </p>
-                <p>
-                  The CI this replaced couldn't keep up. It was a multi-task
-                  Tekton pipeline where every linter spun up its own pod
-                  attached to a shared PVC (minutes of pod-startup and
-                  volume-attach overhead before a single file was read), with
-                  logic buried in Bash scripts that could not be unit-tested.
-                  <a href="#timeline">The Timeline below</a> traces how it got
-                  there and how it was rewritten.
-                </p>
-                <p>
-                  <strong>CI is the universal safety net.</strong>
-                  k8s-gitops-ci is that net: an open-source, org-agnostic single
-                  Go binary. It resolves exactly what a PR changed, lints it,
-                  builds only the Kustomize/Helm overlays the change affects,
-                  runs a registry of Kubernetes compliance checks against the
-                  result, and posts one unified report back on the PR. The same
+                  <strong>CI is the universal safety net.</strong> k8s-gitops-ci
+                  is an open-source, org-agnostic
+                  <strong>single Go binary</strong>. It resolves exactly what a
+                  PR changed, lints it, builds only the affected Kustomize/Helm
+                  overlays, runs Kubernetes compliance checks, and posts
+                  <strong>one unified report</strong> back on the PR. The same
                   command runs on a laptop with no remote and no PR.
                 </p>
+                <h5>Highlights</h5>
+                <ul>
+                  <li>
+                    <strong>Seconds, not minutes:</strong> one process, with no
+                    per-linter pods or shared PVC.
+                  </li>
+                  <li>
+                    <strong>App-aware builds:</strong> only overlays whose
+                    Kustomize graph reaches the change are built.
+                  </li>
+                  <li>
+                    <strong>API-server rules, offline:</strong> the cluster's
+                    own admission validation, ported to Go.
+                  </li>
+                  <li>
+                    <strong>Org-agnostic:</strong> import it as a Go module, no
+                    forks needed.
+                  </li>
+                </ul>
                 <p>
-                  <strong>Upcoming:</strong> presenting &ldquo;Robust CI as a
-                  Safety Net&rdquo; at KubeCon (Salt Lake City) with Jennifer
-                  Weir &mdash; a 30-minute tag-team session pairing GitOps
-                  philosophy with a deep dive into the Go architecture.
+                  <strong>Upcoming:</strong> presenting “Robust CI as a Safety
+                  Net” at KubeCon (Salt Lake City) with Jennifer Weir — a
+                  30-minute tag-team session pairing GitOps philosophy with a
+                  deep dive into the Go architecture.
                 </p>
                 <br />
                 <div class="row">

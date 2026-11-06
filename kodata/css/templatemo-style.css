@@ -375,6 +375,10 @@ h6 {
   padding: 0 35px;
 }
 
+.content-wrapper p {
+  margin-bottom: 10px;
+}
+
 @media screen and (max-width: 992px) {
   .content-wrapper {
     padding: 0 30px;
