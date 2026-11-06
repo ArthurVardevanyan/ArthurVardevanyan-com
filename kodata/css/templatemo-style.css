@@ -655,10 +655,10 @@ h3.profile-title {
   padding: 175px 80px;
   position: relative;
   background-color: #354a5f;
-  background-image: url("../img/k8s/k8s_gitops_ci_banner.svg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  background-image: url("../img/k8s/k8s_gitops_ci_tile.svg");
+  background-repeat: repeat;
+  background-position: top left;
+  background-size: 160px 160px;
   z-index: 2;
 }
 .banner-overlay {
