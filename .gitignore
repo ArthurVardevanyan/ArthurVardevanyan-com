@@ -1,3 +1,4 @@
 terraform/backend.conf
 terraform/.terraform/***
 terraform/.terraform.lock.hcl
+notes/

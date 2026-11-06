@@ -1,3 +1,4 @@
+PORT ?= 8080
 WORKSPACE_RESULTS_PATH ?= /tmp/image
 # https://catalog.redhat.com/software/containers/ubi9-minimal/61832888c0d15aff4912fe0d?image=67625f2743160d79ae9c717e&container-tabs=overview
 # No MultiArch SHA Currently Present
@@ -31,3 +32,10 @@ podman-run: build-quay
 	IMAGE=$$(cat ${WORKSPACE_RESULTS_PATH}); \
 	echo "Running image: $$IMAGE"; \
 	podman run --rm -p 8080:8080 $$IMAGE
+.PHONY: serve
+serve:
+	PORT=$(PORT) go run main.go
+
+.PHONY: clean
+clean:
+	@rm -f webserver
