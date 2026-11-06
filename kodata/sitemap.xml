@@ -10,4 +10,8 @@
     <loc>https://www.arthurvardevanyan.com/homelab.html</loc>
     <changefreq>monthly</changefreq>
   </url>
+  <url>
+    <loc>https://www.arthurvardevanyan.com/k8s_gitops_ci.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
 </urlset>

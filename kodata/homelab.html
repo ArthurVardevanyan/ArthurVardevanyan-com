@@ -85,6 +85,11 @@
               <a href="#top"><i class="fas fa-server"></i>HomeLab</a>
             </li>
             <li>
+              <a href="k8s_gitops_ci.html"
+                ><i class="fas fa-code-branch"></i>k8s-gitops-ci</a
+              >
+            </li>
+            <li>
               <a href="cpd_ap.html"
                 ><i class="fa fa-print"></i>Automated Printing</a
               >
@@ -128,6 +133,11 @@
           </li>
           <li class="active">
             <a href="#top"><i class="fas fa-server"></i>HomeLab</a>
+          </li>
+          <li>
+            <a href="k8s_gitops_ci.html"
+              ><i class="fas fa-code-branch"></i>k8s-gitops-ci</a
+            >
           </li>
           <li>
             <a href="cpd_ap.html"
@@ -893,7 +903,12 @@
                         <b>July 30, 2026</b>: <b>git-clift</b> semantic releaser
                         inception, <b>Service Mesh</b> removed.
                       </li>
-                      <li><b>July 31, 2026</b>: <b>gitops-ci</b> inception.</li>
+                      <li>
+                        <b>July 31, 2026</b>:
+                        <a href="k8s_gitops_ci.html"><b>gitops-ci</b></a>
+                        inception, a single Go binary replacing the multi-task
+                        Tekton CI.
+                      </li>
                       <li>
                         <b>August 11, 2026</b>: <b>Intel Arc B70</b> inception,
                         LLM inference replacing NVIDIA.
@@ -965,6 +980,37 @@
                       <li>
                         <b>November 4, 2026</b>:
                         <b>OpenShift Lightspeed</b> agentic runtime.
+                      </li>
+                      <li>
+                        <b>November 6, 2026</b>:
+                        <b>OpenShift MCP Server</b> deployed via Helm-kustomize,
+                        exposed through Gateway API with <b>Zitadel</b> OIDC
+                        (PKCE).
+                      </li>
+                      <li>
+                        <b>November 9, 2026</b>:
+                        <b>Advanced Cluster Security</b> upgraded to
+                        <b>5.0</b> with the ACS ConsolePlugin; Open WebUI
+                        connected to external MCP servers.
+                      </li>
+                      <li>
+                        <b>November 10, 2026</b>: <b>Kyverno</b> retired —
+                        policies converted to in-tree
+                        <b>MutatingAdmissionPolicy</b>; Perses dashboards served
+                        by the Observability Operator.
+                      </li>
+                      <li>
+                        <b>November 11, 2026</b>: Platform slimmed —
+                        <b>Longhorn</b>, <b>Eclipse Che</b>, <b>UDI</b>, and the
+                        Container Security (Clair) operator retired, leaving
+                        <b>Ceph</b> as the sole storage backend.
+                      </li>
+                      <li>
+                        <b>November 12, 2026</b>: Control-plane &amp; GPU tuning
+                        — etcd <b>controlPlaneHardwareSpeed: Slower</b> for
+                        DRAM-less master SSDs, the
+                        <b>gpu-power-manager</b> DaemonSet for Intel Arc power
+                        limits, and NetObserv/MetalLB reconciliation fixes.
                       </li>
                     </ul>
                   </li>
