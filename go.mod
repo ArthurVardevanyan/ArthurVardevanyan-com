@@ -1,6 +1,6 @@
 module arthurvardevanyan-com
 
-go 1.26.1
+go 1.27.3
 
 require github.com/wneessen/go-mail v0.8.1
 
