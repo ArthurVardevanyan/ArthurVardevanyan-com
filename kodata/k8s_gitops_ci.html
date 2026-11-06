@@ -1,0 +1,1040 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+  <!--<![endif]-->
+
+  <head>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="img/favicon.ico" />
+    <link
+      rel="canonical"
+      href="https://www.arthurvardevanyan.com/k8s_gitops_ci.html"
+    />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>k8s-gitops-ci</title>
+    <meta
+      name="description"
+      content="A generic, org-agnostic GitOps CI engine for Kubernetes manifests, packaged as a single Go binary."
+    />
+    <!--Volton Template	http://www.templatemo.com/tm-441-volton        -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/font-awesome.css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/templatemo-style.css" />
+    <link href="css/prism.css" rel="stylesheet" />
+
+    <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-59427626-2"
+    ></script>
+
+    <script>
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-59427626-2");
+    </script>
+  </head>
+
+  <body>
+    <a href="#" id="scroll" style="display: none"><span></span></a>
+
+    <!--[if lt IE 7]>
+      <p class="browsehappy">
+        You are using an <strong>outdated</strong> browser. Please
+        <a href="http://browsehappy.com/">upgrade your browser</a> to improve
+        your experience.
+      </p>
+    <![endif]-->
+
+    <div class="responsive-header visible-xs visible-sm">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="top-section">
+              <div class="profile-image">
+                <img src="img/k8s/k8s_logo.svg" />
+              </div>
+              <div class="profile-content">
+                <h3 class="profile-title">Arthur Vardevanyan</h3>
+                <p class="profile-description">
+                  k8s-gitops-ci - A GitOps CI Engine in a Single Go Binary
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a href="#" class="toggle-menu"><i class="fa fa-bars"></i></a>
+        <div class="main-navigation responsive-menu">
+          <ul>
+            <li>
+              <a href="index.html"><i class="fa fa-home"></i>Home</a>
+            </li>
+            <li>
+              <a href="homelab.html"><i class="fas fa-server"></i>HomeLab</a>
+            </li>
+            <li class="active">
+              <a href="#top"><i class="fas fa-code-branch"></i>k8s-gitops-ci</a>
+            </li>
+            <li>
+              <a href="cpd_ap.html"
+                ><i class="fa fa-print"></i>Automated Printing</a
+              >
+            </li>
+          </ul>
+          <hr />
+          <br />
+          <ul class="navigation">
+            <li>
+              <a href="#overview"><i class="fa fa-info-circle"></i>Overview</a>
+            </li>
+            <li>
+              <a href="#architecture"
+                ><i class="fa fa-project-diagram"></i>Architecture</a
+              >
+            </li>
+            <li>
+              <a href="#github"><i class="fab fa-github"></i>Github</a>
+            </li>
+            <li>
+              <a href="#timeline"><i class="far fa-clock"></i>Timeline</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- SIDEBAR -->
+    <div class="sidebar-menu hidden-xs hidden-sm">
+      <div class="top-section">
+        <div class="profile-image"><img src="img/k8s/k8s_logo.svg" /></div>
+        <h3 class="profile-title">Arthur Vardevanyan</h3>
+        <p class="profile-description">
+          k8s-gitops-ci - A GitOps CI Engine in a Single Go Binary
+        </p>
+      </div>
+      <!-- top-section -->
+      <div class="main-navigation">
+        <ul>
+          <li>
+            <a href="index.html"><i class="fa fa-home"></i>Home</a>
+          </li>
+          <li>
+            <a href="homelab.html"><i class="fas fa-server"></i>HomeLab</a>
+          </li>
+          <li class="active">
+            <a href="#top"><i class="fas fa-code-branch"></i>k8s-gitops-ci</a>
+          </li>
+          <li>
+            <a href="cpd_ap.html"
+              ><i class="fa fa-print"></i>Automated Printing</a
+            >
+          </li>
+        </ul>
+        <hr />
+        <br />
+        <br />
+        <ul class="navigation">
+          <li>
+            <a href="#overview"><i class="fa fa-info-circle"></i>Overview</a>
+          </li>
+          <li>
+            <a href="#architecture"
+              ><i class="fa fa-project-diagram"></i>Architecture</a
+            >
+          </li>
+          <li>
+            <a href="#github"><i class="fab fa-github"></i>Github</a>
+          </li>
+          <li>
+            <a href="#timeline"><i class="far fa-clock"></i>Timeline</a>
+          </li>
+        </ul>
+      </div>
+      <!-- .main-navigation -->
+      <div class="social-icons">
+        <ul>
+          <!-- <li><a href="#"><i class="fa fa-twitter"></i></a></li> -->
+          <li>
+            <a href="https://www.youtube.com/c/arthurvardevanyan"
+              ><i class="fab fa-youtube"></i
+            ></a>
+          </li>
+          <li>
+            <a href="https://www.linkedin.com/in/arthurvardevanyan/"
+              ><i class="fab fa-linkedin"></i
+            ></a>
+          </li>
+          <li>
+            <a href="https://github.com/ArthurVardevanyan"
+              ><i class="fab fa-github"></i
+            ></a>
+          </li>
+        </ul>
+      </div>
+      <!-- .social-icons -->
+    </div>
+    <!-- .sidebar-menu -->
+    <div class="banner-k8s" id="top">
+      <div class="banner-overlay"></div>
+      <div class="welcome-text">
+        <h2>k8s-gitops-ci</h2>
+        <h5>A GitOps CI Engine in a Single Go Binary</h5>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+      <div class="fluid-container">
+        <div class="content-wrapper">
+          <!-- overview -->
+          <div class="page-section" id="overview">
+            <div class="row">
+              <div class="col-md-12">
+                <h4 class="widget-title">Overview</h4>
+                <p>
+                  In a mature GitOps environment, <em>everything</em> is a pull
+                  request. With human engineers, Renovate, and AI coding agents
+                  all opening them, PR volume explodes and reviewers get "YAML
+                  fatigue". That is exactly when plausible-looking manifests
+                  slip through, like a Kustomize patch that silently applies to
+                  nothing or a selector that doesn't match its own template. The
+                  old multi-task Tekton pipeline took minutes per run and kept
+                  its logic in Bash that could not be unit-tested (see the
+                  <a href="#timeline">Timeline</a>).
+                </p>
+                <p>
+                  <strong>CI is the universal safety net.</strong> k8s-gitops-ci
+                  is an open-source, org-agnostic
+                  <strong>single Go binary</strong>. It resolves exactly what a
+                  PR changed, lints it, builds only the affected Kustomize/Helm
+                  overlays, runs Kubernetes compliance checks, and posts
+                  <strong>one unified report</strong> back on the PR. The same
+                  command runs on a laptop with no remote and no PR.
+                </p>
+                <h5>Highlights</h5>
+                <ul>
+                  <li>
+                    <strong>Seconds, not minutes:</strong> one process, with no
+                    per-linter pods or shared PVC.
+                  </li>
+                  <li>
+                    <strong>App-aware builds:</strong> only overlays whose
+                    Kustomize graph reaches the change are built.
+                  </li>
+                  <li>
+                    <strong>API-server rules, offline:</strong> the cluster's
+                    own admission validation, ported to Go.
+                  </li>
+                  <li>
+                    <strong>Org-agnostic:</strong> import it as a Go module, no
+                    forks needed.
+                  </li>
+                </ul>
+                <p>
+                  <strong>Upcoming:</strong> presenting “Robust CI as a Safety
+                  Net” at KubeCon (Salt Lake City) with Jennifer Weir — a
+                  30-minute tag-team session pairing GitOps philosophy with a
+                  deep dive into the Go architecture.
+                </p>
+                <br />
+                <div class="row">
+                  <div class="col-md-6">
+                    <h5>One Binary, Not a Pile of Pods</h5>
+                    <ul>
+                      <li>
+                        Kustomize builds run through the native Go SDK and Helm
+                        charts render through the native chart loader — no
+                        <code>helm</code> binary, and no
+                        <code>kustomize</code> binary for builds.
+                      </li>
+                      <li>
+                        kubeconform runs as a library with its schemas embedded
+                        and pinned to an upstream commit — no CDN and no network
+                        at run time.
+                      </li>
+                      <li>
+                        The payoff in wall clock: what used to take minutes now
+                        takes seconds.
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col-md-6">
+                    <h5>App-Aware Overlay Detection</h5>
+                    <ul>
+                      <li>
+                        The engine finds the app root you touched and walks each
+                        overlay's actual Kustomize reference graph, building
+                        only the overlays that genuinely reference the changed
+                        piece.
+                      </li>
+                      <li>
+                        <strong>Ghost Patch Detection:</strong> a Kustomize
+                        patch that targets nothing doesn't error — it silently
+                        does nothing. The engine flags the orphans.
+                      </li>
+                      <li>
+                        <strong>Kustomize Fix:</strong> a dry-run of the real
+                        <code>kustomize edit fix</code>, with the exact fix
+                        command in the report to copy and paste.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <h5>Runtime Validation — Beyond the Schemas</h5>
+                    <ul>
+                      <li>
+                        The OpenAPI schemas kubeconform validates against carry
+                        almost no value-level constraints: the schema for
+                        <code>metadata.name</code> is literally "string or
+                        null", so a 400-character name passes.
+                      </li>
+                      <li>
+                        So the Kubernetes API server's own admission validation
+                        is ported into Go, and every rule cites the upstream
+                        function it came from; <code>task ci</code> fails if
+                        upstream changed it.
+                      </li>
+                      <li>
+                        Runtime findings are
+                        <strong>always blocking and never exemptable</strong>:
+                        the cluster itself would reject those manifests.
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col-md-6">
+                    <h5>Security by Default</h5>
+                    <ul>
+                      <li>
+                        <strong
+                          >PR-triggered CI is not a security boundary.</strong
+                        >
+                        On a pull request, <code>test.sh</code> is read from the
+                        trusted target branch, not from the PR; a
+                        <code>/hook-test</code> comment opts a PR in.
+                      </li>
+                      <li>
+                        <strong>Transparent exemptions:</strong> annotations sit
+                        next to the field they excuse and show up in the PR
+                        diff. A malformed exemption parses to zero exemptions
+                        plus a blocking error, so a typo can never silently
+                        over-exempt.
+                      </li>
+                      <li>
+                        <strong>The hard line:</strong> CEL rules, broken JSON,
+                        missing-registry image FQDNs, and every runtime check
+                        are not exemptable. You can turn a check off — you can't
+                        lie about a finding.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <h5>Org-Agnostic by Design</h5>
+                    <ul>
+                      <li>
+                        A generic engine with no org names, cluster names, or
+                        company domains in the code. Organizations import it as
+                        a Go module and compile a thin wrapper binary — no forks
+                        required.
+                      </li>
+                      <li>
+                        Org-specific behavior is injected at startup through a
+                        <code>provider.Providers</code> seam.
+                      </li>
+                      <li>
+                        Every step has a stable ID that can be turned on or off
+                        with <code>--enable-checks</code> /
+                        <code>--disable-checks</code>.
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col-md-6">
+                    <h5>One Unified Report</h5>
+                    <ul>
+                      <li>
+                        Instead of spamming the PR, the engine updates a single
+                        collapsible markdown comment, and every section records
+                        its status so a linter never silently disappears.
+                      </li>
+                      <li>
+                        Applied exemptions render in an audit table, so new
+                        drift can't hide behind an old waiver.
+                      </li>
+                      <li>
+                        The comment ends with a ready-to-copy CLI command so any
+                        engineer <em>or AI agent</em> can reproduce the run
+                        locally.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <br />
+                <h4 class="widget-title">Technology Stack</h4>
+                <ul>
+                  <li><strong>Language:</strong> Go.</li>
+                  <li>
+                    <strong>In-process:</strong> Kustomize SDK, Helm chart
+                    loader, kubeconform (embedded schemas), CEL.
+                  </li>
+                  <li>
+                    <strong>External tools:</strong> shellcheck, golangci-lint,
+                    markdownlint, prettier, kyverno, <code>kustomize</code> (for
+                    <code>edit fix</code>).
+                  </li>
+                  <li><strong>Forges:</strong> GitHub and GitLab.</li>
+                  <li>
+                    <strong>Delivery:</strong> Tekton Pipelines-as-Code for the
+                    repo's own CI, GitHub Actions for multi-arch images,
+                    GoReleaser for releases.
+                  </li>
+                  <li>
+                    <strong>Packaging:</strong> Go module, release binaries, and
+                    a multi-arch UBI 10 Minimal container image on GHCR.
+                  </li>
+                  <li>
+                    <strong>Testing:</strong> table-driven suites with
+                    false-positive guards, a non-blocking live-PR replay, and
+                    upstream-citation verification.
+                  </li>
+                </ul>
+                <hr />
+              </div>
+            </div>
+            <!-- #overview -->
+          </div>
+          <!-- architecture -->
+          <div class="page-section" id="architecture">
+            <div class="row">
+              <div class="col-md-12">
+                <h4 class="widget-title">Pipeline Flow</h4>
+                <p>
+                  The binary runs a fixed sequence of phases. Cheap, decisive
+                  gates run first, independent work fans out across goroutines
+                  (bounded by CPU count), and everything funnels into one
+                  report. The repo's own CI is deliberately tiny — one
+                  Pipelines-as-Code PipelineRun with two parallel tasks —
+                  because the heavy lifting lives in the binary, where it is
+                  testable. The lint task runs the tool against the repo itself.
+                </p>
+                <ol>
+                  <li>
+                    <strong>PR Validation</strong> (forge API only, cheap): PR
+                    title convention, unsigned commits, PR checklist.
+                  </li>
+                  <li>
+                    <strong>Changeset Resolution</strong> — determine exactly
+                    which files this PR touches.
+                  </li>
+                  <li>
+                    <strong>Large File Check</strong> and
+                    <strong>YAML Syntax</strong> — two sequential gates, since
+                    everything downstream assumes parseable files.
+                  </li>
+                  <li>
+                    <strong>Linting</strong> — fanned out: markdownlint,
+                    prettier, golangci-lint, shellcheck (which also lints Bash
+                    embedded in Tekton task scripts and container commands), and
+                    raw-manifest kubeconform.
+                  </li>
+                  <li>
+                    <strong>Static Checks</strong> — fanned out: config sort
+                    order, starting-CSV sanity, and the scaffold README status
+                    table.
+                  </li>
+                  <li>
+                    <strong>Build YAML</strong> — scaffold validation, then the
+                    affected overlay set (app-aware, not a bare path match) is
+                    rendered through the native Kustomize/Helm engines (with AVP
+                    where configured), followed by Kustomize Fix and Ghost Patch
+                    Detection.
+                  </li>
+                  <li>
+                    <strong>Post-Build Validation</strong> — against the
+                    rendered output: kubeconform, CEL, runtime validation, NAD
+                    validation, the resource-compliance registry, and Kyverno
+                    (opt-in). Every finding is classified as blocking (direct)
+                    or warning-only (external).
+                  </li>
+                  <li>
+                    <strong>Unified Report</strong> — one PR comment (or console
+                    output) assembled from every phase.
+                  </li>
+                </ol>
+                <br />
+                <h4 class="widget-title">The Dual Pass: Raw vs. Rendered</h4>
+                <p>
+                  Some checks must run against the <em>raw committed file</em> —
+                  a vault-plugin placeholder like
+                  <code>&lt;vault:secret&gt;</code>
+                  is a legitimate state in git; it resolves at deploy time, not
+                  at review time. Other checks must run against the
+                  <em>final rendered output</em>, after Kustomize generators and
+                  patches have done their mutations. The engine runs both passes
+                  and guarantees each changed manifest is judged by exactly one
+                  of them — so you never get the same finding twice, and you
+                  never validate a state that never actually deploys.
+                </p>
+                <p>
+                  Findings are change-aware: a finding on a resource the PR
+                  itself <strong>changed</strong> is <strong>blocking</strong>;
+                  a finding that only surfaced because a shared base or
+                  component the PR touched feeds that resource is
+                  <strong>warning-only</strong>. Introducing a new policy
+                  therefore can't break legacy code the PR didn't touch.
+                </p>
+                <br />
+                <h4 class="widget-title">Checks at a Glance</h4>
+                <p>
+                  The registry groups its checks into two families. The
+                  complete, current ID list lives in the
+                  <a
+                    href="https://github.com/ArthurVardevanyan/k8s-gitops-ci/blob/main/docs/CI.md"
+                    >CI.md</a
+                  >
+                  reference rather than being duplicated here.
+                </p>
+                <ul>
+                  <li>
+                    <strong>Resource compliance:</strong> namespace declaration,
+                    Pod Security Admission labels, RBAC read-only aggregation
+                    and wildcard bans, ClusterRoleBinding sanity, ArgoCD
+                    sync-options, image digest pinning and explicit registry
+                    hosts, named ports, pod-spec defaults
+                    (<code>securityContext</code>, resources), unresolved
+                    placeholders, and cluster-identity copy/paste.
+                  </li>
+                  <li>
+                    <strong>Runtime validation:</strong> 1:1 ports of the API
+                    server's admission rules across apps, batch, core,
+                    networking, policy, RBAC, storage and more, plus the
+                    NetworkAttachmentDefinition/OVN family. Each cites the
+                    upstream function it was ported from and is verified on
+                    every CI run.
+                  </li>
+                  <li>
+                    <strong>Gated steps:</strong> linters, CEL, Kustomize Fix,
+                    scaffold checks, AVP, and Kyverno each have a stable ID for
+                    <code>--enable-checks</code> /
+                    <code>--disable-checks</code>.
+                  </li>
+                </ul>
+                <br />
+                <h4 class="widget-title">Modes</h4>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Mode</th>
+                      <th>Command</th>
+                      <th>Changeset Source</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Full pipeline</td>
+                      <td>
+                        <code>pipeline --url &lt;repo&gt; --pr &lt;n&gt;</code>
+                      </td>
+                      <td>PR's changed files via the forge API</td>
+                    </tr>
+                    <tr>
+                      <td>Local PR check</td>
+                      <td>
+                        <code
+                          >pipeline --revision &lt;sha&gt; --target-branch
+                          &lt;branch&gt;</code
+                        >
+                      </td>
+                      <td>
+                        <code>git diff &lt;target&gt;...&lt;revision&gt;</code>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Working-tree diff</td>
+                      <td><code>test</code></td>
+                      <td>Uncommitted changes in the current tree</td>
+                    </tr>
+                    <tr>
+                      <td>Directory scan</td>
+                      <td>
+                        <code>test [dirs...]</code> / <code>test --dirs</code>
+                      </td>
+                      <td>Every file under the given paths</td>
+                    </tr>
+                    <tr>
+                      <td>Full repo scan</td>
+                      <td><code>test --all</code></td>
+                      <td>
+                        Every file, every overlay — ignores git state entirely
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Ad-hoc overlay build</td>
+                      <td>
+                        <code
+                          >build-yaml --app &lt;a&gt; --cluster &lt;c&gt;</code
+                        >
+                      </td>
+                      <td>
+                        Targeted: the given app's <code>base/</code> +
+                        <code>overlays/&lt;cluster&gt;</code> only
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p>
+                  <code>test</code> accepts the same scoping and
+                  check-enablement flags as <code>pipeline</code>, so a failing
+                  CI run reproduces on your laptop with no remote and no PR.
+                </p>
+                <hr />
+              </div>
+            </div>
+            <!-- #architecture -->
+          </div>
+
+          <div class="page-section" id="github">
+            <div class="col-md-12">
+              <div class="row">
+                <h4 class="widget-title">GitHub</h4>
+                <a href="https://github.com/ArthurVardevanyan/k8s-gitops-ci"
+                  >https://github.com/ArthurVardevanyan/k8s-gitops-ci</a
+                >
+                <br />
+                <br />
+                <h5>Install</h5>
+                <pre><code>go install github.com/ArthurVardevanyan/k8s-gitops-ci/cmd/k8s-gitops-ci@latest</code></pre>
+                <h5>Usage</h5>
+                <pre><code># Full CI pipeline: PR checks, linting, static checks, resource compliance.
+k8s-gitops-ci pipeline --url https://github.com/&lt;org&gt;/&lt;repo&gt; --pr 123
+
+# Run every validator against the working tree (no PR/remote needed).
+k8s-gitops-ci test ./kubernetes
+
+# Full-repo scan, printing only failing sections.
+k8s-gitops-ci test --all --quiet
+
+# Build rendered YAML for a specific app/cluster overlay.
+k8s-gitops-ci build-yaml --app my-app --cluster my-cluster</code></pre>
+                <h5>Documentation</h5>
+                <ul>
+                  <li>
+                    <a
+                      href="https://github.com/ArthurVardevanyan/k8s-gitops-ci/blob/main/docs/ARCHITECTURE.md"
+                      >ARCHITECTURE.md</a
+                    >
+                    — runtime flow, package map, "where do I find X?"
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/ArthurVardevanyan/k8s-gitops-ci/blob/main/docs/CI.md"
+                      >CI.md</a
+                    >
+                    — pipeline phases, every mode, the full registered-check
+                    list, finding classification
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/ArthurVardevanyan/k8s-gitops-ci/blob/main/docs/DEVELOPMENT.md"
+                      >DEVELOPMENT.md</a
+                    >
+                    — build/test/lint, repository structure, design conventions
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/ArthurVardevanyan/k8s-gitops-ci/blob/main/docs/HOOKS.md"
+                      >HOOKS.md</a
+                    >
+                    — the <code>test.sh</code> contract and the
+                    <code>/hook-test</code> security model
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/ArthurVardevanyan/k8s-gitops-ci/blob/main/docs/EXEMPTIONS.md"
+                      >EXEMPTIONS.md</a
+                    >
+                    — the exemption framework: annotation vs. selector modes,
+                    exemptable check IDs
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/ArthurVardevanyan/k8s-gitops-ci/blob/main/docs/TEKTON.md"
+                      >TEKTON.md</a
+                    >
+                    — the repo's own Pipelines-as-Code setup and caching
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/ArthurVardevanyan/k8s-gitops-ci/blob/main/docs/RELEASE.md"
+                      >RELEASE.md</a
+                    >
+                    — VERSION-file versioning, the release/RC flow, published
+                    artifacts
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/ArthurVardevanyan/k8s-gitops-ci/blob/main/docs/SECURITY.md"
+                      >SECURITY.md</a
+                    >
+                    — trust model, <code>exec.Command</code> audit,
+                    file-permission rationale
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/ArthurVardevanyan/k8s-gitops-ci/blob/main/docs/SCHEMAS.md"
+                      >SCHEMAS.md</a
+                    >
+                    — embedded kubeconform schemas / Kyverno policies, and how
+                    to supply your own
+                  </li>
+                </ul>
+                <br />
+              </div>
+            </div>
+          </div>
+          <hr />
+          <br />
+          <!-- TimeLine  -->
+          <div class="page-section" id="timeline">
+            <div class="row">
+              <div class="col-md-12">
+                <h4 class="widget-title">Timeline / Process</h4>
+                <ul class="timeline">
+                  <li>
+                    <h5>Shell Scripts — “Does It Build?”</h5>
+                    <p>December 2022 – February 2023</p>
+                    <p>
+                      GitOps overlays were multiplying across many apps, and
+                      nothing verified that they still rendered before ArgoCD
+                      tried to sync them.
+                    </p>
+                    <ul>
+                      <li>
+                        <strong>December 2022:</strong> First per-app
+                        <code>test.sh</code>: a loop over
+                        <code>*/overlays/*</code> running
+                        <code>kustomize build</code>.
+                      </li>
+                      <li>
+                        <strong>February 2023:</strong>
+                        <code>test.sh</code> rolled out app by app. Runs were
+                        local, serial, and per-app; there was no pipeline yet.
+                      </li>
+                      <li><strong>Key Tech:</strong> Kustomize, Bash.</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>Pipelines-as-Code & the First Real CI</h5>
+                    <p>February – March 2023</p>
+                    <p>
+                      The scripts moved into a Tekton pipeline triggered by
+                      Pipelines-as-Code.
+                    </p>
+                    <ul>
+                      <li>
+                        <strong>February 2023:</strong> First Tekton
+                        PipelineRun, run on every pull request, with AVP
+                        rendering added.
+                      </li>
+                      <li>
+                        <strong>March 2023:</strong>
+                        <strong>Change detection</strong> maps a PR's changed
+                        files to the overlays they affect, with the first PR
+                        comment output.
+                      </li>
+                      <li>
+                        <strong>March 2023:</strong>
+                        <strong>Helm rendering</strong> and
+                        <strong>kubeconform</strong> schema validation added;
+                        kubeconform becomes blocking.
+                      </li>
+                      <li>
+                        <strong>Key Tech:</strong> Tekton, Pipelines-as-Code,
+                        Kustomize, Helm, AVP, kubeconform.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>Hardening & the Lint Suite</h5>
+                    <p>April 2023 – December 2024</p>
+                    <p>
+                      With rendering and schema validation in place, attention
+                      turned to the quality of everything else in the repo.
+                    </p>
+                    <ul>
+                      <li>
+                        <strong>2023:</strong> Pinned pipeline images, a
+                        restricted git-clone task, and regular kubeconform
+                        schema refreshes.
+                      </li>
+                      <li>
+                        <strong>November 2023:</strong>
+                        <strong>markdownlint</strong>,
+                        <strong>prettier</strong>, and
+                        <strong>shellcheck</strong> added to the pipeline.
+                      </li>
+                      <li>
+                        <strong>December 2023:</strong>
+                        <strong>pre-commit hooks</strong> (gitleaks, shellcheck,
+                        checkov, markdownlint, prettier), followed by a
+                        conventional-commit check in January 2024.
+                      </li>
+                      <li>
+                        <strong>December 2024:</strong> CI now fails when
+                        <code>test.sh</code> is missing or invalid, and the
+                        pipeline standardizes on one shared builder image.
+                      </li>
+                      <li>
+                        <strong>Size:</strong> about 3,000 lines of Bash across
+                        ~106 <code>test.sh</code> files.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>Reusable Tasks & a Dedicated Overlay Repo</h5>
+                    <p>2025</p>
+                    <p>
+                      Pipeline logic was copy-pasted per repository, so it was
+                      extracted into versioned, reusable tasks.
+                    </p>
+                    <ul>
+                      <li>
+                        <strong>March 2025:</strong> New overlay repository with
+                        a full inline-Bash pipeline.
+                      </li>
+                      <li>
+                        <strong>July 2025:</strong> Tasks published as a
+                        versioned catalog that repositories resolve remotely
+                        instead of embedding.
+                      </li>
+                      <li>
+                        <strong>July 2025:</strong>
+                        <strong>First Go code:</strong> a standalone OVN-aware
+                        NetworkAttachmentDefinition validator, the ancestor of
+                        today's <code>k8scni</code> checks.
+                      </li>
+                      <li>
+                        <strong>October 2025:</strong>
+                        <strong>Lint-only pipeline:</strong> a fast path that
+                        skips builds and kubeconform.
+                      </li>
+                      <li>
+                        <strong>Key Tech:</strong> Tekton tasks, GoReleaser,
+                        kubeconform, a first Go validator.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5><code>test-utils.sh</code> — Bash at Its Limit</h5>
+                    <p>October 2025 – June 2026</p>
+                    <p>
+                      A shared library replaced the copy-pasted logic. It grew
+                      roughly 20× in eight months.
+                    </p>
+                    <ul>
+                      <li>
+                        <strong>October 2025:</strong>
+                        <code>test-utils.sh</code> v1 (108 lines) with
+                        change-scoped overlay selection.
+                      </li>
+                      <li>
+                        <strong>January 2026:</strong>
+                        <strong>Scaffold drift detection</strong>: do overlays
+                        still match the templates they were generated from?
+                      </li>
+                      <li>
+                        <strong>February 2026:</strong> golangci-lint added, and
+                        <strong>parallel overlay builds</strong> through
+                        background subshells.
+                      </li>
+                      <li>
+                        <strong>March 2026:</strong>
+                        <code>kustomize edit fix</code> normalization, PR
+                        checklist and title checks, and startingCSV and scaffold
+                        checks.
+                      </li>
+                      <li>
+                        <strong>June 2026:</strong>
+                        <code>test-utils.sh</code> peaks at
+                        <strong>2,107 lines</strong>. Testing and parallelizing
+                        it had become the bottleneck, which motivated the
+                        rewrite.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>The Go Rewrite</h5>
+                    <p>June – July 2026</p>
+                    <p>
+                      The multi-task Bash pipeline was replaced by a single Go
+                      binary, with no shared volume needed to pass state between
+                      tasks.
+                    </p>
+                    <ul>
+                      <li>
+                        <strong>June 2026:</strong> The Go pipeline runs in
+                        <strong>shadow (non-blocking) mode</strong> alongside
+                        the Bash pipeline.
+                      </li>
+                      <li>
+                        <strong>June 2026:</strong>
+                        <strong>Rewrite merged:</strong> ~20k lines of Go
+                        covering 23 validation steps, four build strategies
+                        (Kustomize, Helm, each with or without AVP), and
+                        embedded schemas and policies.
+                      </li>
+                      <li>
+                        <strong>June 2026:</strong> Parallelism across linters,
+                        static checks, and per-overlay builds, plus
+                        <strong>selective builds</strong> of only the overlays a
+                        change reaches.
+                      </li>
+                      <li>
+                        <strong>June 2026:</strong>
+                        <strong>One unified report:</strong> about ten per-check
+                        comments collapse into a single PR comment.
+                      </li>
+                      <li>
+                        <strong>July 2026:</strong>
+                        <strong>Multi-arch images</strong> (<code
+                          >linux/amd64</code
+                        >
+                        + <code>linux/arm64</code>) through ko, and a new
+                        named-ports check.
+                      </li>
+                      <li>
+                        <strong>Key Tech:</strong> Go, Kustomize, Helm,
+                        kubeconform, Kyverno, ko, GoReleaser.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>Standalone Core & Provider Split</h5>
+                    <p>July 2026</p>
+                    <p>
+                      The generic engine was separated from
+                      organization-specific behavior, and the last Bash
+                      scaffolding was removed.
+                    </p>
+                    <ul>
+                      <li>
+                        <strong>July 2026:</strong>
+                        <strong>Core/org split:</strong> organization-specific
+                        behavior moved behind provider interfaces (branding,
+                        comment policy, secret backend, cluster metadata).
+                      </li>
+                      <li>
+                        <strong>July 2026:</strong>
+                        <strong>Legacy Bash shim decommissioned:</strong>
+                        <code>test.sh</code> became declarative config plus hook
+                        functions.
+                      </li>
+                      <li>
+                        <strong>July 2026:</strong> The generic engine is
+                        extracted into its own
+                        <strong>standalone, open-source module</strong>.
+                      </li>
+                      <li>
+                        <strong>July 2026:</strong> Hooks, AVP/Helm detection,
+                        Kyverno, and NetworkAttachmentDefinition validation
+                        wired into the pipeline, with real per-app scaffold
+                        drift detection.
+                      </li>
+                      <li>
+                        <strong>July 2026:</strong> The documentation suite is
+                        published: ARCHITECTURE, CI, HOOKS, EXEMPTIONS, RELEASE,
+                        TEKTON, and SECURITY.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>Exemptions, Releases & Runtime Validation</h5>
+                    <p>August – September 2026</p>
+                    <ul>
+                      <li>
+                        <strong>August 2026:</strong>
+                        <strong>Unified exemption framework:</strong>
+                        annotation-based and repo-wide selectors, both
+                        fail-closed.
+                      </li>
+                      <li>
+                        <strong>August 2026:</strong> <strong>Releases:</strong>
+                        <code>VERSION</code> becomes the single source of truth,
+                        with a bump-correctness gate and auto-cut RC
+                        pre-releases.
+                      </li>
+                      <li>
+                        <strong>August 2026:</strong>
+                        <strong>Dual-pass compliance</strong>, and a live replay
+                        of recent HomeLab PRs as a false-positive gate.
+                      </li>
+                      <li>
+                        <strong>August 2026:</strong> Kubernetes admission rules
+                        <strong>ported 1:1</strong> into the binary, each citing
+                        the upstream function it came from, with a CI job that
+                        breaks if upstream changes.
+                      </li>
+                      <li>
+                        <strong>September 2026:</strong>
+                        <strong>CEL validation</strong> for CRD
+                        <code>x-kubernetes-validations</code> rules.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>Multi-Forge, Distribution & Stabilization</h5>
+                    <p>September – November 2026</p>
+                    <ul>
+                      <li>
+                        <strong>September 2026:</strong>
+                        <strong>GitLab CI support</strong> through an explicit
+                        <code>--forge</code> flag and
+                        <code>glab</code> integration.
+                      </li>
+                      <li>
+                        <strong>September 2026:</strong> A
+                        <strong>Containerfile</strong> based on Red Hat UBI 10
+                        Minimal for distribution as a container image.
+                      </li>
+                      <li>
+                        <strong>September 2026:</strong> Image building moves
+                        from Tekton to GitHub Actions, publishing a multi-arch
+                        index to GHCR.
+                      </li>
+                      <li>
+                        <strong>October – November 2026:</strong> Attribution
+                        and classification fixes, Helm-template exclusions, and
+                        clearer AVP errors.
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <br />
+          <div class="row" id="footer">
+            <div class="col-md-12 text-center"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/vendor/jquery-3.7.1.min.js"></script>
+    <script src="js/min/plugins.min.js"></script>
+    <script src="js/min/main.min.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

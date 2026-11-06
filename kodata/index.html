@@ -63,6 +63,11 @@
               <a href="homelab.html"><i class="fas fa-server"></i>HomeLab</a>
             </li>
             <li>
+              <a href="k8s_gitops_ci.html"
+                ><i class="fas fa-code-branch"></i>k8s-gitops-ci</a
+              >
+            </li>
+            <li>
               <a href="cpd_ap.html"
                 ><i class="fa fa-print"></i>Automated Printing</a
               >
@@ -113,6 +118,11 @@
           </li>
           <li>
             <a href="homelab.html"><i class="fas fa-server"></i>HomeLab</a>
+          </li>
+          <li>
+            <a href="k8s_gitops_ci.html"
+              ><i class="fas fa-code-branch"></i>k8s-gitops-ci</a
+            >
           </li>
           <li>
             <a href="cpd_ap.html"
@@ -202,6 +212,21 @@
             <div class="col-md-12">
               <div class="row">
                 <h4 class="widget-title">Projects</h4>
+                <h5>
+                  k8s-gitops-ci — A GitOps CI Engine in a Single Go Binary
+                </h5>
+                <p>
+                  <a href="k8s_gitops_ci.html">Click Here for Project Info</a>
+                </p>
+                <p>
+                  A generic, org-agnostic GitOps CI engine for Kubernetes
+                  manifests: it replaces a multi-task Tekton pipeline with a
+                  single Go binary — clone/resolve the changeset, lint it, build
+                  the Kustomize/Helm overlays it affects, run a registry of
+                  resource-compliance checks (including ports of the API
+                  server's own admission rules), and post one unified PR report.
+                </p>
+                <br />
                 <h5>Print Department Automated Printing Software</h5>
                 <p><a href="cpd_ap.html">Click Here for Project Info</a></p>
                 <p>
