@@ -69,7 +69,7 @@
               <div class="profile-content">
                 <h3 class="profile-title">Arthur Vardevanyan</h3>
                 <p class="profile-description">
-                  HomeLab - Server & Desktop Configuration
+                  HomeLab - Server, Desktop & Edge Configuration
                 </p>
               </div>
             </div>
@@ -117,7 +117,7 @@
         <div class="profile-image"><img src="img/homelab/HomeLab.png" /></div>
         <h3 class="profile-title">Arthur Vardevanyan</h3>
         <p class="profile-description">
-          HomeLab - Server & Desktop Configuration
+          HomeLab - Server, Desktop & Edge Configuration
         </p>
       </div>
       <!-- top-section -->
@@ -181,7 +181,7 @@
       <div class="banner-overlay"></div>
       <div class="welcome-text">
         <h2>HomeLab</h2>
-        <h5>HomeLab Server & Desktop Configuration</h5>
+        <h5>HomeLab Server, Desktop & Edge Configuration</h5>
       </div>
     </div>
 
@@ -217,13 +217,13 @@
                         <strong>GitOps Implementation:</strong> Established a
                         declarative delivery model using ArgoCD for continuous
                         deployment and Tekton for CI pipelines, integrating with
-                        self-hosted Gitea and Quay registries.
+                        self-hosted Gitea, Quay, and a private Docker registry.
                       </li>
                       <li>
                         <strong>Cluster Management:</strong> Managed full
                         lifecycle of bare-metal clusters (IPI/SNO), including
                         automated provisioning, scaling, and seamless upgrades
-                        (up to OKD 4.21).
+                        (up to OKD 5.0).
                       </li>
                     </ul>
                   </div>
@@ -296,28 +296,42 @@
                 <h4 class="widget-title">Technology Stack</h4>
                 <ul>
                   <li>
-                    <strong>Platforms:</strong> OKD (OpenShift), Kubernetes,
-                    K3s, Docker, MicroShift.
+                    <strong>Platforms:</strong> OKD (OpenShift) 5.0, Kubernetes,
+                    K3s, Docker, MicroShift (BootC).
                   </li>
                   <li>
                     <strong>IaC & Config:</strong> Ansible, Terraform, Helm,
                     Kustomize.
                   </li>
                   <li>
-                    <strong>CI/CD:</strong> ArgoCD, Tekton, GitLab CI, GitHub
-                    Actions.
+                    <strong>CI/CD:</strong> ArgoCD (Red Hat GitOps Operator),
+                    Tekton, Tekton Chains (SBOM/cosign), gitops-ci, git-clift,
+                    GitLab CI, GitHub Actions.
                   </li>
                   <li>
-                    <strong>Storage:</strong> Ceph, Rook, MinIO, Longhorn,
-                    TrueNAS (ZFS).
+                    <strong>Storage:</strong> Ceph (ODF 1.20), Rook, MinIO,
+                    Longhorn, TrueNAS (ZFS), UNAS.
+                  </li>
+                  <li>
+                    <strong>Databases:</strong> CloudNative-PG, PostgreSQL,
+                    MongoDB, Dragonfly (Redis).
                   </li>
                   <li>
                     <strong>Networking:</strong> Istio, Traefik, MetalLB,
-                    OVN-K8s, pfSense.
+                    OVN-K8s, pfSense, Gateway API, BGP, Technitium DNS.
+                  </li>
+                  <li>
+                    <strong>Security & Identity:</strong> Zitadel (OIDC), Vault,
+                    Kyverno, Coraza WAF, NetworkPolicies.
                   </li>
                   <li>
                     <strong>Observability:</strong> Prometheus, Grafana, Loki,
                     VictoriaMetrics, Stackrox.
+                  </li>
+                  <li>
+                    <strong>AI & LLM:</strong> LiteLLM, llama-swap, llama.cpp,
+                    vLLM (Intel XPU), Open WebUI, SearXNG, Intel Arc Pro B70
+                    GPUs.
                   </li>
                   <li><strong>Languages:</strong> Python, Bash, Go.</li>
                 </ul>
@@ -855,6 +869,102 @@
                       <li>
                         <b>March 12, 2026</b>: <b>Docker Registry</b> inception,
                         Renovate switch to <b>GitHub App</b>.
+                      </li>
+                      <li><b>April 2, 2026</b>: <b>Gateway API</b> rework.</li>
+                      <li>
+                        <b>April 5, 2026</b>: <b>InstallPlan Approver</b> for
+                        automated OLM operator upgrades.
+                      </li>
+                      <li><b>May 8, 2026</b>: <b>Knative</b> removed.</li>
+                      <li>
+                        <b>May 11, 2026</b>: OKD upgrade to <b>4.22.0</b> (GA).
+                      </li>
+                      <li>
+                        <b>May 18, 2026</b>: <b>AI agent skills</b> and
+                        <b>Fedora Snapdragon laptop</b> inception.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>AI, LLM & GPU</h5>
+                    <p>Mid 2026</p>
+                    <ul>
+                      <li>
+                        <b>July 30, 2026</b>: <b>git-clift</b> semantic releaser
+                        inception, <b>Service Mesh</b> removed.
+                      </li>
+                      <li><b>July 31, 2026</b>: <b>gitops-ci</b> inception.</li>
+                      <li>
+                        <b>August 11, 2026</b>: <b>Intel Arc B70</b> inception,
+                        LLM inference replacing NVIDIA.
+                      </li>
+                      <li>
+                        <b>August 14, 2026</b>:
+                        <b>Dual Intel Arc Pro B70</b> upgrade with
+                        <b>LiteLLM</b>, <b>llama-swap</b>, <b>Open WebUI</b> and
+                        <b>SearXNG</b>.
+                      </li>
+                      <li>
+                        <b>August 21, 2026</b>: <b>OIDC CLI (PKCE)</b> and
+                        <b>NetObserv Loki</b> re-inception.
+                      </li>
+                      <li>
+                        <b>August 23, 2026</b>: <b>KubeVirt on GPU node</b> and
+                        cross-CPU live migration.
+                      </li>
+                      <li>
+                        <b>August 24, 2026</b>: <b>GPU power tuning</b> and LLM
+                        security hardening.
+                      </li>
+                      <li>
+                        <b>September 10, 2026</b>: Chat models migrated to
+                        <b>vLLM XPU</b>.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <h5>OKD 5.0</h5>
+                    <p>Late 2026</p>
+                    <ul>
+                      <li>
+                        <b>September 12, 2026</b>: <b>Ceph 1.20</b> operator
+                        upgrade.
+                      </li>
+                      <li>
+                        <b>September 17, 2026</b>: OKD upgrade to <b>5.0</b>.
+                      </li>
+                      <li>
+                        <b>September 21, 2026</b>:
+                        <b>media-ingest</b> GPU-accelerated AV1 video ingestion
+                        pipeline.
+                      </li>
+                      <li>
+                        <b>October 6, 2026</b>: ArgoCD migrated to the
+                        <b>Red Hat OpenShift GitOps Operator</b>.
+                      </li>
+                      <li>
+                        <b>October 20, 2026</b>: Per-app Gateway
+                        <b>ListenerSets</b>.
+                      </li>
+                      <li>
+                        <b>October 22, 2026</b>: <b>Tekton Chains</b> image
+                        signing and SBOM.
+                      </li>
+                      <li>
+                        <b>October 23, 2026</b>: Native worker provisioning via
+                        <b>metal3 + iPXE</b>.
+                      </li>
+                      <li>
+                        <b>October 27, 2026</b>: <b>MicroShift BootC</b> image
+                        and <b>Gitea GPG</b> commit signing.
+                      </li>
+                      <li>
+                        <b>November 1, 2026</b>:
+                        <b>DC2 MicroShift cluster</b> inception.
+                      </li>
+                      <li>
+                        <b>November 4, 2026</b>:
+                        <b>OpenShift Lightspeed</b> agentic runtime.
                       </li>
                     </ul>
                   </li>
