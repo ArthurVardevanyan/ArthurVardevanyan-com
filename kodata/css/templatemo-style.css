@@ -341,7 +341,8 @@ h6 {
 }
 
 .banner-cpd,
-.banner-homeLab {
+.banner-homeLab,
+.banner-k8s {
   float: right;
   width: 80%;
 }
@@ -352,7 +353,8 @@ h6 {
     width: 75%;
   }
   .banner-cpd,
-  .banner-homeLab {
+  .banner-homeLab,
+  .banner-k8s {
     width: 75%;
   }
 }
@@ -363,7 +365,8 @@ h6 {
     width: 100%;
   }
   .banner-cpd,
-  .banner-homeLab {
+  .banner-homeLab,
+  .banner-k8s {
     width: 100%;
   }
 }
@@ -610,6 +613,9 @@ h3.profile-title {
   .banner-homeLab {
     padding: 100px 25px !important;
   }
+  .banner-k8s {
+    padding: 100px 25px !important;
+  }
   .hide-mobile {
     display: none !important;
   }
@@ -639,6 +645,17 @@ h3.profile-title {
   padding: 175px 80px;
   position: relative;
   background: url("../img/homelab/HomeLab_Banner.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  z-index: 2;
+}
+
+.banner-k8s {
+  padding: 175px 80px;
+  position: relative;
+  background-color: #354a5f;
+  background-image: url("../img/k8s/k8s_gitops_ci_banner.svg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
